@@ -49,18 +49,32 @@ function shaders() {
 
 // Single directional light, Lambert diffuse only: no specular, no ambient, no emission
 var S1 = `
-        float cosAlphaAngle = dot(normalVec, LADir);
+    float cosAlphaAngle = dot(normalVec, LADir);
 	out_color = LAlightColor *  diffColor * clamp(cosAlphaAngle, 0.0, 1.0);
 `;
 
 // Single point light with decay, Lambert diffuse, Blinn specular, no ambient and no emission
 var S2 = `
-	out_color = vec4(0.0, 1.0, 0.0, 1.0);
+	vec3 differenceVector = LAPos - fs_pos;
+	float differenceLength = length(differenceVector);
+	float decayFactor = pow( (LATarget / differenceLength), LADecay);	
+	float cosAlphaAngle = dot(differenceVector/differenceLength, LADir);
+	out_color = LAlightColor * decayFactor * diffColor * clamp(cosAlphaAngle, 0.0, 1.0) ;
 `;
 
 // Single directional light, Lambert diffuse, Phong specular, constant ambient and emission
 var S3 = `
-	out_color = vec4(1.0, 1.0, 0.0, 1.0);
+	float cosAlphaAngle = dot(normalVec, LADir);
+	vec3 reflectionDir = normalVec * 2.0 * dot(LADir , normalVec) - LADir;
+	float specularIntensity = pow(
+									clamp(dot(eyedirVec, reflectionDir), 0.0, 1.0), 
+									SpecShine); 
+
+	vec4 diffuseComponent = LAlightColor *  diffColor * clamp(cosAlphaAngle, 0.0, 1.0); 
+	vec4 specularComponent = specularColor * specularIntensity;
+	out_color = clamp(
+						diffuseComponent + specularComponent + ambientLightColor * ambColor + emit ,
+						0.0, 1.0)	;
 `;
 
 // Single spot light (with decay), Lambert diffuse, Blinn specular, no ambient and no emission
