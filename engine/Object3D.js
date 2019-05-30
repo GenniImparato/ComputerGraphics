@@ -1,33 +1,34 @@
 class Object3D
 {
-	//reference to a loaded mesh
-	mesh = null;
-	//reference to a loaded shader
-	shader = null;
-
-	//position
-	x = 0;
-	y = 0;
-	z = 0;
-
-	//rotation
-	rotx = 0;
-	roty = 0;
-	rotz = 0;
-
-	//scale
-	scale = 1.0;
-
-	//speed
-	speedX = 0;
-	speedY = 0;
-	speedZ = 0;
+	
 
 	
 	constructor(mesh, shader)
-	{
-		this.mesh = mesh;
-		this.shader = shader;
+		{
+
+		//position
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+
+		//rotation
+		this.rotx = 0;
+		this.roty = 0;
+		this.rotz = 0;
+
+		//scale
+		this.scale = 1.0;
+
+		//speed
+		this.speedX = 0;
+		this.speedY = 0;
+		this.speedZ = 0;
+		
+			//reference to a loaded mesh
+		
+		//reference to a loaded shader
+		this.mesh = mesh || null;
+		this.shader = shader || null;
 
 		//bounding box coordinates
 		var minX = 1000000;

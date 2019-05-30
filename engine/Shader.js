@@ -1,19 +1,20 @@
 class Shader
 {
-	program = null;
-
-	positionsLoc = null;
-	normalsLoc = null;
-
-	matrixLoc = null;
-	nMatrixLoc = null;
-
-	//color for bounding box fshader
-	colorLoc = null;
+	
 
 	//creates a shader from .vs and .fs files
 	constructor(vsFile, fsFile)
 	{
+		this.program = null;
+
+		this.positionsLoc = null;
+		this.normalsLoc = null;
+
+		this.matrixLoc = null;
+		this.nMatrixLoc = null;
+
+		//color for bounding box fshader
+		this.colorLoc = null;
 		var locProgram;
 		var vertexShader;
 		var fragmentShader;

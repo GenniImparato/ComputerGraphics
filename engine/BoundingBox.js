@@ -1,54 +1,35 @@
 class BoundingBox
 {
-	//position
-	x = 0.0;
-	y = 0.0;
-	z = 0.0;
 
-	//offset
-	offX = 0.0;
-	offY = 0.0;
-	offZ = 0.0;
 
-	//original dimensions
-	dx_ = 1.0;
-	dy_ = 2.0;
-	dz_ = 1.0;
-
-	//actual dimension (after scaling)
-	dx = 0.0;
-	dy = 0.0;
-	dz = 0.0;
-
-	//box coords
-	minX = 0.0; 
-	maxX = 0.0;
-	minY = 0.0; 
-	maxY = 0.0;
-	minZ = 0.0;
-	maxZ = 0.0;
-
-	color = [1.0, 0.0, 0.0, 1.0];
 
 	constructor(offX, offY, offZ, minX, maxX, minY, maxY, minZ, maxZ)
 	{
-		this.offX = offX;
-		this.offY = offY;
-		this.offZ = offZ;
 
-		this.dx_ = maxX-minX;
-		this.dy_ = maxY-minY;
-		this.dz_ = maxZ-minZ;
+			//position
+		this.x = 0.0;
+		this.y = 0.0;
+		this.z = 0.0	;
+		//offset
+		this.offX = offX || 0.0;
+		this.offY = offY || 0.0;
+		this.offZ = offZ || 0.0;
+
+		this.minX = minX || 0.0;	
+		this.minY = minY || 0.0;
+		this.minZ = minZ || 0.0;
+		this.maxX = maxX || 0.0;
+		this.maxY = maxY || 0.0;
+		this.maxZ = maxZ || 0.0;
+		//original dimensions	
+		this.dx_ = (maxX-minX) != 0 ? (maxX - minX) : 1.0;
+		this.dy_ = (maxY-minY) != 0 ? (maxY - minY) : 2.0;
+		this.dz_ = (maxZ-minZ) != 0 ? (maxZ - minZ) : 1.0;
+		//actual dimension (after scaling)
 		this.dx = this.dx_;
 		this.dy = this.dy_;
 		this.dz = this.dz_;
-
-		this.minX = minX;
-		this.minY = minY;
-		this.minZ = minZ;
-		this.maxX = maxX;
-		this.maxY = maxY;
-		this.maxZ = maxZ;
+		this.color = [1.0, 0.0, 0.0, 1.0];
 
 	}
 

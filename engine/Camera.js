@@ -1,13 +1,16 @@
 class LookAtCamera
 {
-	lookRadius	= 10.0;
-	angle 		= 0.0;
-	elevation 	= 0.0;
 
-	xLook 		= 0.0;
-	yLook		= 0.0;
-	zLook 	    = 0.0;
 
+	constructor() {	
+		this.lookRadius	= 10.0;
+		this.angle 		= 0.0;
+		this.elevation 	= 0.0;
+
+		this.xLook 		= 0.0;
+		this.yLook		= 0.0;
+		this.zLook 	    = 0.0;
+	}
 	setLookRadius(radius)
 	{
 		this.lookRadius = radius;
