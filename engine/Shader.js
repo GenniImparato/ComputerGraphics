@@ -1,7 +1,5 @@
 class Shader
 {
-	
-
 	//creates a shader from .vs and .fs files
 	constructor(vsFile, fsFile)
 	{

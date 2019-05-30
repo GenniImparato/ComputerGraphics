@@ -1,11 +1,7 @@
 class Object3D
 {
-	
-
-	
 	constructor(mesh, shader)
-		{
-
+	{
 		//position
 		this.x = 0;
 		this.y = 0;
@@ -23,8 +19,6 @@ class Object3D
 		this.speedX = 0;
 		this.speedY = 0;
 		this.speedZ = 0;
-		
-			//reference to a loaded mesh
 		
 		//reference to a loaded shader
 		this.mesh = mesh || null;

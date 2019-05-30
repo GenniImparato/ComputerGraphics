@@ -1,30 +1,31 @@
 class BoundingBox
 {
-
-
-
 	constructor(offX, offY, offZ, minX, maxX, minY, maxY, minZ, maxZ)
 	{
 
-			//position
+		//position
 		this.x = 0.0;
 		this.y = 0.0;
-		this.z = 0.0	;
+		this.z = 0.0;
+
 		//offset
 		this.offX = offX || 0.0;
 		this.offY = offY || 0.0;
 		this.offZ = offZ || 0.0;
 
+		//bounding coords
 		this.minX = minX || 0.0;	
 		this.minY = minY || 0.0;
 		this.minZ = minZ || 0.0;
 		this.maxX = maxX || 0.0;
 		this.maxY = maxY || 0.0;
 		this.maxZ = maxZ || 0.0;
+
 		//original dimensions	
-		this.dx_ = (maxX-minX) != 0 ? (maxX - minX) : 1.0;
-		this.dy_ = (maxY-minY) != 0 ? (maxY - minY) : 2.0;
-		this.dz_ = (maxZ-minZ) != 0 ? (maxZ - minZ) : 1.0;
+		this.dx_ = (maxX-minX);
+		this.dy_ = (maxY-minY);
+		this.dz_ = (maxZ-minZ);
+
 		//actual dimension (after scaling)
 		this.dx = this.dx_;
 		this.dy = this.dy_;

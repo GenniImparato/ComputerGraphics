@@ -1,8 +1,7 @@
 class LookAtCamera
 {
-
-
-	constructor() {	
+	constructor() 
+	{	
 		this.lookRadius	= 10.0;
 		this.angle 		= 0.0;
 		this.elevation 	= 0.0;
@@ -11,6 +10,7 @@ class LookAtCamera
 		this.yLook		= 0.0;
 		this.zLook 	    = 0.0;
 	}
+	
 	setLookRadius(radius)
 	{
 		this.lookRadius = radius;
