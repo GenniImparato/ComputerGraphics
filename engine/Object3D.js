@@ -21,6 +21,9 @@ class Object3D
 		this.speedX = 0;
 		this.speedY = 0;
 		this.speedZ = 0;
+
+		//flag for setting gravity ON/OFF
+		this.enGravity = false;
 		
 		//reference to a loaded mesh
 		this.mesh = mesh || null;
@@ -99,6 +102,11 @@ class Object3D
 		this.speedX = x;	this.speedY = y;	this.speedZ = z;
 	}
 
+	enableGravity(boolean)
+	{
+		this.enGravity = boolean;
+	}
+
 	render()
 	{
 		this.boundingBox.update(this.x, this.y, this.z, 
@@ -139,11 +147,11 @@ class Object3D
 			this.collisionZ = true;
 
 		//collision from y++
-		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY)
+		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY	&& this.speedY<=0)
 			this.collisionY = true;
 
 		//collision from y--
-		if(this.boundingBox.maxY >= object.boundingBox.minY	&& 	this.boundingBox.minY <= object.boundingBox.minY) 
+		if(this.boundingBox.maxY >= object.boundingBox.minY	&& 	this.boundingBox.minY <= object.boundingBox.minY 	&& this.speedY>0) 
 			this.collisionY = true;
 
 	}
@@ -151,9 +159,12 @@ class Object3D
 	//update physics
 	updatePhysics()
 	{
-		//gravity;)
-		this.speedY = -0.1;
-
+		//gravity
+		if(this.enGravity)
+		{
+			this.speedY += gravityAccelY;
+		}
+		
 		//collisions
 		if(this.collisionX)
 			this.speedX = 0;
