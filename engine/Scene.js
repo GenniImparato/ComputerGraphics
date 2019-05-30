@@ -2,36 +2,36 @@ var camera;
 var objects = [];
 var playerObj;
 
-var angle = 0;
-var anglecam = 0;
 
 var Scene = 
 {
 	init: function()
 	{
 		//load shader
-		var shader = new Shader("vs.glsl", "fs.glsl");
+		 boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
+		var shader 			= new Shader("vs.glsl", "fs.glsl");
 
 		//load mesh
-		var plantMesh = Mesh.loadFromOBJFile("plant.obj");
-		var houseMesh = Mesh.loadFromOBJFile("house.obj");
-		var cubeMesh  = Mesh.loadFromOBJFile("cube.obj");
+		 unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");	//global var
+		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
+		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
+		
 
 		//creates objects
-		objects[0] = new Object(plantMesh, shader);
-		objects[1] = new Object(plantMesh, shader);
-		objects[2] = new Object(houseMesh, shader);
-		playerObj  = new Object(cubeMesh, shader);
+		objects[0] = new Object3D(plantMesh, shader);
+		objects[1] = new Object3D(plantMesh, shader);
+		objects[2] = new Object3D(houseMesh, shader);
+		playerObj  = new Object3D(unitCubeMesh, shader);
 
-		objects[0].setPosition(5, 0, 3);
-		objects[1].setPosition(5, 0, -3);
-		objects[2].setPosition(-5, 0, 0);
-		objects[2].scale = 0.4;
+		objects[0].setPosition(5, 0, 5);
+		objects[1].setPosition(5, 0, -5);
+		objects[2].setPosition(-7, 0, 0);
+		objects[2].setScale(0.5);
 		playerObj.setPosition(10, 0, 0);
 
 		//creates camera
 		camera = new LookAtCamera();
-		camera.setLookRadius(20.0);
+		camera.setLookRadius(25.0);
 		camera.setElevation(45.0);
 		camera.setLookPoint(0, 0, 0);
 
@@ -40,34 +40,53 @@ var Scene =
 	render: function()
 	{
 		gl.clear(gl.COLOR_BUFFER_BIT);
-		angle += 1.5;
-		anglecam += 0.5;
 
 		//move player cube
-		if(Input.isKeyPressed(Input.UP_KEY))
+		if(Input.isKeyDown(Input.UP_KEY))
 		{
-			playerObj.z -= 0.5 * Math.cos(utils.degToRad(playerObj.rotx));
-			playerObj.x -= 0.5 * Math.sin(utils.degToRad(-playerObj.rotx));
+			playerObj.setSpeed(-0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
+								0,
+								-0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
 		}
-		else if(Input.isKeyPressed(Input.DOWN_KEY))
+		else if(Input.isKeyDown(Input.DOWN_KEY))
 		{
-			playerObj.z += 0.5 * Math.cos(utils.degToRad(playerObj.rotx));
-			playerObj.x += 0.5 * Math.sin(utils.degToRad(-playerObj.rotx));
+			playerObj.setSpeed(0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
+								0,
+								0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
+		}
+		else
+			playerObj.setSpeed(0, 0, 0);
+
+		if(Input.isKeyDown(Input.LEFT_KEY))
+			playerObj.rotate(-2.0, 0, 0);
+		else if(Input.isKeyDown(Input.RIGHT_KEY))
+			playerObj.rotate(2.0, 0, 0);
+
+		//rotates plants
+		objects[0].rotate(1.5, 0, 0);
+		objects[1].rotate(-1.5, 0, 0);
+
+		//collisions
+		playerObj.boundingBox.setColor([0, 1, 0, 1]);
+		for(var i=0; i<3; i++)
+		{
+			if(playerObj.checkCollision(objects[i]))
+			{
+				playerObj.solveCollision(objects[i]);
+				playerObj.boundingBox.setColor([0, 0, 1, 1]);
+			}
 		}
 
-		if(Input.isKeyPressed(Input.LEFT_KEY))
-			playerObj.rotx -= 2;
-		else if(Input.isKeyPressed(Input.RIGHT_KEY))
-			playerObj.rotx += 2;
+		playerObj.updatePhysics();
 
 		//set camera to follow player
 		camera.setAngle(playerObj.rotx);
 		camera.setLookPoint(playerObj.x, playerObj.y, playerObj.z);
 		camera.look();
-		
-		//rotates plants
-		objects[0].rotx = angle;
-		objects[1].rotx = -angle;
+
+		//toggle showing of bounding boxes
+		if(Input.isKeyClicked(Input.B_KEY))
+			showBoundingBoxes = !showBoundingBoxes;
 
 
 		objects[0].render();

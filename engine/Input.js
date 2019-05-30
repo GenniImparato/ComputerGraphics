@@ -1,4 +1,5 @@
 var keys = [];
+var clickedKeys = [];
 
 var Input =
 {
@@ -6,6 +7,8 @@ var Input =
 	DOWN_KEY: 		40,
 	LEFT_KEY: 		37,
 	RIGHT_KEY: 		39,
+
+	B_KEY:          66,
 
 	init: function()
 	{
@@ -16,18 +19,35 @@ var Input =
 	keyUp: function(e)
 	{
 		if(keys[e.keyCode]) 
+		{
   			keys[e.keyCode] = false;
+  			clickedKeys[e.keyCode] = false;
+		}
   	},
 
 	keyDown: function(e)
 	{
-		if(!keys[e.keyCode]) 
-  			keys[e.keyCode] = true;
+		if(!keys[e.keyCode])
+		{
+			keys[e.keyCode] = true;
+			clickedKeys[e.keyCode] = true;
+		} 
+  			
 	},
 
-	isKeyPressed(key)
+	isKeyDown(key)
 	{
 		return keys[key];
+	},
+
+	isKeyClicked(key)
+	{
+		var ret = clickedKeys[key];
+
+		if(clickedKeys[key])
+			clickedKeys[key] = false;
+
+		return ret;
 	},
 	
 }

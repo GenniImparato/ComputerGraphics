@@ -21,6 +21,9 @@ var Canvas =
             gl.enable(gl.CULL_FACE);
   			gl.enable(gl.DEPTH_TEST);
   			gl.cullFace(gl.BACK);
+
+  			//gl.enable(gl.BLEND);
+  			//gl.blendFunc(gl.ONE_MINUS_SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         }
         else
             alert("Error: WebGL not supported by your browser!");

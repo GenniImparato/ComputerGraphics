@@ -8,6 +8,9 @@ class Shader
 	matrixLoc = null;
 	nMatrixLoc = null;
 
+	//color for bounding box fshader
+	colorLoc = null;
+
 	//creates a shader from .vs and .fs files
 	constructor(vsFile, fsFile)
 	{
@@ -55,6 +58,7 @@ class Shader
 
 		this.matrixLoc = gl.getUniformLocation(this.program, "matrix");
 		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
+		this.colorLoc = gl.getUniformLocation(this.program, "color");
 
 		//gl.enableVertexAttribArray(getAttributeLocation("inTextCoord");
 
@@ -71,5 +75,7 @@ class Shader
 	getNormalsLocation()		{ return this.normalsLoc; }
 	getMatrixLocation()			{ return this.matrixLoc; }
 	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
+
+	getColorLocation()			{ return this.colorLoc; }
 
 }

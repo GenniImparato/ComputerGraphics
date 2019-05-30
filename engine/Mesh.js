@@ -9,18 +9,20 @@ class Mesh
 							function (fileText) 
 							{
       							obj = new OBJ.Mesh(fileText);
+      							console.log(obj);
       							OBJ.initMeshBuffers(gl, obj);
       						});
 
-		return new Mesh(obj.vertexBuffer,
+		return new Mesh(obj.vertices, obj.vertexBuffer,
 						obj.normalBuffer,
 						obj.textureBuffer,
 						obj.indexBuffer);
 	}
 
-	//creates a mesh from buffers
-	constructor(positionBuffer, normalBuffer, textCoordBuffer, indexBuffer)
+	//creates a mesh 
+	constructor(positions, positionBuffer, normalBuffer, textCoordBuffer, indexBuffer)
 	{
+		this.positions = positions;
 		this.positionBuffer = positionBuffer;
 		this.normalBuffer = normalBuffer;
 		this.textCoordBuffer = textCoordBuffer;
