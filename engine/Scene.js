@@ -1,4 +1,5 @@
 var camera;
+var directionalLight;
 
 //stores all Objects3D in the scene
 var objects = [];
@@ -19,7 +20,7 @@ var Scene =
 	{
 		//load shader
 		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
-		var shader 			= new Shader("vs.glsl", "fs.glsl");
+		var shader 			= new Shader("vs.glsl", "fs_2.glsl");
 
 		//load mesh
 		unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");	//global var
@@ -60,6 +61,11 @@ var Scene =
 		camera.setLookRadius(25.0);
 		camera.setElevation(45.0);
 		camera.setLookPoint(0, 0, 0);
+
+		//creates first light 
+		directionalLight = new DirectionalLight('LA', 0.0, 0.5, 1.0, shader);
+		directionalLight.setColor(1.0, 1.0, 1.0, 1.0);
+		directionalLight.bind();
 
 	},
 
