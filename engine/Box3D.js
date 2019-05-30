@@ -5,6 +5,6 @@ class Box3D extends Object3D
 	{
 		super(unitCubeMesh, shader);
 		this.setScale(dimX, dimY, dimZ);
-		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
+		this.boundingBox.setScaleCorrection(1, 1, 1);
 	}
 }

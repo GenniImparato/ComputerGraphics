@@ -125,25 +125,48 @@ class Object3D
 	{
 		//collision from x++
 		if(this.boundingBox.maxX >= object.boundingBox.maxX	&& 	this.boundingBox.minX <= object.boundingBox.maxX	&&	this.speedX<0) 
-			this.speedX = 0;
-
+			this.collisionX = true;
 		//collision from x--
 		if(this.boundingBox.maxX >= object.boundingBox.minX	&& 	this.boundingBox.minX <= object.boundingBox.minX	&&	this.speedX>0)
-			this.speedX = 0;
+			this.collisionX = true;
 
 		//collision from z++
 		if(this.boundingBox.maxZ >= object.boundingBox.maxZ	&& 	this.boundingBox.minZ <= object.boundingBox.maxZ	&&	this.speedZ<0)
-			this.speedZ = 0;
+			this.collisionZ = true;
 
 		//collision from z--
 		if(this.boundingBox.maxZ >= object.boundingBox.minZ	&& 	this.boundingBox.minZ <= object.boundingBox.minZ	&&	this.speedZ>0) 
-			this.speedZ = 0;
+			this.collisionZ = true;
+
+		//collision from y++
+		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY)
+			this.collisionY = true;
+
+		//collision from y--
+		if(this.boundingBox.maxY >= object.boundingBox.minY	&& 	this.boundingBox.minY <= object.boundingBox.minY) 
+			this.collisionY = true;
 
 	}
 
 	//update physics
 	updatePhysics()
 	{
+		//gravity;)
+		this.speedY = -0.1;
+
+		//collisions
+		if(this.collisionX)
+			this.speedX = 0;
+		if(this.collisionY)
+			this.speedY = 0;
+		if(this.collisionZ)
+			this.speedZ = 0;
+
+		this.collisionX = false;
+		this.collisionY = false;
+		this.collisionZ = false;
+
+		//update position
 		this.x += this.speedX;
 		this.y += this.speedY;
 		this.z += this.speedZ;

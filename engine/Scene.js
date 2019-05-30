@@ -30,7 +30,17 @@ var Scene =
 		Scene.addObject3D(new Object3D(plantMesh, shader));
 		Scene.addObject3D(new Object3D(plantMesh, shader));
 		Scene.addObject3D(new Object3D(houseMesh, shader));
-		Scene.addObject3D(new Wall(2, 10, 8, shader));
+
+		//wall
+		var tmpWall = new Box3D(2, 10, 8, shader);
+		tmpWall.setPosition(0, 5, -10);
+		Scene.addObject3D(tmpWall);
+
+		//floor
+		var tmpWall = new Box3D(50, 1, 50, shader);
+		tmpWall.setPosition(0, -0.5, 0);
+		Scene.addObject3D(tmpWall);
+
 		playerObj  = new Object3D(unitCubeMesh, shader);
 
 		//first plant
@@ -49,16 +59,14 @@ var Scene =
 		objects[2].setScale(0.4, 0.6, 0.5);
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
 
-		objects[3].setPosition(0, 0, 10);
 
-
-		playerObj.setPosition(10, 0, 0);
+		playerObj.setPosition(10, 15, 0);
 		playerObj.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
 
 		//creates camera
 		camera = new LookAtCamera();
-		camera.setLookRadius(25.0);
-		camera.setElevation(45.0);
+		camera.setLookRadius(15.0);
+		camera.setElevation(25.0);
 		camera.setLookPoint(0, 0, 0);
 
 	},
@@ -106,10 +114,9 @@ var Scene =
 			showBoundingBoxes = !showBoundingBoxes;
 
 
-		objects[0].render();
-		objects[1].render();
-		objects[2].render();
-		objects[3].render();
+		for(var i=0; i<objectsCount; i++)
+			objects[i].render();
+
 		playerObj.render();
 	
 		window.requestAnimationFrame(Scene.render);
