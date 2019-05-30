@@ -131,6 +131,8 @@ class Object3D
 
 	solveCollision(object)
 	{
+		this.penetrationZ = 0;
+
 		//collision from x++
 		if(this.boundingBox.maxX >= object.boundingBox.maxX	&& 	this.boundingBox.minX <= object.boundingBox.maxX	&&	this.speedX<0) 
 			this.collisionX = true;
@@ -147,8 +149,11 @@ class Object3D
 			this.collisionZ = true;
 
 		//collision from y++
-		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY	&& this.speedY<=0)
+		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY	&& this.speedY<0)
+		{
 			this.collisionY = true;
+			this.penetrationY = object.boundingBox.maxY - this.boundingBox.minY;
+		}
 
 		//collision from y--
 		if(this.boundingBox.maxY >= object.boundingBox.minY	&& 	this.boundingBox.minY <= object.boundingBox.minY 	&& this.speedY>0) 
@@ -169,7 +174,10 @@ class Object3D
 		if(this.collisionX)
 			this.speedX = 0;
 		if(this.collisionY)
+		{
 			this.speedY = 0;
+			this.y += this.penetrationY;
+		}
 		if(this.collisionZ)
 			this.speedZ = 0;
 

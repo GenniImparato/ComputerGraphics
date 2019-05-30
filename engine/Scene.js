@@ -61,7 +61,7 @@ var Scene =
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
 
 
-		playerObj.setPosition(10, 5, 0);
+		playerObj.setPosition(10, 50, 0);
 		playerObj.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
 		playerObj.enableGravity(true);
 
