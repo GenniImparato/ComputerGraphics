@@ -61,8 +61,9 @@ var Scene =
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
 
 
-		playerObj.setPosition(10, 15, 0);
+		playerObj.setPosition(10, 50, 0);
 		playerObj.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
+		playerObj.enableGravity(true);
 
 		//creates camera
 		camera = new LookAtCamera();
@@ -85,22 +86,25 @@ var Scene =
 		if(Input.isKeyDown(Input.UP_KEY))
 		{
 			playerObj.setSpeed(-0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
-								0,
+								playerObj.speedY,
 								-0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
 		}
 		else if(Input.isKeyDown(Input.DOWN_KEY))
 		{
 			playerObj.setSpeed(0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
-								0,
+								playerObj.speedY,
 								0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
 		}
 		else
-			playerObj.setSpeed(0, 0, 0);
+			playerObj.setSpeed(0, playerObj.speedY, 0);
 
 		if(Input.isKeyDown(Input.LEFT_KEY))
 			playerObj.rotate(-2.0, 0, 0);
 		else if(Input.isKeyDown(Input.RIGHT_KEY))
 			playerObj.rotate(2.0, 0, 0);
+
+		if(Input.isKeyClicked(Input.SPACE_KEY))
+			playerObj.setSpeed(playerObj.speedX, 0.6, playerObj.speedZ);
 
 		//rotates plants
 		objects[0].rotate(1.5, 0, 0);

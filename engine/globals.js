@@ -17,3 +17,5 @@ var boundingBoxShader;		//loaded in Scene.init()
 
 //flag to show/hide bounding boxes of every object in the scene
 var showBoundingBoxes = true;
+
+var gravityAccelY = -0.02;

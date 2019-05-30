@@ -1,6 +1,6 @@
 class Box3D extends Object3D
 {
-	//construct a wall by given dimensions
+	//construct a box by given dimensions
 	constructor(dimX, dimY, dimZ, shader)
 	{
 		super(unitCubeMesh, shader);

@@ -8,6 +8,8 @@ var Input =
 	LEFT_KEY: 		37,
 	RIGHT_KEY: 		39,
 
+	SPACE_KEY:      32,
+
 	B_KEY:          66,
 
 	init: function()
