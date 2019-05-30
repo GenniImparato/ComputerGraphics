@@ -3,34 +3,29 @@
 precision mediump float;
 
 in vec3 fsNormal;
-in vec3 fs_pos;			// Position of the point in 3D space
+in vec3 fs_pos;			
 
-uniform vec3 LAPos;			// Position of first (or single) light
-uniform vec3 LADir;			// Direction of first (or single) light
-uniform float LAConeOut;		// Outer cone (in degree) of the light (if spot)
-uniform float LAConeIn;		// Inner cone (in percentage of the outher cone) of the light (if spot)
-uniform float LADecay;		// Decay factor (0, 1 or 2)
-uniform float LATarget;		// Target distance
-uniform vec4 LAlightColor;	// color of the first light
-uniform bool directionalLight;
-uniform bool pointLight;
-uniform bool spotLight;
+uniform vec3 LAPos;			
+uniform vec3 LADir;			
+uniform float LAConeOut;	
+uniform float LAConeIn;		
+uniform float LADecay;		
+uniform float LATarget;		
+uniform vec4 LAColor;	
+uniform vec3 lightType;
 		
 
-uniform vec4 ambientLightColor;		// Ambient light color. For hemispheric, this is the color on the p
-uniform vec4 ambientLightLowColor;	// For hemispheric ambient, this is the bottom color
-uniform vec3 ADir;					// For hemispheric ambient, this is the up direction
+uniform vec4 ambientLightColor;		
+uniform vec4 ambientLightLowColor;	
+uniform vec3 ADir;					
 
-uniform float SpecShine;				// specular coefficient for both blinn and phong
-uniform float DToonTh;				// Threshold for diffuse in a toon shader
-uniform float SToonTh;				// Threshold for specular in a toon shader
-
-uniform vec4 diffColor;				// diffuse color
-uniform vec4 ambColor;				// material ambient color
-uniform vec4 specularColor;			// specular color
-uniform vec4 emit;					// emitted color
+uniform float SpecShine;				
+uniform float DToonTh;				
+uniform float SToonTh;				
+		
+				
 	
-uniform vec3 eyedirVec;				// looking direction
+uniform vec3 eyedirVec;				
 
 
 // Final color is returned into:
@@ -40,33 +35,30 @@ out vec4 outColor;
 void main() 
 {
 	vec4 diffColor = vec4(0.1, 0.9, 1.0, 1.0);
-	if(directionalLight) {
-		float cosAlphaAngle = dot(fsNormal, LADir);
-	    out_color = clamp(LAlightColor *  diffColor * clamp(cosAlphaAngle, 0.0, 1.0), 0.0, 1.0);
+	// directional light
+	
+	vec3 dirLightDir = LADir;
+	vec4 dirLightColor = LAColor;
 
-	} else if (pointLight) {
-		vec3 differenceVector = LAPos - fs_pos;
-		float differenceLength = length(differenceVector);
-		float decayFactor = pow( (LATarget / differenceLength), LADecay);	
-		float cosAlphaAngle = clamp(dot(differenceVector/differenceLength, LADir), 0.0, 1.0);
-		out_color = clamp(LAlightColor * decayFactor * diffColor * cosAlphaAngle, 0.0, 1.0);
+	//point light
+	vec3 pointLightDir = normalize(LAPos - fs_pos);
+	vec4 pointLightColor = LAColor * pow( (LATarget / length(LAPos - fs_pos)), LADecay);	
+	
+	// spot light
+	vec3 spotLightDir = normalize(LAPos - fs_pos);
+	float cosAngle = dot(spotLightDir, LADir);
+	vec4 spotLightColor = LAColor *  pow( (LATarget / length(LAPos - fs_pos)), LADecay) * 
+								clamp((cosAngle - LAConeOut)/(LAConeIn - LAConeOut) , 0.0, 1.0);
 
-	} else if (spotLight) {
-		vec3 differenceVector = LAPos - fs_pos;
-		float differenceLength = length(differenceVector);
-		float cosAlphaAngle = clamp(dot(differenceVector/differenceLength, LADir), 0.0, 1.0);
-		float coneLight = clamp( (cosAlphaAngle - LAConeOut) / ( LAConeIn - LAConeOut) ,0.0, 1.0);
-		float lightDecay =  pow( LATarget / differenceLength , LADecay);
-		vec4 lightComponent  = LAlightColor *  lightDecay * coneLight; 
-		vec3 halfVector = normalize(LADir + eyedirVec);
-		vec4 diffuseComponent =  diffColor * clamp(cosAlphaAngle, 0.0, 1.0);
-		out_color = clamp(lightComponent * diffuseComponent, 0.0, 1.0);
 
-	} else {
-	  // no light 
-	}
-	 
+	vec3 lightDir = dirLightDir * lightType.x +
+					pointLightDir * lightType.y + 
+					spotLightDir  * lightType.z;
 
-	vec4 lambertColor = diffColor * LAColor * dot(normalize(fsNormal), LADir);
-  	outColor = (clamp(lambertColor, 0.0, 1.0));
+	vec4 lightColor = dirLightColor * lightType.x +
+					pointLightColor * lightType.y + 
+					spotLightColor  * lightType.z;
+
+	// lambert diffuse without specular
+	outColor = clamp(lightColor * diffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
 }
