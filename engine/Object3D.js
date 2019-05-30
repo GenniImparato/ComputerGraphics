@@ -13,7 +13,9 @@ class Object3D
 		this.rotz = 0;
 
 		//scale
-		this.scale = 1.0;
+		this.scaleX = 1.0;
+		this.scaleY = 1.0;
+		this.scaleZ = 1.0;
 
 		//speed
 		this.speedX = 0;
@@ -56,19 +58,22 @@ class Object3D
 
 		this.boundingBox = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
-		this.boundingBox.update(this.x, this.y, this.z, this.scale);
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 	setPosition(x, y, z)
 	{
 		this.x = x;		this.y = y;		this.z = z;
-		this.boundingBox.update(this.x, this.y, this.z, this.scale);
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 	move(x, y, z)
 	{
 		this.x += x;	this.y += y;	this.z += z;
-		this.boundingBox.update(this.x, this.y, this.z, this.scale);
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 	setRotation(x, y, z)
@@ -81,10 +86,11 @@ class Object3D
 		this.rotx += x;	this.roty += y;	this.rotz += z;
 	}
 
-	setScale(s)
+	setScale(x, y, z)
 	{
-		this.scale = s;
-		this.boundingBox.update(this.x, this.y, this.z, this.scale);
+		this.scaleX = x; this.scaleY = y; this.scaleZ = z;
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 	setSpeed(x, y, z)
@@ -99,9 +105,9 @@ class Object3D
 			this.boundingBox.render();
 
 		//renders object
-		var worldMatrix = utils.MakeWorld(this.x, this.y, this.z, 
+		var worldMatrix = utils.MakeWorld_(this.x, this.y, this.z, 
 										this.rotx, this.roty, this.rotz, 
-										this.scale);
+										this.scaleX, this.scaleY, this.scaleZ);
 
 		this.mesh.render(this.shader, worldMatrix);
 	}
@@ -138,7 +144,8 @@ class Object3D
 		this.y += this.speedY;
 		this.z += this.speedZ;
 
-		this.boundingBox.update(this.x, this.y, this.z, this.scale);
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 }

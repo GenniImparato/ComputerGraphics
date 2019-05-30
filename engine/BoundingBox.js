@@ -34,16 +34,16 @@ class BoundingBox
 
 	}
 
-	update(x, y, z, scale)
+	update(x, y, z, scaleX, scaleY, scaleZ)
 	{
-		this.x = x + this.offX*scale;
-		this.y = y + this.offY*scale;
-		this.z = z + this.offZ*scale;
+		this.x = x + this.offX*scaleX;
+		this.y = y + this.offY*scaleY;
+		this.z = z + this.offZ*scaleZ;
 
 		//computes and scale bound coords
-		this.dx = this.dx_*scale;
-		this.dy = this.dy_*scale;
-		this.dz = this.dz_*scale;
+		this.dx = this.dx_*scaleX;
+		this.dy = this.dy_*scaleY;
+		this.dz = this.dz_*scaleZ;
 
 		this.minX = this.x - this.dx/2.0;
 		this.minY = this.y - this.dy/2.0;

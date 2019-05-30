@@ -8,7 +8,7 @@ var Scene =
 	init: function()
 	{
 		//load shader
-		 boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
+		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
 		var shader 			= new Shader("vs.glsl", "fs.glsl");
 
 		//load mesh
@@ -26,7 +26,7 @@ var Scene =
 		objects[0].setPosition(5, 0, 5);
 		objects[1].setPosition(5, 0, -5);
 		objects[2].setPosition(-7, 0, 0);
-		objects[2].setScale(0.5);
+		objects[2].setScale(0.4, 0.6, 0.5);
 		playerObj.setPosition(10, 0, 0);
 
 		//creates camera
