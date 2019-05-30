@@ -3,16 +3,6 @@ class Shader
 	//creates a shader from .vs and .fs files
 	constructor(vsFile, fsFile)
 	{
-		this.program = null;
-
-		this.positionsLoc = null;
-		this.normalsLoc = null;
-
-		this.matrixLoc = null;
-		this.nMatrixLoc = null;
-
-		//color for bounding box fshader
-		this.colorLoc = null;
 		var locProgram;
 		var vertexShader;
 		var fragmentShader;
@@ -76,5 +66,6 @@ class Shader
 	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
 
 	getColorLocation()			{ return this.colorLoc; }
+	getUniformLocation(locationName) {return gl.getUniformLocation(this.program, locationName);}
 
 }
