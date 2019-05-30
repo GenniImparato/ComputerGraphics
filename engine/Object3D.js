@@ -22,17 +22,18 @@ class Object3D
 		this.speedY = 0;
 		this.speedZ = 0;
 		
-		//reference to a loaded shader
+		//reference to a loaded mesh
 		this.mesh = mesh || null;
+		//reference to a loaded shader
 		this.shader = shader || null;
 
 		//bounding box coordinates
-		var minX = 1000000;
-		var maxX = -100000;
-		var minY = 1000000;
-		var maxY = -100000;
-		var minZ = 1000000;
-		var maxZ = -100000;
+		var minX = mesh.positions[0];
+		var maxX = mesh.positions[0];
+		var minY = mesh.positions[1];
+		var maxY = mesh.positions[1];
+		var minZ = mesh.positions[2];
+		var maxZ = mesh.positions[2];
 		//computes bounding box coords
 		for(var i=0; i<mesh.positions.length; i+=3)
 		{
@@ -100,6 +101,9 @@ class Object3D
 
 	render()
 	{
+		this.boundingBox.update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ);
+		
 		//renders bounding box
 		if(showBoundingBoxes)
 			this.boundingBox.render();

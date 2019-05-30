@@ -2,7 +2,6 @@ class BoundingBox
 {
 	constructor(offX, offY, offZ, minX, maxX, minY, maxY, minZ, maxZ)
 	{
-
 		//position
 		this.x = 0.0;
 		this.y = 0.0;
@@ -32,18 +31,26 @@ class BoundingBox
 		this.dz = this.dz_;
 		this.color = [1.0, 0.0, 0.0, 1.0];
 
+		//scale and position corrections
+		this.scaleCX 	= 1.0;
+		this.scaleCY 	= 1.0;
+		this.scaleCZ 	= 1.0;
+		this.posCX 		= 0.0;
+		this.posCY 		= 0.0;
+		this.posCZ 		= 0.0;
+
 	}
 
 	update(x, y, z, scaleX, scaleY, scaleZ)
 	{
-		this.x = x + this.offX*scaleX;
-		this.y = y + this.offY*scaleY;
-		this.z = z + this.offZ*scaleZ;
+		this.x = x + (this.offX + this.posCX) * scaleX;
+		this.y = y + (this.offY + this.posCY) * scaleY;
+		this.z = z + (this.offZ + this.posCZ) * scaleZ;
 
 		//computes and scale bound coords
-		this.dx = this.dx_*scaleX;
-		this.dy = this.dy_*scaleY;
-		this.dz = this.dz_*scaleZ;
+		this.dx = this.dx_ * scaleX * this.scaleCX;
+		this.dy = this.dy_ * scaleY * this.scaleCY;
+		this.dz = this.dz_ * scaleZ * this.scaleCZ;
 
 		this.minX = this.x - this.dx/2.0;
 		this.minY = this.y - this.dy/2.0;
@@ -56,6 +63,20 @@ class BoundingBox
 	setColor(color)
 	{
 		this.color = color;
+	}
+
+	setScaleCorrection(x, y, z)
+	{
+		this.scaleCX = x;
+		this.scaleCY = y;
+		this.scaleCZ = z;
+	}
+
+	setPositionCorrection(x, y, z)
+	{
+		this.posCX = x;
+		this.posCY = y;
+		this.posCZ = z;
 	}
 
 	render()
