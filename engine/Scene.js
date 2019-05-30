@@ -20,7 +20,7 @@ var Scene =
 	{
 		//load shader
 		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
-		var shader 			= new Shader("vs.glsl", "fs_2.glsl");
+		var shader 			= new Shader("vs.glsl", "fs.glsl");
 
 		//load mesh
 		unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");	//global var

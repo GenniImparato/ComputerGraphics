@@ -10,6 +10,12 @@ class Light {
 		this.Bcolor = 1.0;
 		this.Acolor = 1.0;
 		this.shader = shader;
+		var dirLightBool = this.shader.getUniformLocation('directionalLight');
+		gl.uniform1i(dirLightBool, new Int32(0));
+		var pointLightBool = this.shader.getUniformLocation('pointLight');
+		gl.uniform1i(pointLightBool, new Int32(0));
+		var spotLightBool = this.shader.getUniformLocation('spotLight');
+		gl.uniform1i(spotLightBool, new Int32(0));
 	}	
 
 	setColor(red, green, blue, alpha) {
@@ -38,6 +44,8 @@ class DirectionalLight extends Light {
 	}
 
 	bind() { // bind gl variables 
+		var dirLightBool = this.shader.getUniformLocation('directionalLight');
+		gl.uniform1i(dirLightBool, new Int32(1));
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
 		console.log("binding directionLoc " + directionLoc);
@@ -53,29 +61,67 @@ class PointLight extends Light {
 	constructor(name, x, y, z, target, shader) {
 		super(name, x, y, z, shader);
 		this.targetDistance = target;
+
 	}
 
 	bind() { // bind gl variables 
+		var dirLightBool = this.shader.getUniformLocation('pointLight');
+		gl.uniform1i(dirLightBool, new Int32(1));
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-		console.log("binding directionLoc " + directionLoc);
-		gl.uniform4fv(colorLoc, new Float32Array([this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]));
-		console.log("binding colorLoc " + colorLoc);
-		
+		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
+		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
+		gl.uniform4fv(colorLoc, new Float32Array([this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]));	
 		gl.uniform3fv(directionLoc, new Float32Array([this.dirx, this.diry, this.dirz]));
+		gl.uniform1f(targetLoc, new Float32(this.targetDistance));
+		gl.uniform3fv(positionLoc, new Float32Array([this.x, this.y, this.z]));
 	}
 
 }
 
 class SpotLight extends Light {
-	constructor(name, x, y, z, dirx, diry, dirz, target, coneIn, coneOut , shader) {
+	constructor(name, x, y, z, dirx, diry, dirz,  shader) {
 		super(name, x,y,z, shader);
 		this.dirx = dirx;
 		this.diry = diry;
-		this.dirz = dirz; 
-		this.target = target;
+		this.dirz = dirz;
+		this.targetDistance = 1;
+		this.coneIn = 0.5;
+		this.coneOut = 0.5;
+	}
+
+	setDecay(decay) {
+		this.decay = decay;
+	}
+
+	setTarget(target) {
+		this.targetDistance = target;
+	}
+
+	setCone(coneIn, coneOut ) {	
 		this.coneIn = coneIn;
 		this.coneOut = coneOut;
+	}
+
+
+	bind() { // bind gl variables 
+		var dirLightBool = this.shader.getUniformLocation('spotLight');
+		gl.uniform1i(dirLightBool, new Int32(1));
+		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
+		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
+		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
+		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
+		var coneInLoc = this.shader.getUniformLocation(this.name + 'ConeIn');
+		var coneOutLoc = this.shader.getUniformLocation(this.name + 'ConeOut');
+		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
+		gl.uniform4fv(colorLoc, new Float32Array([this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]));	
+		gl.uniform3fv(directionLoc, new Float32Array([this.dirx, this.diry, this.dirz]));
+		gl.uniform3fv(positionLoc, new Float32Array([this.x, this.y, this.z]));
+		gl.uniform1f(targetLoc, new Float32(this.targetDistance));
+		gl.uniform1f(coneInLoc, new Float32(this.coneIn));
+		gl.uniform1f(coneOutLoc, new Float32(this.coneOut));
+		gl.uniform1f(decayLoc, new Float32(this.decay));
+		
 	}
 
 }
