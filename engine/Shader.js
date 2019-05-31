@@ -66,6 +66,7 @@ class Shader
 	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
 
 	getColorLocation()			{ return this.colorLoc; }
-	getUniformLocation(locationName) {return gl.getUniformLocation(this.program, locationName);}
+	getUniformLocation(locationName) {
+		return gl.getUniformLocation(this.program, locationName);}
 
 }

@@ -13,20 +13,9 @@ uniform float LADecay;
 uniform float LATarget;		
 uniform vec4 LAColor;	
 uniform vec3 lightType;
-		
-
-uniform vec4 ambientLightColor;		
-uniform vec4 ambientLightLowColor;	
-uniform vec3 ADir;					
-
-uniform float SpecShine;				
-uniform float DToonTh;				
-uniform float SToonTh;				
-		
-				
-	
-uniform vec3 eyedirVec;				
-
+					
+uniform vec4 mDiffColor;
+uniform vec4 mSpecColor; 
 
 // Final color is returned into:
 
@@ -60,5 +49,5 @@ void main()
 					spotLightColor  * lightType.z;
 
 	// lambert diffuse without specular
-	outColor = clamp(lightColor * diffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
+	outColor = clamp(lightColor * mDiffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
 }

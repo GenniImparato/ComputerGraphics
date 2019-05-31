@@ -1,9 +1,9 @@
 var camera;
-var directionalLight;
-
+var light;
 //stores all Objects3D in the scene
 var objects = [];
 var objectsCount = 0;
+
 
 var player;
 
@@ -76,11 +76,12 @@ var Scene =
 		camera.setLookRadius(15.0);
 		camera.setElevation(25.0);
 		camera.setLookPoint(0, 0, 0);
+		camera.look();
 
 		//creates first light 
-		directionalLight = new DirectionalLight('LA', 0.0, 0.5, 1.0, shader);
-		directionalLight.setColor(1.0, 1.0, 1.0, 1.0);
-		directionalLight.bind();
+		light = new PointLight('LA', 1.0, 2.0, 1.0, 10, 0.1, shader);
+		light.setColor(0.6, 0.6, 0.6, 1.0);
+		light.bind();
 
 	},
 
@@ -117,6 +118,7 @@ var Scene =
 			objects[i].render();
 
 		player.render();
+		
 	
 		window.requestAnimationFrame(Scene.render);
 	},
