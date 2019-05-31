@@ -2,6 +2,11 @@ class Object3D
 {
 	constructor(mesh, shader)
 	{
+		//reference to a loaded mesh
+		this.mesh = mesh;
+		//reference to a loaded shader
+		this.shader = shader;
+
 		//position
 		this.x = 0;
 		this.y = 0;
@@ -22,13 +27,15 @@ class Object3D
 		this.speedY = 0;
 		this.speedZ = 0;
 
-		//flag for setting gravity ON/OFF
-		this.enGravity = false;
-		
-		//reference to a loaded mesh
-		this.mesh = mesh || null;
-		//reference to a loaded shader
-		this.shader = shader || null;
+		//boolean flags
+		this.enGravity			= false;
+		this.visible			= true;
+		this.changeBBColor		= false; //must be only active on one objects
+
+		//Object3D list
+		this.collisionObjects = [];
+
+	
 
 		//bounding box coordinates
 		var minX = mesh.positions[0];
@@ -65,6 +72,10 @@ class Object3D
 		this.boundingBox.update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ);
 	}
+
+	////
+	////		SETTERS/GETTERS
+	////____________________________
 
 	setPosition(x, y, z)
 	{
@@ -107,6 +118,13 @@ class Object3D
 		this.enGravity = boolean;
 	}
 
+	setVisible(boolean)
+	{
+		this.visible = boolean;
+	}
+
+	///______________________________
+
 	render()
 	{
 		this.boundingBox.update(this.x, this.y, this.z, 
@@ -116,50 +134,94 @@ class Object3D
 		if(showBoundingBoxes)
 			this.boundingBox.render();
 
-		//renders object
-		var worldMatrix = utils.MakeWorld_(this.x, this.y, this.z, 
+		//doesn't render invisible objects
+		if(this.visible)
+		{
+			//renders object
+			var worldMatrix = utils.MakeWorld_(this.x, this.y, this.z, 
 										this.rotx, this.roty, this.rotz, 
 										this.scaleX, this.scaleY, this.scaleZ);
-
-		this.mesh.render(this.shader, worldMatrix);
+				
+			this.mesh.render(this.shader, worldMatrix);
+		}
 	}
 
+	////
+	////		COLLISIONS AND PHYSICS
+	////____________________________
+
+	//boolean collision check
 	checkCollision(object)
 	{
 		return this.boundingBox.checkCollision(object.boundingBox);
 	}
 
+	enableCollisionWith(objects)
+	{
+		this.collisionObjects = objects;
+	}
+
+	//must be called in render func
+	solveCollisions()
+	{
+		for(var i=0; i<this.collisionObjects.length; i++)
+		{
+			if(this.changeBBColor)
+					this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.nonCollidedColor);	
+
+			if(this.checkCollision(this.collisionObjects[i]))
+			{
+				this.solveCollision(this.collisionObjects[i]);
+
+				if(this.changeBBColor)
+					this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.collidedColor);				
+			}
+		}
+	}
+
+
+	//solve the collision for this object using the handler of the collided object
 	solveCollision(object)
 	{
-		this.penetrationZ = 0;
+		object.collisionHandler(this);
+	}
+
+	//defines the reponse of this object when another objects collides with it
+	//can be override
+	//default acts as a rigid body that stops colliding objects
+	collisionHandler(object)
+	{
+		object.penetrationZ = 0;
 
 		//collision from x++
-		if(this.boundingBox.maxX >= object.boundingBox.maxX	&& 	this.boundingBox.minX <= object.boundingBox.maxX	&&	this.speedX<0) 
-			this.collisionX = true;
+		if(object.boundingBox.maxX >= this.boundingBox.maxX	&& 	object.boundingBox.minX <= this.boundingBox.maxX	&&	object.speedX<0) 
+			object.collisionX = true;
 		//collision from x--
-		if(this.boundingBox.maxX >= object.boundingBox.minX	&& 	this.boundingBox.minX <= object.boundingBox.minX	&&	this.speedX>0)
-			this.collisionX = true;
+		if(object.boundingBox.maxX >= this.boundingBox.minX	&& 	object.boundingBox.minX <= this.boundingBox.minX	&&	object.speedX>0)
+			object.collisionX = true;
 
 		//collision from z++
-		if(this.boundingBox.maxZ >= object.boundingBox.maxZ	&& 	this.boundingBox.minZ <= object.boundingBox.maxZ	&&	this.speedZ<0)
-			this.collisionZ = true;
+		if(object.boundingBox.maxZ >= this.boundingBox.maxZ	&& 	object.boundingBox.minZ <= this.boundingBox.maxZ	&&	object.speedZ<0)
+			object.collisionZ = true;
 
 		//collision from z--
-		if(this.boundingBox.maxZ >= object.boundingBox.minZ	&& 	this.boundingBox.minZ <= object.boundingBox.minZ	&&	this.speedZ>0) 
-			this.collisionZ = true;
+		if(object.boundingBox.maxZ >= this.boundingBox.minZ	&& 	object.boundingBox.minZ <= this.boundingBox.minZ	&&	object.speedZ>0) 
+			object.collisionZ = true;
 
 		//collision from y++
-		if(this.boundingBox.maxY >= object.boundingBox.maxY	&& 	this.boundingBox.minY <= object.boundingBox.maxY	&& this.speedY<0)
+		if(object.boundingBox.maxY >= this.boundingBox.maxY	&& 	object.boundingBox.minY <= this.boundingBox.maxY	&& object.speedY<0)
 		{
-			this.collisionY = true;
-			this.penetrationY = object.boundingBox.maxY - this.boundingBox.minY;
+			object.collisionY = true;
+			object.penetrationY = this.boundingBox.maxY - object.boundingBox.minY;
 		}
 
 		//collision from y--
-		if(this.boundingBox.maxY >= object.boundingBox.minY	&& 	this.boundingBox.minY <= object.boundingBox.minY 	&& this.speedY>0) 
-			this.collisionY = true;
-
+		if(object.boundingBox.maxY >= this.boundingBox.minY	&& 	object.boundingBox.minY <= this.boundingBox.minY 	&& object.speedY>0) 
+			object.collisionY = true;
 	}
+
+	//to override
+	update()	{}
 
 	//update physics
 	updatePhysics()
@@ -190,8 +252,11 @@ class Object3D
 		this.y += this.speedY;
 		this.z += this.speedZ;
 
+		this.update();
+
 		this.boundingBox.update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ);
 	}
 
 }
+

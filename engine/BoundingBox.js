@@ -29,7 +29,7 @@ class BoundingBox
 		this.dx = this.dx_;
 		this.dy = this.dy_;
 		this.dz = this.dz_;
-		this.color = [1.0, 0.0, 0.0, 1.0];
+		
 
 		//scale and position corrections
 		this.scaleCX 	= 1.0;
@@ -38,6 +38,11 @@ class BoundingBox
 		this.posCX 		= 0.0;
 		this.posCY 		= 0.0;
 		this.posCZ 		= 0.0;
+
+		//colors
+		this.collidedColor = [1, 0, 0, 1];			//red
+		this.nonCollidedColor = [0, 0, 1, 1];		//blue
+		this.color = [0, 1, 0, 1];
 
 	}
 

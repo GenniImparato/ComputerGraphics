@@ -6,6 +6,8 @@ class Player extends Object3D
 	constructor(mesh, shader)
 	{
 		super(mesh, shader);
+		this.changeBBColor = true;
+		this.boundingBox.setColor([1, 1, 0, 1]);
 		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
 		this.enableGravity(true);
 

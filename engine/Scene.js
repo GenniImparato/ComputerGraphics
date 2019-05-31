@@ -37,18 +37,19 @@ var Scene =
 		Scene.addObject3D(new Object3D(houseMesh, shader));
 
 		//wall
-		var tmpWall = new Box3D(2, 10, 8, shader);
-		tmpWall.setPosition(0, 5, -10);
-		Scene.addObject3D(tmpWall);
+		var tmpObj = new Box3D(2, 10, 8, shader);
+		tmpObj.setPosition(0, 5, -10);
+		Scene.addObject3D(tmpObj);
 
 		//floor
-		var tmpWall = new Box3D(50, 1, 50, shader);
-		tmpWall.setPosition(0, -0.5, 0);
-		Scene.addObject3D(tmpWall);
+		var tmpObj = new Box3D(50, 1, 50, shader);
+		tmpObj.setPosition(0, -0.5, 0);
+		Scene.addObject3D(tmpObj);
 
-		//player
-		player  = new Player(unitCubeMesh, shader);
-		player.setPosition(10, 50, 0);
+		//trigger
+		var tmpObj = new TriggerBox3D(20, 20, 20, shader);
+		tmpObj.setPosition(-20, 10, 20);
+		Scene.addObject3D(tmpObj);
 
 		//first plant
 		objects[0].setPosition(5, 0, 5);
@@ -65,6 +66,11 @@ var Scene =
 		objects[2].setPosition(-7, 0, 0);
 		objects[2].setScale(0.4, 0.6, 0.5);
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
+
+		//player
+		player  = new Player(unitCubeMesh, shader);
+		player.setPosition(10, 50, 0);
+		player.enableCollisionWith(objects);
 		
 		//creates camera
 		camera = new LookAtCamera();
@@ -89,9 +95,14 @@ var Scene =
 
 		player.handleInput();
 
-		//physics
-		Scene.updateCollisions();
+		//physics and collisions
+		player.solveCollisions();		//only solve collisions with enabled objects
 		player.updatePhysics();
+		for(var i=0; i<objectsCount; i++)
+		{
+			objects[i].solveCollisions();		//only solve collisions with enabled objects
+			objects[i].updatePhysics();
+		}
 
 		//set camera to follow player
 		camera.setAngle(player.rotx);
@@ -109,21 +120,5 @@ var Scene =
 		player.render();
 	
 		window.requestAnimationFrame(Scene.render);
-	},
-
-	updateCollisions: function()
-	{
-		player.boundingBox.setColor([0, 1, 0, 1]);
-		for(var i=0; i<objectsCount; i++)
-		{
-			objects[i].boundingBox.setColor([1, 0, 0, 1]);
-
-			if(player.checkCollision(objects[i]))
-			{
-				player.solveCollision(objects[i]);
-				player.boundingBox.setColor([0, 0, 1, 1]);
-				objects[i].boundingBox.setColor([0, 0, 1, 1]);
-			}
-		}
 	},
 }
