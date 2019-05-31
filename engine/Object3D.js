@@ -166,15 +166,19 @@ class Object3D
 	{
 		for(var i=0; i<this.collisionObjects.length; i++)
 		{
-			if(this.changeBBColor)
-					this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.nonCollidedColor);	
-
-			if(this.checkCollision(this.collisionObjects[i]))
+			//doens't collide with itself
+			if(this.collisionObjects[i] != this)
 			{
-				this.solveCollision(this.collisionObjects[i]);
-
 				if(this.changeBBColor)
+						this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.nonCollidedColor);	
+
+				if(this.checkCollision(this.collisionObjects[i]))
+				{
+					this.solveCollision(this.collisionObjects[i]);
+
+					if(this.changeBBColor)
 					this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.collidedColor);				
+				}	
 			}
 		}
 	}

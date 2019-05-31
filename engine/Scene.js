@@ -6,6 +6,7 @@ var objectsCount = 0;
 
 
 var player;
+var bot;
 
 
 var Scene = 
@@ -48,6 +49,31 @@ var Scene =
 		//trigger
 		var tmpObj = new TriggerBox3D(20, 20, 20, shader);
 		tmpObj.setPosition(-20, 10, 20);
+		Scene.addObject3D(tmpObj);
+
+		//boxes with gravity
+		var tmpObj = new Box3D(5, 5, 5, shader);
+		tmpObj.setPosition(15, 30, -10);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		Scene.addObject3D(tmpObj);
+
+		var tmpObj = new Box3D(7, 5, 3, shader);
+		tmpObj.setPosition(15, 60, -10);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		Scene.addObject3D(tmpObj);
+
+		var tmpObj = new Box3D(3, 5, 3, shader);
+		tmpObj.setPosition(25, 60, -10);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		Scene.addObject3D(tmpObj);
+
+		var tmpObj = new Box3D(2, 5, 5, shader);
+		tmpObj.setPosition(30, 60, -10);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
 
 		//first plant
