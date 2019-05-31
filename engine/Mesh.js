@@ -47,19 +47,6 @@ class Mesh
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
 		gl.vertexAttribPointer(shader.getNormalsLocation(), this.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-	    // lightDirection
-	    var lightDir = light.getLightDirection();
-	    var lightDirMatrix = utils.invertMatrix3(utils.sub3x3from4x4(worldMatrix));
-	    lightDir = utils.multiplyMatrix3Vector3(lightDirMatrix, lightDir);
-	    light.setLightDirection(lightDir[0], lightDir[1], lightDir[2]);
-
-	    // lightPosition
-	    var lightPos = light.getLightDirection();
-	    var lightPosMatrix = utils.invertMatrix(worldMatrix);
-	    lightPos = utils.multiplyMatrixVector(lightPosMatrix, [lightPos, 1.0]);
-	    light.setLightPosition(lightPos[0], lightPos[1], lightPos[2]);
-
-	    light.bind();
 	    
 
 		//rendering

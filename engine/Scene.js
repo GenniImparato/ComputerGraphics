@@ -105,7 +105,7 @@ var Scene =
 		camera.look();
 
 		//creates first light 
-		light = new DirectionalLight('LA', 1.0, 0.0, 0.0,  shader);
+	    light = new DirectionalLight('LA', -1.0, -1.0, 1.0, shader);
 		light.setColor(0.6, 0.6, 0.6, 1.0);
 
 	},
@@ -133,6 +133,23 @@ var Scene =
 		camera.setAngle(player.rotx);
 		camera.setLookPoint(player.x, player.y, player.z);
 		camera.look();
+
+	    // rotate lightDirection according to camera direction 
+	    var originalDir = light.getLightDirection();
+	    var lightDirMatrix = utils.sub3x3from4x4(viewMatrix);
+	    var lightDir = utils.multiplyMatrix3Vector3(lightDirMatrix, originalDir);
+	    light.setLightDirection(lightDir[0], lightDir[1], lightDir[2]);
+
+	    // translate lightPosition according to camera direction
+	    var originalPos = light.getLightPosition();
+	    var lightPosMatrix = viewMatrix;
+	    var lightPos = utils.multiplyMatrixVector(lightPosMatrix, [originalPos, 1.0]);
+	    light.setLightPosition(lightPos[0], lightPos[1], lightPos[2]);
+	    light.bind();
+
+	    // reset light direction and position
+	    light.setLightPosition(originalPos[0], originalPos[1], originalPos[2]);
+	    light.setLightDirection(originalDir[0], originalDir[1], originalDir[2]);
 
 		//toggle showing of bounding boxes
 		if(Input.isKeyClicked(Input.B_KEY))

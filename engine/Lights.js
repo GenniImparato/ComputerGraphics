@@ -4,11 +4,7 @@ class Light {
 		this.name = name;// prefix used in gl variables
 		this.x = x;
 		this.y = y;
-	    this.z = z;
-
-		this.dirx = 1.0;
-		this.diry = 0.0;
-		this.dirz = 0.0 ; 
+	        this.z = z;
 		this.Rcolor = 0.0;
 		this.Gcolor = 0.0;
 		this.Bcolor = 0.0;
@@ -31,7 +27,7 @@ class Light {
 
 
     setLightDirection(dirx, diry, dirz) {
-	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
+	var length = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
 		this.dirx = dirx / length;
 		this.diry = diry / length;
 		this.dirz = dirz / length ; 
@@ -44,7 +40,7 @@ class Light {
 		this.Acolor = alpha;
 	}
 
-    getLigthPosition() {return [this.x, this.y, this.z];}
+    getLightPosition() {return [this.x, this.y, this.z];}
 
     getLightDirection() {return [this.dirx, this.diry, this.dirz];}
 
@@ -60,9 +56,11 @@ class Light {
 
 class DirectionalLight extends Light {
 	constructor(name, dirx, diry, dirz, shader) {
-		super(name, 0.0, 0.0, 0.0, shader);
+	    super(name, 1.0 ,1.0 , 1.0 , shader);
 
-	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
+	    var length = Math.sqrt(dirx * dirx +
+				   diry * diry +
+				   dirz * dirz);
 		this.dirx = dirx / length;
 		this.diry = diry / length;
 		this.dirz = dirz / length ; 
@@ -87,6 +85,9 @@ class PointLight extends Light {
 		super(name, x, y, z, shader);
 		this.targetDistance = target;
 		this.decay = decay;
+		this.dirx = 1.0;
+		this.diry = 0.0;
+		this.dirz = 0.0; 
 		var pointTypeLoc = this.shader.getUniformLocation(this.name + 'pointBool');
 		gl.uniform1f(pointTypeLoc , 1.0);
 
@@ -100,8 +101,8 @@ class PointLight extends Light {
 		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
 		console.log("binding " + colorLoc  + " with " + [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);
 		gl.uniform4fv(colorLoc, [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);	
-		console.log("binding " + directionLoc  + " with " + [0.0, 0.0, 0.0]);
-		gl.uniform3fv(directionLoc, [0.0, 0.0, 0.0]);
+		console.log("binding " + directionLoc  + " with " + [1.0, 0.0, 0.0]);
+		gl.uniform3fv(directionLoc, [1.0, 0.0, 0.0]);
 		console.log("binding " + targetLoc  + " with " + this.targetDistance);
 		gl.uniform1f(targetLoc, this.targetDistance);
 		console.log("binding " + decayLoc  + " with "  + this.decay);

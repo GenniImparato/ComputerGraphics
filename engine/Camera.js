@@ -47,5 +47,8 @@ class LookAtCamera
 
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
+
+
+
 	}
 }
