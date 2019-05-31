@@ -23,14 +23,14 @@ class Player extends Object3D
 			this.moveSpeed = standardMoveSpeed;
 
 		//move in the forward direction
-		if(Input.isKeyDown(Input.UP_KEY))
+		if(Input.isKeyDown(Input.W_KEY))
 		{
 			this.setSpeed(-this.moveSpeed * Math.sin(utils.degToRad(-this.rotx)),
 								this.speedY,
 								-this.moveSpeed * Math.cos(utils.degToRad(this.rotx)));
 		}
 		//move in the backward direction
-		else if(Input.isKeyDown(Input.DOWN_KEY))
+		else if(Input.isKeyDown(Input.S_KEY))
 		{
 			this.setSpeed(this.moveSpeed * Math.sin(utils.degToRad(-this.rotx)),
 								this.speedY,
@@ -40,9 +40,9 @@ class Player extends Object3D
 			this.setSpeed(0, this.speedY, 0);
 
 		//rotations
-		if(Input.isKeyDown(Input.LEFT_KEY))
+		if(Input.isKeyDown(Input.A_KEY))
 			this.rotate(-2.0, 0, 0);
-		else if(Input.isKeyDown(Input.RIGHT_KEY))
+		else if(Input.isKeyDown(Input.D_KEY))
 			this.rotate(2.0, 0, 0);
 
 		//jump

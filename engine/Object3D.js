@@ -225,11 +225,15 @@ class Object3D
 	}
 
 	//to override
-	update()	{}
+	update()	
+	{
+	}
 
 	//update physics
 	updatePhysics()
 	{
+		this.update();
+		
 		//gravity
 		if(this.enGravity)
 		{
@@ -255,8 +259,6 @@ class Object3D
 		this.x += this.speedX;
 		this.y += this.speedY;
 		this.z += this.speedZ;
-
-		this.update();
 
 		this.boundingBox.update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ);

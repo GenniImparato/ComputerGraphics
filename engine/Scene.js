@@ -48,11 +48,11 @@ var Scene =
 
 		//trigger
 		var tmpObj = new TriggerBox3D(20, 20, 20, shader);
-		tmpObj.setPosition(-20, 10, 20);
+		tmpObj.setPosition(-20, 12, 20);
 		Scene.addObject3D(tmpObj);
 
 		//boxes with gravity
-		var tmpObj = new Box3D(5, 5, 5, shader);
+		var tmpObj = new MobileBox3D(5, 5, 5, shader);
 		tmpObj.setPosition(15, 30, -10);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
@@ -64,7 +64,7 @@ var Scene =
 		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
 
-		var tmpObj = new Box3D(3, 5, 3, shader);
+		var tmpObj = new MobileBox3D(3, 5, 3, shader);
 		tmpObj.setPosition(25, 60, -10);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
