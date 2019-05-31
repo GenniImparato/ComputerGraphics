@@ -27,8 +27,8 @@ void main()
 {
 	vec4 diffColor = vec4(0.1, 0.9, 1.0, 1.0);
 	// directional light
-	
-	vec3 dirLightDir = LADir ;
+
+	vec3 dirLightDir = normalize(LADir) ;
 	vec4 dirLightColor = LAColor ;
 
 	//point light
@@ -44,16 +44,8 @@ void main()
 	vec3 lightDir = vec3(1.0, 1.0, 1.0);
 	vec4 lightColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-	if(LAdirectionalBool == 1.0) {
-		lightDir = dirLightDir;
-		lightColor = dirLightColor;
-	} else if (LApointBool == 1.0) {
-		lightDir = pointLightDir;	
-		lightColor = pointLightColor;
-	} else if (LAspotBool == 1.0) {
-		lightDir = spotLightDir;
-		lightColor = spotLightColor;
-	}
+	lightDir = dirLightDir;
+	lightColor = dirLightColor;
 
 
 	// lambert diffuse without specular

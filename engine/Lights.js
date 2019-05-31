@@ -4,7 +4,11 @@ class Light {
 		this.name = name;// prefix used in gl variables
 		this.x = x;
 		this.y = y;
-		this.z = z;
+	    this.z = z;
+
+		this.dirx = 1.0;
+		this.diry = 0.0;
+		this.dirz = 0.0 ; 
 		this.Rcolor = 0.0;
 		this.Gcolor = 0.0;
 		this.Bcolor = 0.0;
@@ -17,7 +21,21 @@ class Light {
 		var spotTypeLoc = this.shader.getUniformLocation(this.name + 'spotBool');
 		gl.uniform1f(spotTypeLoc , 0.0);
 		
-	}	
+	}
+
+    setLightPosition(x, y, z){
+		this.x = x;
+		this.y = y;
+	    this.z = z;
+    }
+
+
+    setLightDirection(dirx, diry, dirz) {
+	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
+		this.dirx = dirx / length;
+		this.diry = diry / length;
+		this.dirz = dirz / length ; 
+    }
 
 	setColor(red, green, blue, alpha) {
 		this.Rcolor = red;
@@ -25,6 +43,10 @@ class Light {
 		this.Bcolor = blue;
 		this.Acolor = alpha;
 	}
+
+    getLigthPosition() {return [this.x, this.y, this.z];}
+
+    getLightDirection() {return [this.dirx, this.diry, this.dirz];}
 
 	getLightColor4() {return [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor];}
 
@@ -39,9 +61,11 @@ class Light {
 class DirectionalLight extends Light {
 	constructor(name, dirx, diry, dirz, shader) {
 		super(name, 0.0, 0.0, 0.0, shader);
-		this.dirx = dirx;
-		this.diry = diry;
-		this.dirz = dirz; 
+
+	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
+		this.dirx = dirx / length;
+		this.diry = diry / length;
+		this.dirz = dirz / length ; 
 		this.lightType = [1.0, 0.0, 0.0];
 		var dirTypeLoc = this.shader.getUniformLocation(this.name + 'directionalBool');
 		gl.uniform1f(dirTypeLoc, 1.0);
@@ -91,9 +115,10 @@ class PointLight extends Light {
 class SpotLight extends Light {
 	constructor(name, x, y, z, dirx, diry, dirz, target, decay,  shader) {
 		super(name, x,y,z, shader);
-		this.dirx = dirx;
-		this.diry = diry;
-		this.dirz = dirz;
+	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
+		this.dirx = dirx / length;
+		this.diry = diry / length;
+		this.dirz = dirz / length ; 
 		this.targetDistance = target;
 		this.decay = decay;
 		this.coneIn = 0.5;
