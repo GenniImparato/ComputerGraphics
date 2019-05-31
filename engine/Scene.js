@@ -4,8 +4,8 @@ var directionalLight;
 //stores all Objects3D in the scene
 var objects = [];
 var objectsCount = 0;
-//player's Object3D
-var playerObj;
+
+var player;
 
 
 var Scene = 
@@ -16,14 +16,18 @@ var Scene =
 		objectsCount++;
 	},
 
+	loadGlobalAssets()
+	{
+		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");
+		unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");
+	},
+
 	init: function()
 	{
-		//load shader
-		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");	//global var
+		Scene.loadGlobalAssets();
+		
 		var shader 			= new Shader("vs.glsl", "fs_2.glsl");
 
-		//load mesh
-		unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");	//global var
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
 
@@ -42,7 +46,9 @@ var Scene =
 		tmpWall.setPosition(0, -0.5, 0);
 		Scene.addObject3D(tmpWall);
 
-		playerObj  = new Object3D(unitCubeMesh, shader);
+		//player
+		player  = new Player(unitCubeMesh, shader);
+		player.setPosition(10, 50, 0);
 
 		//first plant
 		objects[0].setPosition(5, 0, 5);
@@ -59,12 +65,7 @@ var Scene =
 		objects[2].setPosition(-7, 0, 0);
 		objects[2].setScale(0.4, 0.6, 0.5);
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
-
-
-		playerObj.setPosition(10, 50, 0);
-		playerObj.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
-		playerObj.enableGravity(true);
-
+		
 		//creates camera
 		camera = new LookAtCamera();
 		camera.setLookRadius(15.0);
@@ -82,41 +83,19 @@ var Scene =
 	{
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		//move player cube
-		if(Input.isKeyDown(Input.UP_KEY))
-		{
-			playerObj.setSpeed(-0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
-								playerObj.speedY,
-								-0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
-		}
-		else if(Input.isKeyDown(Input.DOWN_KEY))
-		{
-			playerObj.setSpeed(0.25 * Math.sin(utils.degToRad(-playerObj.rotx)),
-								playerObj.speedY,
-								0.25 * Math.cos(utils.degToRad(playerObj.rotx)));
-		}
-		else
-			playerObj.setSpeed(0, playerObj.speedY, 0);
-
-		if(Input.isKeyDown(Input.LEFT_KEY))
-			playerObj.rotate(-2.0, 0, 0);
-		else if(Input.isKeyDown(Input.RIGHT_KEY))
-			playerObj.rotate(2.0, 0, 0);
-
-		if(Input.isKeyClicked(Input.SPACE_KEY))
-			playerObj.setSpeed(playerObj.speedX, 0.6, playerObj.speedZ);
-
 		//rotates plants
 		objects[0].rotate(1.5, 0, 0);
 		objects[1].rotate(-1.5, 0, 0);
 
-		Scene.updateCollisions();
+		player.handleInput();
 
-		playerObj.updatePhysics();
+		//physics
+		Scene.updateCollisions();
+		player.updatePhysics();
 
 		//set camera to follow player
-		camera.setAngle(playerObj.rotx);
-		camera.setLookPoint(playerObj.x, playerObj.y, playerObj.z);
+		camera.setAngle(player.rotx);
+		camera.setLookPoint(player.x, player.y, player.z);
 		camera.look();
 
 		//toggle showing of bounding boxes
@@ -127,22 +106,22 @@ var Scene =
 		for(var i=0; i<objectsCount; i++)
 			objects[i].render();
 
-		playerObj.render();
+		player.render();
 	
 		window.requestAnimationFrame(Scene.render);
 	},
 
 	updateCollisions: function()
 	{
-		playerObj.boundingBox.setColor([0, 1, 0, 1]);
+		player.boundingBox.setColor([0, 1, 0, 1]);
 		for(var i=0; i<objectsCount; i++)
 		{
 			objects[i].boundingBox.setColor([1, 0, 0, 1]);
 
-			if(playerObj.checkCollision(objects[i]))
+			if(player.checkCollision(objects[i]))
 			{
-				playerObj.solveCollision(objects[i]);
-				playerObj.boundingBox.setColor([0, 0, 1, 1]);
+				player.solveCollision(objects[i]);
+				player.boundingBox.setColor([0, 0, 1, 1]);
 				objects[i].boundingBox.setColor([0, 0, 1, 1]);
 			}
 		}
