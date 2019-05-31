@@ -12,7 +12,9 @@ uniform float LAConeIn;
 uniform float LADecay;		
 uniform float LATarget;		
 uniform vec4 LAColor;	
-uniform vec3 lightType;
+uniform float LAdirectionalBool;
+uniform float LApointBool;
+uniform float LAspotBool;
 					
 uniform vec4 mDiffColor;
 uniform vec4 mSpecColor; 
@@ -26,28 +28,34 @@ void main()
 	vec4 diffColor = vec4(0.1, 0.9, 1.0, 1.0);
 	// directional light
 	
-	vec3 dirLightDir = LADir;
-	vec4 dirLightColor = LAColor;
+	vec3 dirLightDir = LADir ;
+	vec4 dirLightColor = LAColor ;
 
 	//point light
-	vec3 pointLightDir = normalize(LAPos - fs_pos);
-	vec4 pointLightColor = LAColor * pow( (LATarget / length(LAPos - fs_pos)), LADecay);	
+	vec3 pointLightDir = normalize(LAPos - fs_pos) ;
+	vec4 pointLightColor = LAColor * pow( (LATarget / length(LAPos - fs_pos)), LADecay) ;	
 	
 	// spot light
-	vec3 spotLightDir = normalize(LAPos - fs_pos);
+	vec3 spotLightDir = normalize(LAPos - fs_pos) ;
 	float cosAngle = dot(spotLightDir, LADir);
 	vec4 spotLightColor = LAColor *  pow( (LATarget / length(LAPos - fs_pos)), LADecay) * 
-								clamp((cosAngle - LAConeOut)/(LAConeIn - LAConeOut) , 0.0, 1.0);
+								clamp((cosAngle - LAConeOut)/(LAConeIn - LAConeOut) , 0.0, 1.0) ; 
 
+	vec3 lightDir = vec3(1.0, 1.0, 1.0);
+	vec4 lightColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-	vec3 lightDir = dirLightDir * lightType.x +
-					pointLightDir * lightType.y + 
-					spotLightDir  * lightType.z;
+	if(LAdirectionalBool == 1.0) {
+		lightDir = dirLightDir;
+		lightColor = dirLightColor;
+	} else if (LApointBool == 1.0) {
+		lightDir = pointLightDir;	
+		lightColor = pointLightColor;
+	} else if (LAspotBool == 1.0) {
+		lightDir = spotLightDir;
+		lightColor = spotLightColor;
+	}
 
-	vec4 lightColor = dirLightColor * lightType.x +
-					pointLightColor * lightType.y + 
-					spotLightColor  * lightType.z;
 
 	// lambert diffuse without specular
-	outColor = clamp(lightColor * mDiffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
+	outColor = clamp(lightColor * diffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
 }

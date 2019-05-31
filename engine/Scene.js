@@ -25,7 +25,7 @@ var Scene =
 	init: function()
 	{
 		Scene.loadGlobalAssets();
-		var shader 			= new Shader("vs.glsl", "fs.glsl");
+		var shader 			= new Shader("vs_2.glsl", "fs_2.glsl");
 
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
@@ -79,7 +79,7 @@ var Scene =
 		camera.look();
 
 		//creates first light 
-		light = new PointLight('LA', 1.0, 2.0, 1.0, 10, 0.1, shader);
+		light = new DirectionalLight('LA', 1.0, 2.0, 1.0,  shader);
 		light.setColor(0.6, 0.6, 0.6, 1.0);
 		light.bind();
 
