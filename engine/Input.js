@@ -9,6 +9,7 @@ var Input =
 	RIGHT_KEY: 		39,
 
 	SPACE_KEY:      32,
+	SHIFT_KEY:      16,
 
 	B_KEY:          66,
 

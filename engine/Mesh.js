@@ -9,7 +9,6 @@ class Mesh
 							function (fileText) 
 							{
       							obj = new OBJ.Mesh(fileText);
-      							console.log(obj);
       							OBJ.initMeshBuffers(gl, obj);
       						});
 
