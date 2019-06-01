@@ -30,6 +30,7 @@ var Scene =
 
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
+		var gearMesh 		= Mesh.loadFromOBJFile("gear.obj");
 
 		//creates objects
 		Scene.addObject3D(new Object3D(plantMesh, shader));
@@ -93,14 +94,14 @@ var Scene =
 		objects[2].boundingBox.setScaleCorrection(0.95, 1, 0.95);
 
 		//player
-		player  = new Player(unitCubeMesh, shader);
+		player  = new Player(unitCubeMesh, gearMesh, shader);
 		player.setPosition(10, 50, 0);
 		player.enableCollisionWith(objects);
 		
 		//creates camera
 		camera = new LookAtCamera(shader);
-		camera.setLookRadius(15.0);
-		camera.setElevation(25.0);
+		camera.setLookRadius(10.0);
+		camera.setElevation(30.0);
 		camera.setLookPoint(0, 0, 0);
 		camera.look();
 

@@ -7,6 +7,9 @@ class Object3D
 		//reference to a loaded shader
 		this.shader = shader;
 
+		//hierarchy
+		this.parent = null;
+
 		//position
 		this.x = 0;
 		this.y = 0;
@@ -33,10 +36,11 @@ class Object3D
 		this.changeBBColor		= false; //must be only active on one objects
 
 		//Object3D list
+		//objects in the array are collision-checked against this
 		this.collisionObjects = [];
 
 	
-
+		//computes a default bbox centred in the center of the mesh
 		//bounding box coordinates
 		var minX = mesh.positions[0];
 		var maxX = mesh.positions[0];
@@ -123,11 +127,49 @@ class Object3D
 		this.visible = boolean;
 	}
 
+	setParent(object)
+	{
+		this.parent = object;
+	}
+
+	///			RECURSIVE HIERARCHY
 	///______________________________
+
+	recursivePositionTransform(values)
+	{
+		if(this.parent != null)
+			return this.parent.recursivePositionTransform(
+														[values[0] + this.parent.x,
+														values[1] + this.parent.y,
+														values[2] + this.parent.z]
+													);
+		else
+			return values;
+
+	}
+
+	recursiveRotationTransform(values)
+	{
+		if(this.parent != null)
+			return this.parent.recursiveRotationTransform(
+														[values[0] + this.parent.rotx,
+														values[1] + this.parent.roty,
+														values[2] + this.parent.rotz]
+													);
+		else
+			return values;
+	}
+
+	////_____________________________________
+
 
 	render()
 	{
-		this.boundingBox.update(this.x, this.y, this.z, 
+		//values that needs to be recursivley summed by hierarchy
+		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z]);
+		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
+
+		this.boundingBox.update(transormedPos[0], transormedPos[1], transormedPos[2], 
 								this.scaleX, this.scaleY, this.scaleZ);
 		
 		//renders bounding box
@@ -138,8 +180,8 @@ class Object3D
 		if(this.visible)
 		{
 			//renders object
-			var worldMatrix = utils.MakeWorld_(this.x, this.y, this.z, 
-										this.rotx, this.roty, this.rotz, 
+			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
+										transormedRot[0], transormedRot[1], transormedRot[2], 
 										this.scaleX, this.scaleY, this.scaleZ);
 				
 			this.mesh.render(this.shader, worldMatrix);
