@@ -98,7 +98,7 @@ var Scene =
 		player.enableCollisionWith(objects);
 		
 		//creates camera
-		camera = new LookAtCamera();
+		camera = new LookAtCamera(shader);
 		camera.setLookRadius(15.0);
 		camera.setElevation(25.0);
 		camera.setLookPoint(0, 0, 0);

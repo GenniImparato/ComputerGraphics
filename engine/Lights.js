@@ -48,9 +48,6 @@ class Light {
 
 	getLightColor3() {return [this.Rcolor, this.Gcolor, this.Bcolor];}
 
-	bind() {  // Binds variables in gl program
-		return;
-	}
 
     moveToCameraSpace(viewMatrix) {
 	this.lightDirMatrix = viewMatrix;
@@ -61,7 +58,7 @@ class Light {
 
 class DirectionalLight extends Light {
 	constructor(name, dirx, diry, dirz, shader) {
-	    super(name, 1.0 ,1.0 , 1.0 , shader);
+	    super(name, 0.0 ,0.0 ,0.0 , shader);
 
 	    var length = Math.sqrt(dirx * dirx +
 				   diry * diry +
@@ -76,8 +73,8 @@ class DirectionalLight extends Light {
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
 	    var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	    
-		gl.uniform4fv(colorLoc, [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);
-		gl.uniform3fv(directionLoc, [this.dirx, this.diry, this.dirz]);
+		gl.uniform4f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor, 1.0);
+		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);
 	    gl.uniformMatrix4fv(lightDirMatrixLoc, gl.FALSE , utils.transposeMatrix(this.lightDirMatrix));
 	}
 
@@ -102,16 +99,11 @@ class PointLight extends Light {
 		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
 		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
 		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
-		console.log("binding " + colorLoc  + " with " + [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);
-		gl.uniform4fv(colorLoc, [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);	
-		console.log("binding " + directionLoc  + " with " + [1.0, 0.0, 0.0]);
-		gl.uniform3fv(directionLoc, [1.0, 0.0, 0.0]);
-		console.log("binding " + targetLoc  + " with " + this.targetDistance);
+		gl.uniform4f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor);	
+		gl.uniform3f(directionLoc, 1.0, 0.0, 0.0);
 		gl.uniform1f(targetLoc, this.targetDistance);
-		console.log("binding " + decayLoc  + " with "  + this.decay);
 		gl.uniform1f(decayLoc, this.decay);
-		console.log("binding " + positionLoc  + " with " + [this.x, this.y, this.z]);
-		gl.uniform3fv(positionLoc, [this.x, this.y, this.z]);
+		gl.uniform3f(positionLoc, this.x, this.y, this.z);
 	}
 
 }
@@ -153,9 +145,9 @@ class SpotLight extends Light {
 		var coneInLoc = this.shader.getUniformLocation(this.name + 'ConeIn');
 		var coneOutLoc = this.shader.getUniformLocation(this.name + 'ConeOut');
 		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
-		gl.uniform4fv(colorLoc, new Float32Array([this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]));	
-		gl.uniform3fv(directionLoc, new Float32Array([this.dirx, this.diry, this.dirz]));
-		gl.uniform3fv(positionLoc, new Float32Array([this.x, this.y, this.z]));
+		gl.uniform4f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor);	
+		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);
+	    gl.uniform3f(positionLoc, this.x, this.y, this.z);
 		gl.uniform1f(targetLoc, this.targetDistance);
 		gl.uniform1f(coneInLoc, this.coneIn);
 		gl.uniform1f(coneOutLoc, this.coneOut);
