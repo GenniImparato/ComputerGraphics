@@ -52,6 +52,11 @@ class Light {
 		return;
 	}
 
+    moveToCameraSpace(viewMatrix) {
+	this.lightDirMatrix = viewMatrix;
+	this.lightPosMatrix = utils.invertMatrix(viewMatrix);
+    }
+
 }
 
 class DirectionalLight extends Light {
@@ -65,17 +70,15 @@ class DirectionalLight extends Light {
 		this.diry = diry / length;
 		this.dirz = dirz / length ; 
 		this.lightType = [1.0, 0.0, 0.0];
-		var dirTypeLoc = this.shader.getUniformLocation(this.name + 'directionalBool');
-		gl.uniform1f(dirTypeLoc, 1.0);
 	}
 
 	bind() { // bind gl variables 
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-		console.log("binding color " + colorLoc  + " with " + [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);
+	    var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	    
 		gl.uniform4fv(colorLoc, [this.Rcolor, this.Gcolor, this.Bcolor, this.Acolor]);
-		console.log("binding direction " + directionLoc  + " with " +  [this.dirx, this.diry, this.dirz]);
 		gl.uniform3fv(directionLoc, [this.dirx, this.diry, this.dirz]);
+	    gl.uniformMatrix4fv(lightDirMatrixLoc, gl.FALSE , utils.transposeMatrix(this.lightDirMatrix));
 	}
 
 }
