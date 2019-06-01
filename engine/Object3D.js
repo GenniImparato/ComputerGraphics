@@ -197,31 +197,34 @@ class Object3D
 	{
 		object.penetrationZ = 0;
 
-		//collision from x++
-		if(object.boundingBox.maxX >= this.boundingBox.maxX	&& 	object.boundingBox.minX <= this.boundingBox.maxX	&&	object.speedX<0) 
-			object.collisionX = true;
-		//collision from x--
-		if(object.boundingBox.maxX >= this.boundingBox.minX	&& 	object.boundingBox.minX <= this.boundingBox.minX	&&	object.speedX>0)
-			object.collisionX = true;
-
-		//collision from z++
-		if(object.boundingBox.maxZ >= this.boundingBox.maxZ	&& 	object.boundingBox.minZ <= this.boundingBox.maxZ	&&	object.speedZ<0)
-			object.collisionZ = true;
-
-		//collision from z--
-		if(object.boundingBox.maxZ >= this.boundingBox.minZ	&& 	object.boundingBox.minZ <= this.boundingBox.minZ	&&	object.speedZ>0) 
-			object.collisionZ = true;
-
 		//collision from y++
 		if(object.boundingBox.maxY >= this.boundingBox.maxY	&& 	object.boundingBox.minY <= this.boundingBox.maxY	&& object.speedY<0)
 		{
 			object.collisionY = true;
 			object.penetrationY = this.boundingBox.maxY - object.boundingBox.minY;
 		}
+		else
+		{
+			//collision from x++
+			if(object.boundingBox.maxX >= this.boundingBox.maxX	&& 	object.boundingBox.minX <= this.boundingBox.maxX	&&	object.speedX<0) 
+				object.collisionX = true;
+			//collision from x--
+			if(object.boundingBox.maxX >= this.boundingBox.minX	&& 	object.boundingBox.minX <= this.boundingBox.minX	&&	object.speedX>0)
+				object.collisionX = true;
 
-		//collision from y--
-		if(object.boundingBox.maxY >= this.boundingBox.minY	&& 	object.boundingBox.minY <= this.boundingBox.minY 	&& object.speedY>0) 
-			object.collisionY = true;
+			//collision from z++
+			if(object.boundingBox.maxZ >= this.boundingBox.maxZ	&& 	object.boundingBox.minZ <= this.boundingBox.maxZ	&&	object.speedZ<0)
+				object.collisionZ = true;
+
+			//collision from z--
+			if(object.boundingBox.maxZ >= this.boundingBox.minZ	&& 	object.boundingBox.minZ <= this.boundingBox.minZ	&&	object.speedZ>0) 
+				object.collisionZ = true;
+		}
+		
+
+			//collision from y--
+			if(object.boundingBox.maxY >= this.boundingBox.minY	&& 	object.boundingBox.minY <= this.boundingBox.minY 	&& object.speedY>0) 
+				object.collisionY = true;
 	}
 
 	//to override
