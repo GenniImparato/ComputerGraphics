@@ -6,7 +6,7 @@ in vec3 fsNormal;
 in vec3 fs_pos;			
 
 uniform vec3 LADir;			
-uniform vec4 LAColor;	
+uniform vec3 LAColor;	
 uniform mat4 LADirMatrix;
 uniform vec3 cameraPos;
 
@@ -15,30 +15,30 @@ uniform vec3 cameraPos;
 out vec4 outColor;
 
 
-vec4 compLambertDiffuse(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec4 diffColor) {
-  vec4 diffuseLambert = lightCol * clamp(dot(lightDir, normalVec),0.0,1.0) * diffColor;
+vec3 compLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diffColor) {
+  vec3 diffuseLambert = lightCol * clamp(dot(normalVec, lightDir),0.0,1.0) * diffColor;
      return  diffuseLambert;
 }
 
 
-vec4 compPhongSpecular(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec,  vec4 specularColor) {
+vec3 compPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec3 specularColor) {
 	vec3 reflection = -reflect(lightDir, normalVec);
-	vec4 phongSpecular = lightCol * pow(max(dot(reflection, eyedirVec), 0.0), 0.3) * specularColor;
+	vec3 phongSpecular = lightCol * pow(max(dot(reflection, eyedirVec), 0.0), 0.3) * specularColor;
 	return          phongSpecular;
 }
 
 void main() 
 {
-	vec3 normalVec = normalize(fsNormal);
-	vec4 diffColor = vec4(0.0, 0.4, 0.9, 1.0);
-	vec4 specularColor = vec4(0.9, 0.9, 0.9, 1.0);
-	// directional light
+  vec3 normalVec = normalize(fsNormal);
+	vec4 diffColor = vec4(0.2, 0.2, 0.7, 1.0);
+	vec4 specularColor = vec4(1.0, 1.0, 1.0, 1.0);
 	vec3 lightDir = normalize(mat3(LADirMatrix) * LADir);
-	vec4 lambertDiffuse = compLambertDiffuse(lightDir, LAColor, normalVec, diffColor);
-	vec3 cameraDir  = normalize(cameraPos - fs_pos);
-	vec4 phongSpecular = compPhongSpecular(lightDir, LAColor, normalVec, cameraDir, specularColor);
+	vec3 lambertDiffuse = compLambertDiffuse(lightDir, LAColor, normalVec, diffColor.rgb);
+	// vec3 specularPhong = compPhongSpecular(lightDir, LAColor, normalVec, cameraPos, specularColor.rgb);
+	
 
 
 	// lambert diffuse without specular
-	outColor = clamp(lambertDiffuse + phongSpecular * 0.0, 0.0, 1.0);
+	  outColor = vec4(clamp(lambertDiffuse  ,0.0, 1.0), diffColor.a);
+	
 }

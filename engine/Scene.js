@@ -106,10 +106,9 @@ var Scene =
 		camera.look();
 
 		//creates first light 
-	        light = new DirectionalLight('LA', 1.0, 1.0, 1.0, shader);
-	    light.setColor(0.3, 0.3, 0.3, 1.0);
+	        light = new DirectionalLight('LA', 0.2, 0.2, 1, shader);
+	    light.setColor(1.0, 1.0, 1.0);
 	    light.moveToCameraSpace(viewMatrix);
-		light.setColor(0.6, 0.6, 0.6, 1.0);
 
 	},
 
