@@ -2,7 +2,7 @@ var Canvas =
 {
     init: function()
     {
-        var canvas = document.getElementById("canvas");
+        canvas = document.getElementById("canvas");
 
         try
         {

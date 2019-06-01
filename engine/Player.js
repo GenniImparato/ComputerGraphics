@@ -71,7 +71,7 @@ class Player extends Object3D
 
 		//jump
 		if(Input.isKeyClicked(Input.SPACE_KEY))
-			this.setSpeed(this.speedX, 0.6, this.speedZ);
+			this.setSpeed(this.speedX, 0.5, this.speedZ);
 	}
 
 	//override

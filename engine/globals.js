@@ -1,4 +1,5 @@
 var gl;
+var canvas;
 var aspectRatio;
 
 var OBJModelsDir 	= "http://127.0.0.1:8887/models/";

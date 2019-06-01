@@ -34,8 +34,19 @@ class LookAtCamera
 		this.elevation = elevation;
 	}
 
+	handleInput()
+	{
+		if(Input.isMouseDown())
+		{
+			this.elevation -= Input.getMouseDiffY() * 0.4;
+		}
+		this.lookRadius -= Input.getMouseWheelDiff() * 0.6;
+	}
+
 	look()
 	{
+		this.handleInput();
+
 		//computes camera position
 		this.z = this.lookRadius * Math.cos(utils.degToRad(-this.angle)) * Math.cos(utils.degToRad(this.elevation));
 		this.x = this.lookRadius * Math.sin(utils.degToRad(-this.angle)) * Math.cos(utils.degToRad(this.elevation));
