@@ -1,13 +1,12 @@
-class WallsMaker
+class Castle3D extends GroupObject3D
 {
-	constructor(towerMesh, wallMesh, shader, startX, startY, startZ, scaleX, scaleY, scaleZ)
+	constructor(towerMesh, wallMesh, shader, scaleX, scaleY, scaleZ)
 	{	
-		this.objects = [];
-		this.objectsCount = 0;
-
-		this.currX = startX;
-		this.currY = startY;
-		this.currZ = startZ;
+		super(shader);
+		
+		this.currX = this.x;
+		this.currY = this.y;
+		this.currZ = this.z;
 
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
@@ -19,6 +18,8 @@ class WallsMaker
 		this.shader = shader;
 	}
 
+	//creates count walls int the given direction
+	//valid directions are "U", "D", "L", "R"
 	insertWalls(count, direction)
 	{
 		if(direction == "U")
@@ -47,9 +48,7 @@ class WallsMaker
 			var tmp = new Object3D(this.wallMesh, this.shader);
 			tmp.setScale(this.scaleX, this.scaleY, this.scaleZ);
 			tmp.setPosition(this.currX, this.currY, this.currZ);
-
-			this.objects[this.objectsCount] = tmp;
-			this.objectsCount++;
+			this.addObject3D(tmp);
 
 			//computes next position
 			if(direction == "R")
@@ -84,8 +83,6 @@ class WallsMaker
 				else
 					this.currZ -= tmp.boundingBox.dz/2;
 			}
-
-			Scene.addObject3D(tmp);
 		}
 
 		this.insertTower();
@@ -96,15 +93,6 @@ class WallsMaker
 		var tmp = new Object3D(this.towerMesh, this.shader);
 		tmp.setScale(this.scaleX, this.scaleY, this.scaleZ);
 		tmp.setPosition(this.currX, this.currY, this.currZ);
-
-		this.objects[this.objectsCount] = tmp;
-		this.objectsCount++;
-
-		Scene.addObject3D(tmp);
-	}
-
-	getObjects3D()
-	{
-		return this.objects;
+		this.addObject3D(tmp);
 	}
 }
