@@ -2,9 +2,9 @@
 //all objects in the group are linked in hieararchy to the group
 class GroupObject3D extends Object3D
 {
-	constructor(shader)
+	constructor()
 	{
-		super(unitCubeMesh, shader);
+		super(unitCubeMesh);
 
 		this.objects = [];
 		this.objectsCount = 0;

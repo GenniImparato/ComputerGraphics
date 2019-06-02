@@ -1,12 +1,11 @@
 class SimpleMaterial {
 	
 
-	constructor(diffRed, diffGreen, diffBlue, diffAlpha, shader) {
+	constructor(diffRed, diffGreen, diffBlue, diffAlpha) {
 		this.diffR = diffRed;
 		this.diffG = diffGreen;
 		this.diffB = diffBlue;
 		this.diffA = diffAlpha;
-		this.shader = shader;
 	}
 
 	setDiffuseColor(diffRed, diffGreen, diffBlue, diffAlpha) {
@@ -17,8 +16,8 @@ class SimpleMaterial {
 	}
 
 	bindColors() {
-		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		var materialTypeLoc = this.shader.getUniformLocation("mType");
+		var materialDiffLoc = globalShader.getUniformLocation("mDiffColor");
+		var materialTypeLoc = globalShader.getUniformLocation("mType");
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
 		gl.uniform3f(materialTypeLoc, 1.0, 0.0, 0.0);
 	}
@@ -28,13 +27,12 @@ class SimpleMaterial {
 class SpecularMaterial extends SimpleMaterial {
 
 
-	constructor(diffRed, diffGreen, diffBlue, diffAlpha, specRed, specGreen, specBlue, specAlpha, shader) {
-		super(diffRed, diffGreen, diffBlue, diffAlpha, shader);
+	constructor(diffRed, diffGreen, diffBlue, diffAlpha, specRed, specGreen, specBlue, specAlpha) {
+		super(diffRed, diffGreen, diffBlue, diffAlpha);
 		this.specR = specRed;
 		this.specG = specGreen;
 		this.specB = specBlue;
 		this.specA = specAlpha;
-		this.shader = shader;
 		this.gamma = 100;
 	}
 
@@ -50,10 +48,10 @@ class SpecularMaterial extends SimpleMaterial {
 	}
 
 	bindColors() {
-		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
-		var specularShineLoc = this.shader.getUniformLocation("mSpecShine");
-		var materialTypeLoc = this.shader.getUniformLocation("mType");
+		var materialDiffLoc = globalShader.getUniformLocation("mDiffColor");
+		var materialSpecularLoc = globalShader.getUniformLocation("mSpecColor");
+		var specularShineLoc = globalShader.getUniformLocation("mSpecShine");
+		var materialTypeLoc = globalShader.getUniformLocation("mType");
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
 		gl.uniform4f(materialSpecularLoc, this.specR, this.specG, this.specB, this.specA);
 		gl.uniform1f(specularShineLoc, this.gamma);

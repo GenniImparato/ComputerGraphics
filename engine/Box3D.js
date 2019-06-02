@@ -1,9 +1,9 @@
 class Box3D extends Object3D
 {
 	//construct a box by given dimensions
-	constructor(dimX, dimY, dimZ, shader, material)
+	constructor(dimX, dimY, dimZ, material)
 	{
-		super(unitCubeMesh, shader, material);
+		super(unitCubeMesh, material);
 		this.setScale(dimX, dimY, dimZ);
 		this.boundingBox.setScaleCorrection(1, 1, 1);
 	}
@@ -12,9 +12,9 @@ class Box3D extends Object3D
 class TriggerBox3D extends Box3D
 {
 	//creates an invisible box objects that uses collisions to trigger actions
-	constructor(dimX, dimY, dimZ, shader, material)
+	constructor(dimX, dimY, dimZ, material)
 	{
-		super(dimX, dimY, dimZ, shader, material);
+		super(dimX, dimY, dimZ, material);
 		this.boundingBox.nonCollidedColor = [0, 1, 0, 1];
 		this.setVisible(false);
 

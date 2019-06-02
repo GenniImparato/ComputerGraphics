@@ -1,11 +1,9 @@
 class Object3D
 {
-	constructor(mesh, shader, material)
+	constructor(mesh, material)
 	{
 		//reference to a loaded mesh
 		this.mesh = mesh;
-		//reference to a loaded shader
-		this.shader = shader;
 
 		//hierarchy
 		this.parent = null;
@@ -42,7 +40,7 @@ class Object3D
 		if(material) 
 			this.material = material;
 		else 
-			this.material = new SimpleMaterial(0.2,0.2,0.2,1.0, this.shader);
+			this.material = new SimpleMaterial(0.2,0.2,0.2,1.0);
 
 		if(this.mesh != null)
 		{
@@ -209,7 +207,7 @@ class Object3D
 										this.scaleX, this.scaleY, this.scaleZ);
 			this.material.bindColors();
 				
-			this.mesh.render(this.shader, worldMatrix);
+			this.mesh.render(worldMatrix);
 		}
 	}
 

@@ -1,9 +1,9 @@
 class MobileObject3D extends Object3D
 {
 	//construct a box by given dimensions
-	constructor(mesh, shader, material)
+	constructor(mesh, material)
 	{
-		super(mesh, shader, material);
+		super(mesh, material);
 
 		this.movingX = 0;
 		this.movingY = 0;

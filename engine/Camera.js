@@ -1,6 +1,6 @@
 class LookAtCamera
 {
-	constructor(shader) 
+	constructor() 
 	{	
 		this.lookRadius	= 10.0;
 		this.angle 		= 0.0;
@@ -9,7 +9,6 @@ class LookAtCamera
 		this.xLook 		= 0.0;
 		this.yLook		= 0.0;
 		this.zLook 	    = 0.0;
-	    this.shader = shader;
 	}
 	
 	setLookRadius(radius)
@@ -60,7 +59,7 @@ class LookAtCamera
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
 	        
-	    var cameraLoc = this.shader.getUniformLocation("cameraPos");
+	    var cameraLoc = globalShader.getUniformLocation("cameraPos");
 	    gl.uniform3f(cameraLoc, this.x, this.y, this.z);
 
 

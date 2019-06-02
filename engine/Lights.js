@@ -1,15 +1,13 @@
 class Light {
 	
-	constructor(name, x, y, z, shader) {
+	constructor(name, x, y, z) {
 		this.name = name;// prefix used in gl variables
 		this.x = x;
 		this.y = y;
 	        this.z = z;
 		this.Rcolor = 0.0;
 		this.Gcolor = 0.0;
-		this.Bcolor = 0.0;
-		this.shader = shader;
-		
+		this.Bcolor = 0.0;		
 	}
 
     setLightPosition(x, y, z){
@@ -61,10 +59,10 @@ class DirectionalLight extends Light {
 	}
 
 	bind() { // bind gl variables 
-		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
-		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-	    var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	 
+		var lightTypeLoc = globalShader.getUniformLocation(this.name + "Type");
+		var directionLoc = globalShader.getUniformLocation(this.name + 'Dir');
+		var colorLoc = globalShader.getUniformLocation(this.name + 'Color');
+	    var lightDirMatrixLoc = globalShader.getUniformLocation(this.name + "DirMatrix");	 
 	    gl.uniform3f(lightTypeLoc, 1.0, 0.0, 0.0);   
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);
 		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);
@@ -85,14 +83,14 @@ class PointLight extends Light {
 	}
 
 	bind() { // bind gl variables 
-		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
-		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
-		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
-		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
-		var lightMatrixLoc = this.shader.getUniformLocation(this.name + 'PosMatrix');
-		var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	
+		var lightTypeLoc = globalShader.getUniformLocation(this.name + "Type");
+		var directionLoc = globalShader.getUniformLocation(this.name + 'Dir');
+		var colorLoc = globalShader.getUniformLocation(this.name + 'Color');
+		var targetLoc = globalShader.getUniformLocation(this.name + 'Target');
+		var positionLoc = globalShader.getUniformLocation(this.name + 'Pos');
+		var decayLoc = globalShader.getUniformLocation(this.name + 'Decay');
+		var lightMatrixLoc = globalShader.getUniformLocation(this.name + 'PosMatrix');
+		var lightDirMatrixLoc = globalShader.getUniformLocation(this.name + "DirMatrix");	
 		gl.uniform3f(lightTypeLoc, 0.0, 1.0, 0.0);   
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
 		gl.uniform3f(directionLoc, 0.0, 0.0, 0.0);
@@ -134,14 +132,14 @@ class SpotLight extends Light {
 
 
 	bind() { // bind gl variables 
-		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
-		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
-		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
-		var coneInLoc = this.shader.getUniformLocation(this.name + 'ConeIn');
-		var coneOutLoc = this.shader.getUniformLocation(this.name + 'ConeOut');
-		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
+		var lightTypeLoc = globalShader.getUniformLocation(this.name + "Type");
+		var directionLoc = globalShader.getUniformLocation(this.name + 'Dir');
+		var colorLoc = globalShader.getUniformLocation(this.name + 'Color');
+		var targetLoc = globalShader.getUniformLocation(this.name + 'Target');
+		var positionLoc = globalShader.getUniformLocation(this.name + 'Pos');
+		var coneInLoc = globalShader.getUniformLocation(this.name + 'ConeIn');
+		var coneOutLoc = globalShader.getUniformLocation(this.name + 'ConeOut');
+		var decayLoc = globalShader.getUniformLocation(this.name + 'Decay');
 		gl.uniform3f(lightTypeLoc, 0.0, 0.0, 1.0);
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
 		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);

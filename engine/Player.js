@@ -7,9 +7,9 @@ const sprintGearRotSpeed	= 3;
 
 class Player extends Object3D
 {
-	constructor(mainMesh, gearMesh, shader, material)
+	constructor(mainMesh, gearMesh, material)
 	{
-		super(mainMesh, shader, material);
+		super(mainMesh, material);
 		this.changeBBColor = true;
 		this.boundingBox.setColor([1, 1, 0, 1]);
 		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
@@ -17,9 +17,9 @@ class Player extends Object3D
 		this.setScale(2, 2, 2);
 
 		//child Object3D in hierarchy
-		var shiningMaterial = new SpecularMaterial( 0.2, 0.2, 0.2, 1.0, 1.0, 1.0, 1.0, 1.0, shader);
+		var shiningMaterial = new SpecularMaterial( 0.2, 0.2, 0.2, 1.0, 1.0, 1.0, 1.0, 1.0);
 		shiningMaterial.setSpecularShine(10);
-		this.gear = new Object3D(gearMesh, shader, shiningMaterial);
+		this.gear = new Object3D(gearMesh, shiningMaterial);
 		this.gear.setParent(this);
 		this.gear.setPosition(2, 1, 0);
 		this.gear.setScale(2, 2, 2);

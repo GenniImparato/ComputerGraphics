@@ -42,7 +42,7 @@ class BoundingBox
 		//colors
 		this.collidedColor = [1, 0, 0, 1];			//red
 		this.nonCollidedColor = [0, 0, 1, 1];		//blue
-		this.color = [0, 1, 0, 1];
+		this.material = new SimpleMaterial(0, 1, 0, 1);
 
 	}
 
@@ -78,7 +78,7 @@ class BoundingBox
 
 	setColor(color)
 	{
-		this.color = color;
+		this.material.setDiffuseColor(color[0], color[1], color[2], color[3]);
 	}
 
 	setScaleCorrection(x, y, z)
@@ -102,9 +102,9 @@ class BoundingBox
 											0, 0, 0, 
 											this.dx, this.dy, this.dz);
 
-		boundingBoxShader.use();
-		gl.uniform4f(boundingBoxShader.getColorLocation(), this.color[0], this.color[1], this.color[2], this.color[3]);
-		unitCubeMesh.render(boundingBoxShader, bBoxMatrix);
+		this.material.bindColors();
+		
+		unitCubeMesh.render(bBoxMatrix);
 	}
 
 	checkCollision(bBox)

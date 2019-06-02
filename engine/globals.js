@@ -14,7 +14,7 @@ var projectionMatrix;
 var unitCubeMesh;			//loaded in Scene.init()
 
 //global shader for bounding boxes
-var boundingBoxShader;		//loaded in Scene.init()
+var globalShader;		//loaded in Scene.init()
 
 //flag to show/hide bounding boxes of every object in the scene
 var showBoundingBoxes = true;

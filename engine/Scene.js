@@ -25,8 +25,9 @@ var Scene =
 
 	loadGlobalAssets()
 	{
-		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");
-		unitCubeMesh  		= Mesh.loadFromOBJFile("u_cube.obj");
+		globalShader = new Shader("vs_2.glsl", "fs_2.glsl");
+
+		unitCubeMesh = Mesh.loadFromOBJFile("u_cube.obj");
 	},
 
 	init: function()
@@ -35,7 +36,6 @@ var Scene =
 		////_________________________________
 
 		Scene.loadGlobalAssets();
-		var shader 			= new Shader("vs_2.glsl", "fs_2.glsl");
 
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
@@ -44,22 +44,27 @@ var Scene =
 		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
 		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
 
+
+		////		CREATE MATERIALS
+		////__________________________________
+		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0);
+		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0);
+		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0);
+		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0);
+
+
 		////		CREATE OBJECTS 3D
 		////__________________________________
-		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0,  shader);
-		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0, shader);
-		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0, shader);
-		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0, shader);
 
 		//small plant
-		var tmpObj = new Object3D(plantMesh, shader, greenMaterial);
+		var tmpObj = new Object3D(plantMesh, greenMaterial);
 		tmpObj.setPosition(5, 0, 5);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
 		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//big plant
-		var tmpObj = new Object3D(plantMesh, shader, greenMaterial);
+		var tmpObj = new Object3D(plantMesh, greenMaterial);
 		tmpObj.setPosition(5, 0, -5);
 		tmpObj.setScale(2, 2, 2);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
@@ -67,29 +72,29 @@ var Scene =
 		tmpObj.addToScene();
 
 		//house
-		var tmpObj = new Object3D(houseMesh, shader, redMaterial);
+		var tmpObj = new Object3D(houseMesh, redMaterial);
 		tmpObj.setPosition(-7, 0, 0);
 		tmpObj.setScale(0.4, 0.6, 0.5);
 		tmpObj.addToScene();
 		tmpObj.boundingBox.setScaleCorrection(0.95, 1, 0.95);
 
 		//wall
-		var tmpObj = new Box3D(2, 10, 8, shader);
+		var tmpObj = new Box3D(2, 10, 8);
 		tmpObj.setPosition(0, 5, -10);
 		tmpObj.addToScene();
 
 		//floor
-		var tmpObj = new Box3D(500, 1, 500, shader);
+		var tmpObj = new Box3D(500, 1, 500);
 		tmpObj.setPosition(0, -0.5, 0);
 		tmpObj.addToScene();
 
 		//trigger
-		var tmpObj = new TriggerBox3D(20, 20, 20, shader);
+		var tmpObj = new TriggerBox3D(20, 20, 20);
 		tmpObj.setPosition(-20, 12, 20);
 		tmpObj.addToScene();
 
 
-		var tmpObj = new Box3D(7, 5, 3, shader);
+		var tmpObj = new Box3D(7, 5, 3);
 		tmpObj.setPosition(15, 60, -10);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
@@ -97,26 +102,26 @@ var Scene =
 
 
 		//mobile wood boxes
-		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial);
+		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-25, 50, 50);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial);
+		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-23, 80, 50);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial	);
+		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-45, 100, 45);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleTowerMesh, castleWallMesh, shader, 12, 12, 12);
+		var tmpObj = new Castle3D(castleTowerMesh, castleWallMesh, 12, 12, 12);
 		tmpObj.setPosition(-10, 0, 10);
 		tmpObj.insertWalls(5, "U");
 		tmpObj.insertWalls(2, "L");
@@ -127,7 +132,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//player
-		player  = new Player(unitCubeMesh, gearMesh, shader);
+		player  = new Player(unitCubeMesh, gearMesh);
 		player.setPosition(-20, 40, 82);
 		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
@@ -135,7 +140,7 @@ var Scene =
 		///			CAMERA
 		///_______________________
 
-		camera = new LookAtCamera(shader);
+		camera = new LookAtCamera();
 		camera.setLookRadius(15.0);
 		camera.setElevation(35.0);
 		camera.setLookPoint(0, 0, 0);
@@ -145,7 +150,7 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    light = new DirectionalLight('LA', 0.2, 0.2, 1, shader);
+	    light = new DirectionalLight('LA', 0.2, 0.2, 1);
 	    light.setColor(1.0, 1.0, 1.0);
 	    light.moveToCameraSpace(viewMatrix);
 
