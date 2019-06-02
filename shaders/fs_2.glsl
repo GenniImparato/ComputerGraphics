@@ -18,6 +18,8 @@ uniform bool LAspotBool;
 					
 uniform vec4 mDiffColor;
 uniform vec4 mSpecColor; 
+uniform mat4 nMatrix;
+uniform mat4 matrix;
 
 // Final color is returned into:
 
@@ -47,9 +49,9 @@ void main()
 	   lightColor = pointLightColor;
 	} else if (LAspotBool) {
 	// spot light
-	vec3 spotLightDir = normalize(LAPos - fs_pos) ;
-	float cosAngle = dot(spotLightDir, LADir);
-	vec4 spotLightColor = LAColor *  pow( (LATarget / length(LAPos - fs_pos)), LADecay) * 
+	vec3 spotLightDir = normalize(translatedLightPos - fs_pos) ;
+	float cosAngle = dot(spotLightDir, translatedLightDir);
+	vec4 spotLightColor = LAColor *  pow( (LATarget / length(translatedLightPos - fs_pos)), LADecay) * 
 								clamp((cosAngle - LAConeOut)/(LAConeIn - LAConeOut) , 0.0, 1.0) ; 
 	   lightDir = -spotLightDir;
 	   lightColor = spotLightColor;
