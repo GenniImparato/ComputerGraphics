@@ -15,6 +15,7 @@ uniform vec3 LAType; // x is for directional, y for point and z for spot
 
 uniform vec4 mDiffColor;
 uniform vec4 mSpecColor;
+uniform float mSpecShine;
 uniform vec4 mEmitColor;
 uniform vec3 mType; //  x is for diffuse, y is for specular and z is for emit
 
@@ -28,9 +29,9 @@ vec3 compLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diffC
 }
 
 
-vec3 compPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec3 specularColor) {
+vec4 compPhongSpecular(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec,  vec4 specularColor, float specularShine) {
 	vec3 reflection = -reflect(lightDir, normalVec);
-	vec3 phongSpecular = lightCol * pow(max(dot(reflection, eyedirVec), 0.0), 0.3) * specularColor;
+	vec4 phongSpecular = lightCol * pow(clamp(dot(reflection, eyedirVec), 0.0, 1.0), specularShine ) * specularColor;
 	return          phongSpecular;
 }
 
@@ -41,7 +42,8 @@ void main()
 	vec3 dirLambertDiffuse = compLambertDiffuse(lightDir, LAColor, normalVec, mDiffColor.rgb);
 	vec3 pointLambertDiffuse = vec3(1.0, 1.0, 1.0);
 	vec3 spotLambertDiffuse = vec3(1.0, 1.0, 1.0);
-	vec3 specularPhong = compPhongSpecular(lightDir, LAColor, normalVec, cameraPos, mSpecColor.rgb);
+	vec3 eyeDirVec = normalize(- fs_pos);
+	vec4 specularPhong = compPhongSpecular(lightDir, vec4(LAColor,1.0), normalVec, eyeDirVec, mSpecColor, mSpecShine);
 	
 	vec3 lambertDiffuse = dirLambertDiffuse * LAType.x +
 						pointLambertDiffuse * LAType.y +
@@ -50,6 +52,6 @@ void main()
 	float alphaComponent = mDiffColor.a * mType.x + mSpecColor.a * mType.y +
 						mEmitColor.a * mType.z;
 	// lambert diffuse without specular
-	  outColor = vec4(clamp(lambertDiffuse * mType.x + specularPhong * mType.y ,0.0, 1.0), alphaComponent);
+	  outColor = clamp(vec4(lambertDiffuse, mDiffColor.a) * mType.x + specularPhong * mType.y ,0.0, 1.0);
 	
 }

@@ -29,11 +29,13 @@ class SpecularMaterial extends SimpleMaterial {
 
 
 	constructor(diffRed, diffGreen, diffBlue, diffAlpha, specRed, specGreen, specBlue, specAlpha, shader) {
-		super(diffRed, diffGreen, diffBlue, shader);
+		super(diffRed, diffGreen, diffBlue, diffAlpha, shader);
 		this.specR = specRed;
 		this.specG = specGreen;
 		this.specB = specBlue;
 		this.specA = specAlpha;
+		this.shader = shader;
+		this.gamma = 100;
 	}
 
 	setSpecularColor( specRed, specGreen, specBlue, specAlpha) {
@@ -43,11 +45,19 @@ class SpecularMaterial extends SimpleMaterial {
 		this.specA = specAlpha;
 	}
 
+	setSpecularShine(gamma) {
+		this.gamma = gamma;
+	}
+
 	bindColors() {
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		gl.uniform4fv(materialDiffLoc, new Float32Array([this.diffR, this.diffG, this.diffB, this.diffA]));
-		var materialSpecularLoc = shader.getUniformLocation("mSpecColor");
-		gl.uniform4fv(materialDiffLoc, new Float32Array([this.specR, this.specG, this.specB, this.specA]));
+		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
+		var specularShineLoc = this.shader.getUniformLocation("mSpecShine");
+		var materialTypeLoc = this.shader.getUniformLocation("mType");
+		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
+		gl.uniform4f(materialSpecularLoc, this.specR, this.specG, this.specB, this.specA);
+		gl.uniform1f(specularShineLoc, this.gamma);
+		gl.uniform3f(materialTypeLoc, 1.0, 1.0, 0.0);
 	}
 
 }
