@@ -1,0 +1,15 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Material.001
+Ns 223.529412
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.122081 0.122081 0.122081
+Ke 0.000000 0.000000 0.000000
+Ni 1.330000
+d 1.000000
+illum 2
+map_Kd C:\Users\Genni\Desktop\models\48-crate\Wooden Crate\Textures\2048\Wooden Crate_Crate_BaseColor.png
+map_Bump -bm 0.600000 C:\\Users\\Genni\\Desktop\\models\\48-crate\\Wooden Crate\\Textures\\2048\\Wooden Crate_Crate_Normal.png
+refl C:\\Users\\Genni\\Desktop\\models\\48-crate\\Wooden Crate\\Textures\\2048\\Wooden Crate_Crate_Metallic.png

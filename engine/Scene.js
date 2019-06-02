@@ -39,6 +39,7 @@ var Scene =
 		var gearMesh 		= Mesh.loadFromOBJFile("gear.obj");
 		var castleTowerMesh	= Mesh.loadFromOBJFile("castle_tower.obj");
 		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
+		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
 
 		//creates objects
 		Scene.addObject3D(new Object3D(plantMesh, shader));
@@ -60,12 +61,6 @@ var Scene =
 		tmpObj.setPosition(-20, 12, 20);
 		Scene.addObject3D(tmpObj);
 
-		//boxes with gravity
-		var tmpObj = new MobileBox3D(5, 5, 5, shader);
-		tmpObj.setPosition(15, 30, -10);
-		tmpObj.enableGravity(true);
-		tmpObj.enableCollisionWith(objects);
-		Scene.addObject3D(tmpObj);
 
 		var tmpObj = new Box3D(7, 5, 3, shader);
 		tmpObj.setPosition(15, 60, -10);
@@ -73,14 +68,22 @@ var Scene =
 		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
 
-		var tmpObj = new MobileBox3D(3, 5, 3, shader);
-		tmpObj.setPosition(25, 60, -10);
+
+		//mobile wood boxes
+		var tmpObj = new MobileObject3D(woodBox, shader);
+		tmpObj.setPosition(-25, 50, 50);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
 
-		var tmpObj = new Box3D(2, 5, 5, shader);
-		tmpObj.setPosition(30, 60, -10);
+		var tmpObj = new MobileObject3D(woodBox, shader);
+		tmpObj.setPosition(-23, 80, 50);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		Scene.addObject3D(tmpObj);
+
+		var tmpObj = new MobileObject3D(woodBox, shader);
+		tmpObj.setPosition(-45, 100, 45);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
