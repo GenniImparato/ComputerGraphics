@@ -50,19 +50,16 @@ var Scene =
 		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0, shader);
 		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0, shader);
 		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0, shader);
-		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
-		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
-		Scene.addObject3D(new Object3D(houseMesh, shader, redMaterial));
 
 		//small plant
-		var tmpObj = new Object3D(plantMesh, shader);
+		var tmpObj = new Object3D(plantMesh, shader, greenMaterial);
 		tmpObj.setPosition(5, 0, 5);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
 		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//big plant
-		var tmpObj = new Object3D(plantMesh, shader);
+		var tmpObj = new Object3D(plantMesh, shader, greenMaterial);
 		tmpObj.setPosition(5, 0, -5);
 		tmpObj.setScale(2, 2, 2);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
@@ -70,7 +67,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//house
-		var tmpObj = new Object3D(houseMesh, shader);
+		var tmpObj = new Object3D(houseMesh, shader, redMaterial);
 		tmpObj.setPosition(-7, 0, 0);
 		tmpObj.setScale(0.4, 0.6, 0.5);
 		tmpObj.addToScene();
