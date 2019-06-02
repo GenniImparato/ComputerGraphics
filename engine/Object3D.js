@@ -1,5 +1,6 @@
 class Object3D
 {
+	//mesh can be null
 	constructor(mesh, shader)
 	{
 		//reference to a loaded mesh
@@ -39,42 +40,54 @@ class Object3D
 		//objects in the array are collision-checked against this
 		this.collisionObjects = [];
 
-	
-		//computes a default bbox centred in the center of the mesh
-		//bounding box coordinates
-		var minX = mesh.positions[0];
-		var maxX = mesh.positions[0];
-		var minY = mesh.positions[1];
-		var maxY = mesh.positions[1];
-		var minZ = mesh.positions[2];
-		var maxZ = mesh.positions[2];
-		//computes bounding box coords
-		for(var i=0; i<mesh.positions.length; i+=3)
+		//computes bounding box only if there's a mesh
+		if(this.mesh != null)
 		{
-			if(mesh.positions[i]<minX)
-				minX = mesh.positions[i];
-			if(mesh.positions[i]>maxX)
-				maxX = mesh.positions[i];
+			//computes a default bbox centred in the center of the mesh
+			//bounding box coordinates
+			var minX = mesh.positions[0];
+			var maxX = mesh.positions[0];
+			var minY = mesh.positions[1];
+			var maxY = mesh.positions[1];
+			var minZ = mesh.positions[2];
+			var maxZ = mesh.positions[2];
+			//computes bounding box coords
+			for(var i=0; i<mesh.positions.length; i+=3)
+			{
+				if(mesh.positions[i]<minX)
+					minX = mesh.positions[i];
+				if(mesh.positions[i]>maxX)
+					maxX = mesh.positions[i];
 
-			if(mesh.positions[i+1]<minY)
-				minY = mesh.positions[i+1];
-			if(mesh.positions[i+1]>maxY)
-				maxY = mesh.positions[i+1];
+				if(mesh.positions[i+1]<minY)
+					minY = mesh.positions[i+1];
+				if(mesh.positions[i+1]>maxY)
+					maxY = mesh.positions[i+1];
 
-			if(mesh.positions[i+2]<minZ)
-				minZ = mesh.positions[i+2];
-			if(mesh.positions[i+2]>maxZ)
-				maxZ = mesh.positions[i+2];
-		}
-		//computes center of the mesh (in case it's not the origin)
-		var cX = (maxX-minX)/2.0 + minX;
-		var cY = (maxY-minY)/2.0 + minY;
-		var cZ = (maxZ-minZ)/2.0 + minZ;
+				if(mesh.positions[i+2]<minZ)
+					minZ = mesh.positions[i+2];
+				if(mesh.positions[i+2]>maxZ)
+					maxZ = mesh.positions[i+2];
+			}
+			//computes center of the mesh (in case it's not the origin)
+			var cX = (maxX-minX)/2.0 + minX;
+			var cY = (maxY-minY)/2.0 + minY;
+			var cZ = (maxZ-minZ)/2.0 + minZ;
 
-		this.boundingBox = new BoundingBox(cX, cY, cZ, 
+			this.boundingBox = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
-		this.boundingBox.update(this.x, this.y, this.z, 
+			this.boundingBox.update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		}
+		//no mesh
+		else
+			this.boundingBox = new BoundingBox(0, 0, 0, 0, 0, 0, 0, 0, 0);	
+		
+	}
+
+	addToScene()
+	{
+		Scene.addObject3D(this);
 	}
 
 	////
@@ -183,8 +196,9 @@ class Object3D
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
 										transormedRot[0], transormedRot[1], transormedRot[2], 
 										this.scaleX, this.scaleY, this.scaleZ);
-				
-			this.mesh.render(this.shader, worldMatrix);
+			
+			if(this.mesh != null)	
+				this.mesh.render(this.shader, worldMatrix);
 		}
 	}
 
