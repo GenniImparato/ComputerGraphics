@@ -46,16 +46,27 @@ class BoundingBox
 
 	}
 
-	update(x, y, z, scaleX, scaleY, scaleZ)
+	update(x, y, z, scaleX, scaleY, scaleZ, rotX)
 	{
 		this.x = x + (this.offX + this.posCX) * scaleX;
 		this.y = y + (this.offY + this.posCY) * scaleY;
 		this.z = z + (this.offZ + this.posCZ) * scaleZ;
 
-		//computes and scale bound coords
-		this.dx = this.dx_ * scaleX * this.scaleCX;
-		this.dy = this.dy_ * scaleY * this.scaleCY;
-		this.dz = this.dz_ * scaleZ * this.scaleCZ;
+		//invert bb axis at 90 degrees
+		if(rotX == 90 || rotX == -90)
+		{
+			//swap dx/dz
+			this.dx = this.dz_ * scaleX * this.scaleCX;
+			this.dy = this.dy_ * scaleY * this.scaleCY;
+			this.dz = this.dx_ * scaleX * this.scaleCX;
+		}
+		else
+		{
+			//computes and scale bound coords
+			this.dx = this.dx_ * scaleX * this.scaleCX;
+			this.dy = this.dy_ * scaleY * this.scaleCY;
+			this.dz = this.dz_ * scaleZ * this.scaleCZ;
+		}
 
 		this.minX = this.x - this.dx/2.0;
 		this.minY = this.y - this.dy/2.0;

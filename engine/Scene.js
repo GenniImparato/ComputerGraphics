@@ -17,6 +17,12 @@ var Scene =
 		objectsCount++;
 	},
 
+	addObjects3D: function(objects)
+	{
+		for(this.objectsCount; this.objectsCount<objects.length; this.objectsCount++)
+			objects[objectsCount] = object;
+	},
+
 	loadGlobalAssets()
 	{
 		boundingBoxShader	= new Shader("boundingBox_vs.glsl", "boundingBox_fs.glsl");
@@ -31,6 +37,8 @@ var Scene =
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
 		var gearMesh 		= Mesh.loadFromOBJFile("gear.obj");
+		var castleTowerMesh	= Mesh.loadFromOBJFile("castle_tower.obj");
+		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
 
 		//creates objects
 		Scene.addObject3D(new Object3D(plantMesh, shader));
@@ -43,7 +51,7 @@ var Scene =
 		Scene.addObject3D(tmpObj);
 
 		//floor
-		var tmpObj = new Box3D(50, 1, 50, shader);
+		var tmpObj = new Box3D(500, 1, 500, shader);
 		tmpObj.setPosition(0, -0.5, 0);
 		Scene.addObject3D(tmpObj);
 
@@ -77,6 +85,16 @@ var Scene =
 		tmpObj.enableCollisionWith(objects);
 		Scene.addObject3D(tmpObj);
 
+		//creates castle
+		var maker = new WallsMaker(castleTowerMesh, castleWallMesh, shader,
+									-10, 0, 10, 		12, 12, 12);
+		maker.insertWalls(5, "U");
+		maker.insertWalls(2, "L");
+		maker.insertWalls(3, "D");
+		maker.insertWalls(2, "L");
+		maker.insertWalls(1, "D");
+		maker.insertWalls(4, "R");
+
 		//first plant
 		objects[0].setPosition(5, 0, 5);
 		objects[0].boundingBox.setScaleCorrection(0.2, 1, 0.3);
@@ -95,7 +113,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeMesh, gearMesh, shader);
-		player.setPosition(10, 50, 0);
+		player.setPosition(-20, 40, 82);
 		player.enableCollisionWith(objects);
 		
 		//creates camera

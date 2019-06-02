@@ -74,7 +74,7 @@ class Object3D
 		this.boundingBox = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
 		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ);
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	////
@@ -85,14 +85,14 @@ class Object3D
 	{
 		this.x = x;		this.y = y;		this.z = z;
 		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ);
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	move(x, y, z)
 	{
 		this.x += x;	this.y += y;	this.z += z;
 		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ);
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	setRotation(x, y, z)
@@ -109,7 +109,7 @@ class Object3D
 	{
 		this.scaleX = x; this.scaleY = y; this.scaleZ = z;
 		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ);
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	setSpeed(x, y, z)
@@ -170,7 +170,7 @@ class Object3D
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
 
 		this.boundingBox.update(transormedPos[0], transormedPos[1], transormedPos[2], 
-								this.scaleX, this.scaleY, this.scaleZ);
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 		
 		//renders bounding box
 		if(showBoundingBoxes)
