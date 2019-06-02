@@ -155,29 +155,33 @@ class Object3D
 	///			RECURSIVE HIERARCHY
 	///______________________________
 
-	recursivePositionTransform(values)
+	recursivePositionTransform(position)
 	{
 		if(this.parent != null)
-			return this.parent.recursivePositionTransform(
-														[values[0] + this.parent.x,
-														values[1] + this.parent.y,
-														values[2] + this.parent.z]
-													);
+		{
+			var parentWorldMat = utils.MakeWorld(this.parent.x, this.parent.y, this.parent.z, 
+										this.parent.rotx, this.parent.roty, this.parent.rotz, 
+										1.0);
+
+			var transformedPosition = utils.multiplyMatrixVector(parentWorldMat, position);
+
+			return this.parent.recursivePositionTransform(transformedPosition);
+		}
 		else
-			return values;
+			return position;
 
 	}
 
-	recursiveRotationTransform(values)
+	recursiveRotationTransform(rotation)
 	{
 		if(this.parent != null)
 			return this.parent.recursiveRotationTransform(
-														[values[0] + this.parent.rotx,
-														values[1] + this.parent.roty,
-														values[2] + this.parent.rotz]
+														[rotation[0] + this.parent.rotx,
+														rotation[1] + this.parent.roty,
+														rotation[2] + this.parent.rotz]
 													);
 		else
-			return values;
+			return rotation;
 	}
 
 	////_____________________________________
@@ -186,7 +190,7 @@ class Object3D
 	render()
 	{
 		//values that needs to be recursivley summed by hierarchy
-		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z]);
+		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
 
 		this.boundingBox.update(transormedPos[0], transormedPos[1], transormedPos[2], 

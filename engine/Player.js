@@ -21,7 +21,7 @@ class Player extends Object3D
 		shiningMaterial.setSpecularShine(10);
 		this.gear = new Object3D(gearMesh, shader, shiningMaterial);
 		this.gear.setParent(this);
-		this.gear.setPosition(0, 1, 0);
+		this.gear.setPosition(2, 1, 0);
 		this.gear.setScale(2, 2, 2);
 		this.gear.boundingBox.setScaleCorrection(0, 0, 0);
 
