@@ -9,12 +9,6 @@ class Light {
 		this.Gcolor = 0.0;
 		this.Bcolor = 0.0;
 		this.shader = shader;
-		var dirTypeLoc = this.shader.getUniformLocation(this.name + 'directionalBool');
-		gl.uniform1f(dirTypeLoc, 0.0);
-		var pointTypeLoc = this.shader.getUniformLocation(this.name + 'pointBool');
-		gl.uniform1f(pointTypeLoc , 0.0);
-		var spotTypeLoc = this.shader.getUniformLocation(this.name + 'spotBool');
-		gl.uniform1f(spotTypeLoc , 0.0);
 		
 	}
 
@@ -47,9 +41,9 @@ class Light {
 
 
     moveToCameraSpace(viewMatrix) {
-	this.lightDirMatrix = viewMatrix;
-	this.lightPosMatrix = utils.invertMatrix(viewMatrix);
-    }
+	this.lightDirMatrix = utils.invertMatrix(utils.transposeMatrix(viewMatrix));
+	this.lightPosMatrix = viewMatrix; 
+	}
 
 }
 
@@ -67,9 +61,11 @@ class DirectionalLight extends Light {
 	}
 
 	bind() { // bind gl variables 
+		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
-	    var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	    
+	    var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	 
+	    gl.uniform3f(lightTypeLoc, 1.0, 0.0, 0.0);   
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);
 		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);
 	    gl.uniformMatrix4fv(lightDirMatrixLoc, gl.FALSE , utils.transposeMatrix(this.lightDirMatrix));
@@ -85,22 +81,26 @@ class PointLight extends Light {
 		this.dirx = 1.0;
 		this.diry = 0.0;
 		this.dirz = 0.0; 
-		var pointTypeLoc = this.shader.getUniformLocation(this.name + 'pointBool');
-		gl.uniform1f(pointTypeLoc , 1.0);
 
 	}
 
 	bind() { // bind gl variables 
+		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
 		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
 		var positionLoc = this.shader.getUniformLocation(this.name + 'Pos');
 		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
+		var lightMatrixLoc = this.shader.getUniformLocation(this.name + 'PosMatrix');
+		var lightDirMatrixLoc = this.shader.getUniformLocation(this.name + "DirMatrix");	
+		gl.uniform3f(lightTypeLoc, 0.0, 1.0, 0.0);   
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
-		gl.uniform3f(directionLoc, 1.0, 0.0, 0.0);
+		gl.uniform3f(directionLoc, 0.0, 0.0, 0.0);
 		gl.uniform1f(targetLoc, this.targetDistance);
 		gl.uniform1f(decayLoc, this.decay);
 		gl.uniform3f(positionLoc, this.x, this.y, this.z);
+		gl.uniformMatrix4fv(lightMatrixLoc, gl.FALSE, utils.transposeMatrix(this.lightPosMatrix));
+		gl.uniformMatrix4fv(lightDirMatrixLoc, gl.FALSE , utils.transposeMatrix(this.lightDirMatrix));
 	}
 
 }
@@ -116,8 +116,7 @@ class SpotLight extends Light {
 		this.decay = decay;
 		this.coneIn = 0.5;
 		this.coneOut = 0.5;
-		var spotTypeLoc = this.shader.getUniformLocation(this.name + 'spotBool');
-		gl.uniform1f(spotTypeLoc , 1.0);
+
 	}
 
 	setDecay(decay) {
@@ -135,6 +134,7 @@ class SpotLight extends Light {
 
 
 	bind() { // bind gl variables 
+		var lightTypeLoc = this.shader.getUniformLocation(this.name + "Type");
 		var directionLoc = this.shader.getUniformLocation(this.name + 'Dir');
 		var colorLoc = this.shader.getUniformLocation(this.name + 'Color');
 		var targetLoc = this.shader.getUniformLocation(this.name + 'Target');
@@ -142,6 +142,7 @@ class SpotLight extends Light {
 		var coneInLoc = this.shader.getUniformLocation(this.name + 'ConeIn');
 		var coneOutLoc = this.shader.getUniformLocation(this.name + 'ConeOut');
 		var decayLoc = this.shader.getUniformLocation(this.name + 'Decay');
+		gl.uniform3f(lightTypeLoc, 0.0, 0.0, 1.0);
 		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
 		gl.uniform3f(directionLoc, this.dirx, this.diry, this.dirz);
 	    gl.uniform3f(positionLoc, this.x, this.y, this.z);

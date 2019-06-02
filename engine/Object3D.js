@@ -1,6 +1,6 @@
 class Object3D
 {
-	constructor(mesh, shader)
+	constructor(mesh, shader, material)
 	{
 		//reference to a loaded mesh
 		this.mesh = mesh;
@@ -38,6 +38,11 @@ class Object3D
 		//Object3D list
 		//objects in the array are collision-checked against this
 		this.collisionObjects = [];
+
+		if(material) 
+			this.material = material;
+		else 
+			this.material = new SimpleMaterial(0.2,0.2,0.2,1.0, this.shader);
 
 	
 		//computes a default bbox centred in the center of the mesh
@@ -183,6 +188,8 @@ class Object3D
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
 										transormedRot[0], transormedRot[1], transormedRot[2], 
 										this.scaleX, this.scaleY, this.scaleZ);
+
+			this.material.bindColors();
 				
 			this.mesh.render(this.shader, worldMatrix);
 		}

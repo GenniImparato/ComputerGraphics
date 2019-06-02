@@ -32,7 +32,7 @@ var Scene =
 	init: function()
 	{
 		Scene.loadGlobalAssets();
-		var shader 			= new Shader("vs_2.glsl", "fs_dir.glsl");
+		var shader 			= new Shader("vs_2.glsl", "fs_2.glsl");
 
 		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
 		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
@@ -42,9 +42,11 @@ var Scene =
 		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
 
 		//creates objects
-		Scene.addObject3D(new Object3D(plantMesh, shader));
-		Scene.addObject3D(new Object3D(plantMesh, shader));
-		Scene.addObject3D(new Object3D(houseMesh, shader));
+		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0,  shader);
+		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0, shader);
+		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
+		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
+		Scene.addObject3D(new Object3D(houseMesh, shader, redMaterial));
 
 		//wall
 		var tmpObj = new Box3D(2, 10, 8, shader);
@@ -127,7 +129,7 @@ var Scene =
 		camera.look();
 
 		//creates first light 
-	        light = new DirectionalLight('LA', 0.2, 0.2, 1, shader);
+	        light = new DirectionalLight('LA', 0.0, 2, 1, shader);
 	    light.setColor(1.0, 1.0, 1.0);
 	    light.moveToCameraSpace(viewMatrix);
 

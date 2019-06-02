@@ -30,7 +30,7 @@ vec3 compPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedir
 void main() 
 {
   vec3 normalVec = normalize(fsNormal);
-	vec4 diffColor = vec4(0.2, 0.2, 0.7, 1.0);
+	vec4 diffColor = vec4(0.2, 0.9, 0.7, 1.0);
 	vec4 specularColor = vec4(1.0, 1.0, 1.0, 1.0);
 	vec3 lightDir = normalize(mat3(LADirMatrix) * LADir);
 	vec3 lambertDiffuse = compLambertDiffuse(lightDir, LAColor, normalVec, diffColor.rgb);

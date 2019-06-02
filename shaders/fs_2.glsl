@@ -5,59 +5,51 @@ precision mediump float;
 in vec3 fsNormal;
 in vec3 fs_pos;			
 
-uniform vec3 LAPos;			
 uniform vec3 LADir;			
-uniform float LAConeOut;	
-uniform float LAConeIn;		
-uniform float LADecay;		
-uniform float LATarget;		
-uniform vec4 LAColor;	
-uniform bool LAdirectionalBool;
-uniform bool LApointBool;
-uniform bool LAspotBool;
-					
-uniform vec4 mDiffColor;
-uniform vec4 mSpecColor; 
-uniform mat4 nMatrix;
-uniform mat4 matrix;
+uniform vec3 LAColor;	
+uniform mat4 LADirMatrix;
+uniform vec3 cameraPos;
+uniform vec3 LAType; // x is for directional, y for point and z for spot
 
 // Final color is returned into:
 
+uniform vec4 mDiffColor;
+uniform vec4 mSpecColor;
+uniform vec4 mEmitColor;
+uniform vec3 mType; //  x is for diffuse, y is for specular and z is for emit
+
+
 out vec4 outColor;
 
-void main() 
-{
-	vec4 diffColor = vec4(0.1, 0.9, 1.0, 1.0);
 
-
-	
-
-	vec3 lightDir = vec3(1.0, 1.0, 1.0);
-	vec4 lightColor = vec4(0.0, 0.0, 0.0, 1.0);
-
-	if (LAdirectionalBool) {
-	// directional light
-	   vec3 dirLightDir = normalize(LADir) ;
-	   vec4 dirLightColor = LAColor ;
-	   lightDir = -dirLightDir;	
-	   lightColor = dirLightColor;
-	} else if (LApointBool) {
-	// point light
-	  vec3 pointLightDir = normalize(LAPos - fs_pos) ;
-	  vec4 pointLightColor = LAColor * pow( (LATarget / length(LAPos - fs_pos)), LADecay) ;	
-	   lightDir = -pointLightDir;
-	   lightColor = pointLightColor;
-	} else if (LAspotBool) {
-	// spot light
-	vec3 spotLightDir = normalize(translatedLightPos - fs_pos) ;
-	float cosAngle = dot(spotLightDir, translatedLightDir);
-	vec4 spotLightColor = LAColor *  pow( (LATarget / length(translatedLightPos - fs_pos)), LADecay) * 
-								clamp((cosAngle - LAConeOut)/(LAConeIn - LAConeOut) , 0.0, 1.0) ; 
-	   lightDir = -spotLightDir;
-	   lightColor = spotLightColor;
+vec3 compLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diffColor) {
+  vec3 diffuseLambert = lightCol * clamp(dot(normalVec, lightDir),0.0,1.0) * diffColor;
+     return  diffuseLambert;
 }
 
 
+vec3 compPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec3 specularColor) {
+	vec3 reflection = -reflect(lightDir, normalVec);
+	vec3 phongSpecular = lightCol * pow(max(dot(reflection, eyedirVec), 0.0), 0.3) * specularColor;
+	return          phongSpecular;
+}
+
+void main() 
+{
+ 	vec3 normalVec = normalize(fsNormal);
+	vec3 lightDir = normalize(mat3(LADirMatrix) * LADir);
+	vec3 dirLambertDiffuse = compLambertDiffuse(lightDir, LAColor, normalVec, mDiffColor.rgb);
+	vec3 pointLambertDiffuse = vec3(1.0, 1.0, 1.0);
+	vec3 spotLambertDiffuse = vec3(1.0, 1.0, 1.0);
+	vec3 specularPhong = compPhongSpecular(lightDir, LAColor, normalVec, cameraPos, mSpecColor.rgb);
+	
+	vec3 lambertDiffuse = dirLambertDiffuse * LAType.x +
+						pointLambertDiffuse * LAType.y +
+						spotLambertDiffuse * LAType.z;
+
+	float alphaComponent = mDiffColor.a * mType.x + mSpecColor.a * mType.y +
+						mEmitColor.a * mType.z;
 	// lambert diffuse without specular
-	outColor = clamp(lightColor * diffColor *  clamp(dot(fsNormal, lightDir), 0.0, 1.0), 0.0, 1.0);
+	  outColor = vec4(clamp(lambertDiffuse * mType.x + specularPhong * mType.y ,0.0, 1.0), alphaComponent);
+	
 }

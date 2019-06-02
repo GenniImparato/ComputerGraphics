@@ -10,7 +10,7 @@ uniform mat4 nMatrix;
 
 void main() 
 {
-  fsNormal = normalize(mat3(nMatrix) * inNormal); 
+  fsNormal = mat3(nMatrix) * inNormal; 
   	fs_pos = mat3(matrix) * inPosition;
   	gl_Position = matrix * vec4(inPosition, 1.0);
 }

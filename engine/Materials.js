@@ -18,7 +18,9 @@ class SimpleMaterial {
 
 	bindColors() {
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		gl.uniform4fv(materialDiffLoc, new Float32Array([this.diffR, this.diffG, this.diffB, this.diffA]));
+		var materialTypeLoc = this.shader.getUniformLocation("mType");
+		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
+		gl.uniform3f(materialTypeLoc, 1.0, 0.0, 0.0);
 	}
 
 }
