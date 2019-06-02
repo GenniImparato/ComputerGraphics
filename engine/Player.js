@@ -7,9 +7,9 @@ const sprintGearRotSpeed	= 3;
 
 class Player extends Object3D
 {
-	constructor(mainMesh, gearMesh, shader)
+	constructor(mainMesh, gearMesh, shader, material)
 	{
-		super(mainMesh, shader);
+		super(mainMesh, shader, material);
 		this.changeBBColor = true;
 		this.boundingBox.setColor([1, 1, 0, 1]);
 		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);

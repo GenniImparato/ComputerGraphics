@@ -43,6 +43,7 @@ class Object3D
 			this.material = material;
 		else 
 			this.material = new SimpleMaterial(0.2,0.2,0.2,1.0, this.shader);
+
 		if(this.mesh != null)
 		{
 			//computes a default bbox centred in the center of the mesh
@@ -147,6 +148,10 @@ class Object3D
 		this.parent = object;
 	}
 
+	setMaterial(material) {
+		this.material = material;
+	}
+
 	///			RECURSIVE HIERARCHY
 	///______________________________
 
@@ -198,6 +203,7 @@ class Object3D
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
 										transormedRot[0], transormedRot[1], transormedRot[2], 
 										this.scaleX, this.scaleY, this.scaleZ);
+			this.material.bindColors();
 				
 			this.mesh.render(this.shader, worldMatrix);
 		}

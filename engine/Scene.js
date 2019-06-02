@@ -48,6 +48,8 @@ var Scene =
 		////__________________________________
 		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0,  shader);
 		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0, shader);
+		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0, shader);
+		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0, shader);
 		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
 		Scene.addObject3D(new Object3D(plantMesh, shader, greenMaterial));
 		Scene.addObject3D(new Object3D(houseMesh, shader, redMaterial));
@@ -98,19 +100,19 @@ var Scene =
 
 
 		//mobile wood boxes
-		var tmpObj = new MobileObject3D(woodBox, shader);
+		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial);
 		tmpObj.setPosition(-25, 50, 50);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, shader);
+		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial);
 		tmpObj.setPosition(-23, 80, 50);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, shader);
+		var tmpObj = new MobileObject3D(woodBox, shader, brownMaterial	);
 		tmpObj.setPosition(-45, 100, 45);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(objects);
@@ -130,6 +132,7 @@ var Scene =
 		//player
 		player  = new Player(unitCubeMesh, gearMesh, shader);
 		player.setPosition(-20, 40, 82);
+		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
 		
 		///			CAMERA
