@@ -47,7 +47,7 @@ var Scene =
 
 		////		CREATE MATERIALS
 		////__________________________________
-		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0);
+		var greenMaterial = new SpecularMaterial(0.0, 0.9, 0.1, 1.0);
 		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0);
 		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0);
 		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0);
@@ -150,7 +150,8 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    light = new DirectionalLight('LA', 0.2, 0.2, 1);
+		// light = new DirectionalLight('LA', -1, 0.1, 1 );
+	    light = new PointLight('LA', -20, 30, 100, 10, 0.4 );
 	    light.setColor(1.0, 1.0, 1.0);
 	    light.moveToCameraSpace(viewMatrix);
 

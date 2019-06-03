@@ -46,8 +46,8 @@ class Light {
 }
 
 class DirectionalLight extends Light {
-	constructor(name, dirx, diry, dirz, shader) {
-	    super(name, 0.0 ,0.0 ,0.0 , shader);
+	constructor(name, dirx, diry, dirz) {
+	    super(name, 0.0 ,0.0 ,0.0);
 
 	    var length = Math.sqrt(dirx * dirx +
 				   diry * diry +
@@ -72,8 +72,8 @@ class DirectionalLight extends Light {
 }
 
 class PointLight extends Light {
-	constructor(name, x, y, z, target, decay, shader) {
-		super(name, x, y, z, shader);
+	constructor(name, x, y, z, target, decay) {
+		super(name, x, y, z);
 		this.targetDistance = target;
 		this.decay = decay;
 		this.dirx = 1.0;
@@ -104,8 +104,8 @@ class PointLight extends Light {
 }
 
 class SpotLight extends Light {
-	constructor(name, x, y, z, dirx, diry, dirz, target, decay,  shader) {
-		super(name, x,y,z, shader);
+	constructor(name, x, y, z, dirx, diry, dirz, target, decay) {
+		super(name, x,y,z);
 	var length = Math.sqrt(dirx * dirx - diry * diry - dirz * dirz);
 		this.dirx = dirx / length;
 		this.diry = diry / length;

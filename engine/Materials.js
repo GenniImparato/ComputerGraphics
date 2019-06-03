@@ -27,12 +27,13 @@ class SimpleMaterial {
 class SpecularMaterial extends SimpleMaterial {
 
 
-	constructor(diffRed, diffGreen, diffBlue, diffAlpha, specRed, specGreen, specBlue, specAlpha) {
+	constructor(diffRed, diffGreen, diffBlue, diffAlpha) {
 		super(diffRed, diffGreen, diffBlue, diffAlpha);
-		this.specR = specRed;
-		this.specG = specGreen;
-		this.specB = specBlue;
-		this.specA = specAlpha;
+		// default white specular
+		this.specR = 1.0;
+		this.specG = 1.0;
+		this.specB = 1.0;
+		this.specA = 1.0;
 		this.gamma = 100;
 	}
 
@@ -41,10 +42,12 @@ class SpecularMaterial extends SimpleMaterial {
 		this.specG = specGreen;
 		this.specB = specBlue;
 		this.specA = specAlpha;
+		return this; //useful for chaining setters
 	}
 
 	setSpecularShine(gamma) {
 		this.gamma = gamma;
+		return this; // useful for chaining setters
 	}
 
 	bindColors() {

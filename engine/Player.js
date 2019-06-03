@@ -17,7 +17,7 @@ class Player extends Object3D
 		this.setScale(2, 2, 2);
 
 		//child Object3D in hierarchy
-		var shiningMaterial = new SpecularMaterial( 0.2, 0.2, 0.2, 1.0, 1.0, 1.0, 1.0, 1.0);
+		var shiningMaterial = new SpecularMaterial( 0.2, 0.2, 0.2, 1.0);
 		shiningMaterial.setSpecularShine(10);
 		this.gear = new Object3D(gearMesh, shiningMaterial);
 		this.gear.setParent(this);
