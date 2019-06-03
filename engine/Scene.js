@@ -196,7 +196,7 @@ var Scene =
 		camera.setAngle(player.rotx);
 		camera.setLookPoint(player.x, player.y, player.z);
 		camera.look();
-		light.setLightPosition(player.x, player.y, player.z);
+		light.setLightPosition(player.x, player.y+10, player.z);
  	    light.moveToCameraSpace(viewMatrix);
 
 		//toggle showing of bounding boxes
