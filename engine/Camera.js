@@ -59,8 +59,6 @@ class LookAtCamera
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
 	        
-	    var cameraLoc = globalShader.getUniformLocation("cameraPos");
-	    gl.uniform3f(cameraLoc, this.x, this.y, this.z);
 
 
 

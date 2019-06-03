@@ -22,7 +22,6 @@ var Scene =
 
 	loadGlobalAssets()
 	{
-		globalShader = new Shader("vs_2.glsl", "fs_2.glsl");
 
 		unitCubeMesh = Mesh.loadFromOBJFile("u_cube.obj");
 	},
@@ -45,10 +44,11 @@ var Scene =
 
 		////		CREATE MATERIALS
 		////__________________________________
-		var greenMaterial = new SpecularMaterial(0.0, 0.9, 0.1, 1.0);
-		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0);
-		var brownMaterial = new SimpleMaterial(	0.9, 0.7, 0.5, 1.0);
-		var yellowMaterial = new SimpleMaterial( 1.0, 1.0 , 0.0, 1.0);
+		var greenSpecMaterial = new SpecularMaterial(0.0, 255, 10, 255);
+	        var greenMaterial = new DiffuseMaterial(0.0, 255, 10, 255);
+		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
+		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
+		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
 
 
 		////		CREATE OBJECTS 3D
@@ -151,9 +151,9 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-		light = new DirectionalLight('LA', -1, 0.1, 1 );
-	    //light = new PointLight('LA', -20, 30, 100, 10, 0.4 );
-	    light.setColor(1.0, 1.0, 1.0);
+	    light = new DirectionalLight('LA', -1, 1, 1 );
+	    // light = new PointLight('LA', 0, 30, 80, 10, 0.4 );
+	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 
 	},
@@ -181,9 +181,7 @@ var Scene =
 		camera.setAngle(player.rotx);
 		camera.setLookPoint(player.x, player.y, player.z);
 		camera.look();
-
-	    light.moveToCameraSpace(viewMatrix);
-	    light.bind();
+ 	    light.moveToCameraSpace(viewMatrix);
 
 		//toggle showing of bounding boxes
 		if(Input.isKeyClicked(Input.B_KEY))

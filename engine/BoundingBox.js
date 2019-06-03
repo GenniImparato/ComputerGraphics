@@ -40,9 +40,9 @@ class BoundingBox
 		this.posCZ 		= 0.0;
 
 		//colors
-		this.collidedColor = [1, 0, 0, 1];			//red
-		this.nonCollidedColor = [0, 0, 1, 1];		//blue
-		this.material = new SimpleMaterial(0, 1, 0, 1);
+		this.collidedColor = [255, 0, 0, 255];			//red
+		this.nonCollidedColor = [0, 0, 255, 255];		//blue
+		this.material = new DiffuseMaterial(0, 255, 0, 255);
 
 	}
 
@@ -102,9 +102,9 @@ class BoundingBox
 											0, 0, 0, 
 											this.dx, this.dy, this.dz);
 
-		this.material.bindColors();
+		this.material.bindShader();
 		
-		unitCubeMesh.render(bBoxMatrix);
+	    unitCubeMesh.render(bBoxMatrix, this.material.shader);
 	}
 
 	checkCollision(bBox)

@@ -11,14 +11,14 @@ class Player extends Object3D
 	{
 		super(mainMesh, material);
 		this.changeBBColor = true;
-		this.boundingBox.setColor([1, 1, 0, 1]);
+		this.boundingBox.setColor([255, 255, 0, 255]);
 		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
 		this.enableGravity(true);
 		this.enablePhysics(true);
 		this.setScale(2, 2, 2);
 
 		//child Object3D in hierarchy
-		var shiningMaterial = new SpecularMaterial( 0.2, 0.2, 0.2, 1.0);
+		var shiningMaterial = new SpecularMaterial( 20, 20, 20, 255);
 		shiningMaterial.setSpecularShine(10);
 		this.gear = new Object3D(gearMesh, shiningMaterial);
 		this.gear.setParent(this);
