@@ -15,7 +15,7 @@ class SimpleMaterial {
 		this.diffB = diffBlue / 255.0;
 	    this.diffA = diffAlpha / 255.0;
 	    if( !simpleShader) {
-		simpleShader = new Shader("vs_2.glsl", "fs_lambert.glsl")	
+		simpleShader = new Shader("vs_3.glsl", "fs_simple.glsl")	
 	    }
 	    this.shader = simpleShader;
 	    
@@ -32,10 +32,8 @@ class SimpleMaterial {
 
 	    this.shader.use();
 	    light.bind(this.shader);
-		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		var materialTypeLoc = this.shader.getUniformLocation("mType");
+		var materialDiffLoc = this.shader.getUniformLocation("mColor");
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
-		gl.uniform3f(materialTypeLoc, 1.0, 0.0, 0.0);
 	}
 
 }
@@ -51,7 +49,7 @@ class DiffuseMaterial extends SimpleMaterial {
 		this.gamma = 100;
 	    if(!lambertShader)
 	    {
-		lambertShader = new Shader("vs_2.glsl", "fs_lambert.glsl");
+		lambertShader = new Shader("vs_3.glsl", "fs_lambert.glsl");
 	    }
 	    this.shader  = lambertShader;
 	}
@@ -78,7 +76,7 @@ class SpecularMaterial extends SimpleMaterial {
 		this.gamma = 100;
 	    if(!phongShader)
 	    {
-		phongShader = new Shader("vs_2.glsl", "fs_phong.glsl");
+		phongShader = new Shader("vs_3.glsl", "fs_phong.glsl");
 	    }
 	    this.shader = phongShader;
 	}
@@ -124,7 +122,7 @@ class ToonMaterial extends SimpleMaterial {
 	this.specTh = specThreshold;
 	    if(!toonShader)
 	    {
-		toonShader = new Shader("vs_2.glsl", "fs_toon.glsl");
+		toonShader = new Shader("vs_3.glsl", "fs_toon.glsl");
 	    }
 	    this.shader  = toonShader;
 	}
@@ -144,41 +142,3 @@ class ToonMaterial extends SimpleMaterial {
     
 }
 
-class TextureMaterial extends SimpleMaterial {
-
-	constructor(txFile) {
-	    super(255, 255, 255, 255);
-		// default white specular
-		this.specR = 1.0;
-		this.specG = 1.0;
-		this.specB = 1.0;
-		this.specA = 1.0;
-		this.gamma = 100;
-
-		this.textureLocation = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, textureLocation);
-		this.image = new Image();
-		this.image.src = txFile;
-		this.image.addEventListener('load', function(){
-				gl.generateMipmap(gl.TEXTURE_2D);
-		});
-	    if(!textureShader)
-	    {
-		textureShader = new Shader("vs_2.glsl", "fs_tex.glsl");
-	    }
-	    this.shader  = textureShader;
-	}
-
-
-    bindShader() {	
-	    this.shader.use();
-	    light.bind(this.shader);
-		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
-		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
-		var specularShineLoc = this.shader.getUniformLocation("mSpecShine");
-		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
-		gl.uniform4f(materialSpecularLoc, this.specR, this.specG, this.specB, this.specA);
-		gl.uniform1f(specularShineLoc, this.gamma);
-    }
-    
-}

@@ -55,14 +55,14 @@ var Scene =
 		////__________________________________
 
 		//small plant
-		var tmpObj = new Object3D(plantMesh, greenMaterial);
+		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, 5);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
 		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//big plant
-		var tmpObj = new Object3D(plantMesh, greenMaterial);
+		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, -5);
 		tmpObj.setScale(2, 2, 2);
 		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
@@ -166,7 +166,8 @@ var Scene =
 
 		//creates first light 
 	    // light = new DirectionalLight('LA', -1, 1, 1 );
-	    light = new PointLight('LA', 0, 0, 170, 10, 0.4 );
+
+	    light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 
