@@ -13,6 +13,7 @@ class Shader
       							locProgram = gl.createProgram();
 
 								vertexShader = gl.createShader(gl.VERTEX_SHADER);
+							        console.log("Vertex shader source for "+ vsFile + ":\n" + shaderText[0] );
 								gl.shaderSource(vertexShader, shaderText[0]);
 								gl.compileShader(vertexShader);
 								if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) 
@@ -22,6 +23,7 @@ class Shader
 
 								var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
 								gl.shaderSource(fragmentShader, shaderText[1])
+							        console.log("Fragment shader source for "+ fsFile + ":\n" + shaderText[1] );
 								gl.compileShader(fragmentShader);		
 								if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) 
 								{

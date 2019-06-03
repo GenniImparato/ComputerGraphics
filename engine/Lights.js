@@ -44,9 +44,7 @@ class Light {
 	var lightDirMatrix = utils.invertMatrix(utils.transposeMatrix(viewMatrix));
 	var lightPosMatrix = utils.invertMatrix(viewMatrix); 
 	this.movedPosition = utils.multiplyMatrixVector(lightPosMatrix, [this.x, this.y, this.z, 1.0]);
-	console.log("Moved light " + this.name + " position to " + this.movedPosition );
 	this.movedDir = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), [this.dirx, this.diry, this.dirz]);
-	console.log("Rotated light " + this.name + "direction to " + this.movedDir);
 	}
 
 }
