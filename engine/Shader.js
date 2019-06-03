@@ -54,7 +54,8 @@ class Shader
 		this.uvsLoc = gl.getAttribLocation(this.program, "inUV");
 		gl.enableVertexAttribArray(this.uvsLoc);
 
-		this.matrixLoc = gl.getUniformLocation(this.program, "matrix");
+		this.matrixLoc = gl.getUniformLocation(this.program, "worldProjectionMatrix");
+	    this.wvMatrixLoc = gl.getUniformLocation(this.program, "worldViewMatrix");
 		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
 		this.colorLoc = gl.getUniformLocation(this.program, "color");
 
@@ -73,6 +74,7 @@ class Shader
 	getNormalsLocation()		{ return this.normalsLoc; }
 	getUVsLocation()			{ return this.uvsLoc; }
 	getMatrixLocation()			{ return this.matrixLoc; }
+	getWorldViewMatrixLocation()			{ return this.wvMatrixLoc; }
 	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
 
 	getColorLocation()			{ return this.colorLoc; }
