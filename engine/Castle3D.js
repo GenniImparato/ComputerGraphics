@@ -1,6 +1,6 @@
 class Castle3D extends GroupObject3D
 {
-	constructor(towerMesh, wallMesh, scaleX, scaleY, scaleZ)
+	constructor(towerMesh, towerMaterial, wallMesh, wallMaterial, scaleX, scaleY, scaleZ)
 	{	
 		super();
 		
@@ -13,7 +13,10 @@ class Castle3D extends GroupObject3D
 		this.scaleZ = scaleZ;
 
 		this.towerMesh = towerMesh;
+		this.towerMaterial = towerMaterial;
 		this.wallMesh = wallMesh;
+		this.wallMaterial = wallMaterial;
+
 	}
 
 	//creates count walls int the given direction
@@ -43,7 +46,7 @@ class Castle3D extends GroupObject3D
 
 		for(var i=0; i<count; i++)
 		{
-			var tmp = new Object3D(this.wallMesh);
+			var tmp = new Object3D(this.wallMesh, this.wallMaterial);
 			tmp.setScale(this.scaleX, this.scaleY, this.scaleZ);
 			tmp.setPosition(this.currX, this.currY, this.currZ);
 			this.addObject3D(tmp);
@@ -88,7 +91,7 @@ class Castle3D extends GroupObject3D
 
 	insertTower()
 	{
-		var tmp = new Object3D(this.towerMesh);
+		var tmp = new Object3D(this.towerMesh, this.towerMaterial);
 		tmp.setScale(this.scaleX, this.scaleY, this.scaleZ);
 		tmp.setPosition(this.currX, this.currY, this.currZ);
 		this.addObject3D(tmp);

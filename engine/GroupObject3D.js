@@ -4,7 +4,7 @@ class GroupObject3D extends Object3D
 {
 	constructor()
 	{
-		super(unitCubeMesh);
+		super(null);
 
 		this.objects = [];
 		this.objectsCount = 0;
@@ -16,6 +16,7 @@ class GroupObject3D extends Object3D
 		this.objects[this.objectsCount].setParent(this);
 		this.objectsCount++;
 	}
+
 	
 	//override
 	addToScene()

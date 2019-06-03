@@ -207,7 +207,8 @@ class Object3D
 										this.scaleX, this.scaleY, this.scaleZ);
 			this.material.bindColors();
 				
-			this.mesh.render(worldMatrix);
+			if(this.mesh != null)
+				this.mesh.render(worldMatrix);
 		}
 	}
 
