@@ -4,10 +4,7 @@ var light;
 var objects = [];
 var objectsCount = 0;
 
-
 var player;
-var bot;
-
 
 var Scene = 
 {
@@ -49,8 +46,8 @@ var Scene =
 		////__________________________________
 		var greenMaterial = new SimpleMaterial(0.0, 0.9, 0.1, 1.0);
 		var redMaterial = new SimpleMaterial(1.0, 0.2, 0.2, 1.0);
-		var brownMaterial = new SimpleMaterial(	0.5, 0.3, 0.31, 1.0);
-		var yellowMaterial = new SimpleMaterial( 0.2, 0.8, 0.9, 1.0);
+		var brownMaterial = new SimpleMaterial(	0.9, 0.7, 0.5, 1.0);
+		var yellowMaterial = new SimpleMaterial( 1.0, 1.0 , 0.0, 1.0);
 
 
 		////		CREATE OBJECTS 3D
@@ -83,21 +80,13 @@ var Scene =
 		tmpObj.setPosition(0, 5, -10);
 		tmpObj.addToScene();
 
-		//floor
-		var tmpObj = new Box3D(500, 1, 500);
-		tmpObj.setPosition(0, -0.5, 0);
+		//floors
+		var tmpObj = new Box3D(200, 10, 175, greenMaterial);
+		tmpObj.setPosition(0, -5, 0);
 		tmpObj.addToScene();
 
-		//trigger
-		var tmpObj = new TriggerBox3D(20, 20, 20);
-		tmpObj.setPosition(-20, 12, 20);
-		tmpObj.addToScene();
-
-
-		var tmpObj = new Box3D(7, 5, 3);
-		tmpObj.setPosition(15, 60, -10);
-		tmpObj.enableGravity(true);
-		tmpObj.enableCollisionWith(objects);
+		var tmpObj = new Box3D(100, 10, 200, greenMaterial);
+		tmpObj.setPosition(0, -5, 250);
 		tmpObj.addToScene();
 
 
@@ -121,7 +110,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleTowerMesh, castleWallMesh, 12, 12, 12);
+		var tmpObj = new Castle3D(castleTowerMesh, yellowMaterial, castleWallMesh, yellowMaterial, 12, 12, 12);
 		tmpObj.setPosition(-10, 0, 10);
 		tmpObj.insertWalls(5, "U");
 		tmpObj.insertWalls(2, "L");
@@ -131,11 +120,18 @@ var Scene =
 		tmpObj.insertWalls(4, "R");
 		tmpObj.addToScene();
 
+		//Bridge
+		var tmpObj = new AutomaticBridge3D(redMaterial);
+		tmpObj.setPosition(0, 0, 140);
+		tmpObj.setRotation(180, 0, 0);
+		tmpObj.addToScene();
+
 		//player
 		player  = new Player(unitCubeMesh, gearMesh);
-		player.setPosition(-20, 40, 82);
+		player.setPosition(-20, 40, 170);
 		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
+
 		
 		///			CAMERA
 		///_______________________
