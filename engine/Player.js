@@ -14,6 +14,7 @@ class Player extends Object3D
 		this.boundingBox.setColor([1, 1, 0, 1]);
 		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
 		this.enableGravity(true);
+		this.enablePhysics(true);
 		this.setScale(2, 2, 2);
 
 		//child Object3D in hierarchy

@@ -30,6 +30,7 @@ class Object3D
 
 		//boolean flags
 		this.enGravity			= false;
+		this.enPhysics			= false;
 		this.visible			= true;
 		this.changeBBColor		= false; //must be only active on one objects
 
@@ -129,6 +130,11 @@ class Object3D
 	setSpeed(x, y, z)
 	{
 		this.speedX = x;	this.speedY = y;	this.speedZ = z;
+	}
+
+	enablePhysics(boolean)
+	{
+		this.enPhysics = boolean;
 	}
 
 	enableGravity(boolean)
@@ -294,40 +300,44 @@ class Object3D
 	}
 
 	//to override
-	update()	
+	preUpdate()	
 	{
 	}
 
 	//update physics
-	updatePhysics()
+	update()
 	{
-		this.update();
+		this.preUpdate();
 		
 		//gravity
 		if(this.enGravity)
 		{
 			this.speedY += gravityAccelY;
 		}
-		
-		//collisions
-		if(this.collisionX)
-			this.speedX = 0;
-		if(this.collisionY)
+
+		if(this.enPhysics)
 		{
-			this.speedY = 0;
-			this.y += this.penetrationY;
-		}
-		if(this.collisionZ)
-			this.speedZ = 0;
+			//collisions
+			if(this.collisionX)
+				this.speedX = 0;
+			if(this.collisionY)
+			{
+				this.speedY = 0;
+				this.y += this.penetrationY;
+			}
 
-		this.collisionX = false;
-		this.collisionY = false;
-		this.collisionZ = false;
+			if(this.collisionZ)
+				this.speedZ = 0;
 
-		//update position
-		this.x += this.speedX;
-		this.y += this.speedY;
-		this.z += this.speedZ;
+			this.collisionX = false;
+			this.collisionY = false;
+			this.collisionZ = false;
+
+			//update position
+			this.x += this.speedX;
+			this.y += this.speedY;
+			this.z += this.speedZ;
+		}		
 
 		this.boundingBox.update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ);

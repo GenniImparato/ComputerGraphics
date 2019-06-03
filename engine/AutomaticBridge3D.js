@@ -2,26 +2,22 @@ var block;
 
 class AutomaticBridge3D extends GroupObject3D
 {
-	constructor(blokcsCount, length, material)
+	constructor(mesh, material)
 	{ 
 		super();
 
-		for(var i=0; i<3; i++)
-		{
-			block = new Box3D(12, 18, 15, material);
-			block.setPosition(0, -10, i*20);
-			this.addObject3D(block);
-		}
+		//main object
+		this.addObject3D(new Object3D(mesh, material));
 
-		var trigger1 = new TriggerBox3D(20, 10, 20);
-		trigger1.setPosition(0, 0, -20);
-		this.addObject3D(trigger1);
+		//trigger
+		this.trigger = new TriggerBox3D(this.boundingBox.dx+30, this.boundingBox.dy+30, this.boundingBox.dz+30);
+		this.addObject3D(this.trigger);
 
-		trigger1.onTrigger = this.activate;
+		this.trigger.onTrigger = this.activate;
 	}
 
 	activate()
 	{
-		block.enableGravity(true);
+		
 	}
 }
