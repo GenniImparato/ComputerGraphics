@@ -1,6 +1,6 @@
 class KeyFrame
 {
-	constructor(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, time)
+	constructor(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ)
 	{
 		this.x = x;
 		this.y = y;
@@ -11,24 +11,16 @@ class KeyFrame
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
 		this.scaleZ = scaleZ;
-
-		this.time = time;
 	}
 
 	//interpolates this with the next frame
 	//interpolatePosition range: [0.0, 1.0];
 	interpolate(nextframe, interpolatePosition)
 	{
-		var interpolated;
-		interpolated.x = this.x + (nextframe.x - this.x)*interpolatePosition;
-		interpolated.y = this.y + (nextframe.y - this.y)*interpolatePosition;
-		interpolated.z = this.z + (nextframe.z- this.z)*interpolatePosition;
-		/*interpolated.rotX = this.this.x + (nextframe.x - this.x)*interpolatePosition;
-		interpolated.rotY = this.this.x + (nextframe.x - this.x)*interpolatePosition;
-		interpolated.rotZ = this.this.x + (nextframe.x - this.x)*interpolatePosition;
-		interpolated.scaleX = this.scaleX - nextframe.scaleX;
-		interpolated.scaleY = this.scaleY - nextframe.scaleY;
-		interpolated.scaleZ = this.scaleZ - nextframe.scaleZ;*/
+		return new KeyFrame(this.x + (nextframe.x - this.x)*interpolatePosition,
+							this.y + (nextframe.y - this.y)*interpolatePosition,
+							this.z + (nextframe.z- this.z)*interpolatePosition, 0, 0, 0, 0, 0, 0);
+
 	}
 }
 
@@ -40,23 +32,64 @@ class LinearAnimator
 		this.kfCount = 0;
 
 		this.currTime = 0.0;
+		this.currFrame = 0;
+
+		this.playing = false;
+		this.reverse = false;
 
 		this.object = object;
 	}
 
-	addKeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, duration)
+	addKeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ)
 	{
-		this.keyFrames[this.kfCount] = new KeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ, duration);
+		this.keyFrames[this.kfCount] = new KeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ);
 		this.kfCount++;
 	}
 
 	playAnimation()
 	{
-		this.currTime++;
-
-		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/1000);
-		this.object.setPosition(interpolatedFrame.x, interpolatedFrame.y interpolatedFrame.z);
+		this.playing = true;
+		this.reverse = false;
 	}
 
+	playReverseAnimation()
+	{
+		this.playing = true;
+		this.reverse = true;
+	}
 
+	stopAnimation()
+	{
+		this.playing = false;
+	}
+
+	update()
+	{
+		if(this.playing)
+		{
+			if(this.reverse)
+				this.currTime--;
+			else
+				this.currTime++;
+
+			if(this.reverse && (this.currTime <= this.currFrame*30))
+			{
+				if(this.currFrame == 0)
+					this.stopAnimation();
+				else
+					this.currFrame--;
+			}
+			if(this.currTime >= this.currFrame*30)
+			{
+				if(this.currFrame == this.kfCount-1)
+					this.stopAnimation();
+				else
+					this.currFrame++;
+			}
+
+		}
+
+		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/30);
+		this.object.setPosition(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
+	}
 }

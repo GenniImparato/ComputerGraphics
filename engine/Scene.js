@@ -45,7 +45,7 @@ var Scene =
 		////		CREATE MATERIALS
 		////__________________________________
 		var greenSpecMaterial = new SpecularMaterial(0.0, 255, 10, 255);
-	        var greenMaterial = new DiffuseMaterial(0.0, 255, 10, 255);
+	    var greenMaterial = new DiffuseMaterial(0.0, 255, 10, 255);
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
@@ -82,7 +82,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//floors
-		var tmpObj = new Box3D(200, 10, 175, greenMaterial);
+		var tmpObj = new Box3D(200, 10, 190, greenMaterial);
 		tmpObj.setPosition(0, -5, 0);
 		tmpObj.addToScene();
 
@@ -125,9 +125,23 @@ var Scene =
 		tmpObj.addToScene();
 
 		//bridge
-		var tmpObj = new AutomaticBridge3D(rock0Mesh, brownMaterial);
+		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
 		tmpObj.setPosition(0, -6, 140);
-		tmpObj.setRotation(180, 0, 0);
+		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(10, -5, 130);
+		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(4, -6, 120);
+		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(5, -5, 110);
 		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
@@ -152,7 +166,7 @@ var Scene =
 
 		//creates first light 
 	    // light = new DirectionalLight('LA', -1, 1, 1 );
-	    light = new PointLight('LA', 0, 30, 80, 10, 0.4 );
+	    light = new PointLight('LA', 0, 0, 170, 10, 0.4 );
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 
@@ -181,6 +195,7 @@ var Scene =
 		camera.setAngle(player.rotx);
 		camera.setLookPoint(player.x, player.y, player.z);
 		camera.look();
+		light.setLightPosition(player.x, player.y, player.z);
  	    light.moveToCameraSpace(viewMatrix);
 
 		//toggle showing of bounding boxes

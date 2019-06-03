@@ -12,14 +12,16 @@ class Box3D extends Object3D
 class TriggerBox3D extends Box3D
 {
 	//creates an invisible box objects that uses collisions to trigger actions
-	constructor(dimX, dimY, dimZ, material)
+	constructor(dimX, dimY, dimZ, instance)
 	{
-		super(dimX, dimY, dimZ, material);
-		this.boundingBox.nonCollidedColor = [0, 1, 0, 1];
+		super(dimX, dimY, dimZ);
+		this.boundingBox.nonCollidedColor = [0, 255, 0, 255];
 		this.setVisible(false);
 
 		this.triggered = false;
 		this.colliding = false;
+
+		this.instance = instance;
 	}
 
 	preUpdate()
@@ -27,7 +29,7 @@ class TriggerBox3D extends Box3D
 		if(!this.colliding && this.triggered)
 		{
 			this.triggered = false;
-			this.onUntrigger();
+			this.onUntrigger(this.instance);
 		}
 
 		this.colliding = false;
@@ -42,22 +44,22 @@ class TriggerBox3D extends Box3D
 		if(!this.triggered)
 		{
 			this.triggered = true;
-			this.onTrigger();
+			this.onTrigger(this.instance);
 		}
 		
-		this.onCollide();
+		this.onCollide(this.instance);
 	}
 
-	onTrigger()
+	onTrigger(instance)
 	{
 		console.log("triggered");
 	}
 
-	onUntrigger()
+	onUntrigger(instance)
 	{
 		console.log("un-triggered");
 	}
 
-	onCollide()
+	onCollide(instance)
 	{}
 }
