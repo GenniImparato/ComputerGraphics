@@ -30,9 +30,13 @@ class Shader
 
 								gl.attachShader(locProgram, vertexShader);
 								gl.attachShader(locProgram, fragmentShader);
-								gl.linkProgram(locProgram);				
-		
-								gl.useProgram(locProgram);
+							    gl.linkProgram(locProgram);
+							    
+							    if ( !gl.getProgramParameter( locProgram, gl.LINK_STATUS) ) {
+								var info = gl.getProgramInfoLog(locProgram);
+								alert("ERROR LINKING GL PROGRAM : " + info);
+								throw new Error('Could not compile WebGL program. \n\n' + info);
+							    }
 
       						});
 

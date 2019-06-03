@@ -40,7 +40,7 @@ class Object3D
 		if(material) 
 			this.material = material;
 		else 
-			this.material = new SimpleMaterial(0.2,0.2,0.2,1.0);
+			this.material = new SimpleMaterial(20,20,20,255);
 
 		if(this.mesh != null)
 		{
@@ -205,10 +205,10 @@ class Object3D
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
 										transormedRot[0], transormedRot[1], transormedRot[2], 
 										this.scaleX, this.scaleY, this.scaleZ);
-			this.material.bindColors();
 				
+	            this.material.bindShader();
 			if(this.mesh != null)
-				this.mesh.render(worldMatrix);
+			    this.mesh.render(worldMatrix, this.material.shader);
 		}
 	}
 

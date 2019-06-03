@@ -29,28 +29,28 @@ class Mesh
 	}
 
 	//draws the mesh
-	render(worldMatrix)
+    render(worldMatrix, shader)
 	{
-		globalShader.use();
+		shader.use();
 
 		var matrix =  utils.multiplyMatrices(projectionMatrix, worldMatrix); // world matrix
-		gl.uniformMatrix4fv(globalShader.getMatrixLocation(), gl.FALSE, utils.transposeMatrix(matrix));
+		gl.uniformMatrix4fv(shader.getMatrixLocation(), gl.FALSE, utils.transposeMatrix(matrix));
 
 	    var WVMatrix = utils.multiplyMatrices(viewMatrix, worldMatrix); // world view matrix 
 	    var nMatrix = utils.invertMatrix(utils.transposeMatrix(WVMatrix));
-		gl.uniformMatrix4fv(globalShader.getNormalMatrixLocation(), gl.FALSE, utils.transposeMatrix(nMatrix));
+		gl.uniformMatrix4fv(shader.getNormalMatrixLocation(), gl.FALSE, utils.transposeMatrix(nMatrix));
 
 		//positions
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
-		gl.vertexAttribPointer(globalShader.getPositionsLocation(), this.positionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(shader.getPositionsLocation(), this.positionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 		//normals
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
-		gl.vertexAttribPointer(globalShader.getNormalsLocation(), this.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(shader.getNormalsLocation(), this.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 		//uv
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.textCoordBuffer);
-		gl.vertexAttribPointer(globalShader.getUVsLocation(), this.textCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(shader.getUVsLocation(), this.textCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	    
 
