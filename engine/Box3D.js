@@ -22,7 +22,7 @@ class TriggerBox3D extends Box3D
 		this.colliding = false;
 	}
 
-	update()
+	preUpdate()
 	{
 		if(!this.colliding && this.triggered)
 		{

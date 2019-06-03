@@ -58,7 +58,7 @@ class MobileObject3D extends Object3D
 		}
 	}
 
-	update()
+	preUpdate()
 	{
 		if(this.movingX != 0)
 			this.setSpeed(this.movingX*0.05, this.speedY, 0);

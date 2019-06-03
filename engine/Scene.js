@@ -39,6 +39,7 @@ var Scene =
 		var castleTowerMesh	= Mesh.loadFromOBJFile("castle_tower.obj");
 		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
 		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
+		var rock0Mesh		= Mesh.loadFromOBJFile("rock0.obj");
 
 
 		////		CREATE MATERIALS
@@ -94,18 +95,21 @@ var Scene =
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-25, 50, 50);
 		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-23, 80, 50);
 		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
 		tmpObj.setPosition(-45, 100, 45);
 		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
@@ -120,15 +124,16 @@ var Scene =
 		tmpObj.insertWalls(4, "R");
 		tmpObj.addToScene();
 
-		//Bridge
-		var tmpObj = new AutomaticBridge3D(redMaterial);
-		tmpObj.setPosition(0, 0, 140);
+		//bridge
+		var tmpObj = new AutomaticBridge3D(rock0Mesh, brownMaterial);
+		tmpObj.setPosition(0, -6, 140);
 		tmpObj.setRotation(180, 0, 0);
+		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
 		//player
 		player  = new Player(unitCubeMesh, gearMesh);
-		player.setPosition(-20, 40, 170);
+		player.setPosition(0, 40, 170);
 		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
 
@@ -165,11 +170,11 @@ var Scene =
 
 		//physics and collisions
 		player.solveCollisions();		//only solve collisions with enabled objects
-		player.updatePhysics();
+		player.update();
 		for(var i=0; i<objectsCount; i++)
 		{
 			objects[i].solveCollisions();		//only solve collisions with enabled objects
-			objects[i].updatePhysics();
+			objects[i].update();
 		}
 
 		//set camera to follow player

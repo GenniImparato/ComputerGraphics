@@ -17,6 +17,6 @@ var unitCubeMesh;			//loaded in Scene.init()
 var globalShader;		//loaded in Scene.init()
 
 //flag to show/hide bounding boxes of every object in the scene
-var showBoundingBoxes = true;
+var showBoundingBoxes = false;
 
 var gravityAccelY = -0.02;
