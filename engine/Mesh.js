@@ -48,6 +48,10 @@ class Mesh
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.normalBuffer);
 		gl.vertexAttribPointer(globalShader.getNormalsLocation(), this.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+		//uv
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.textCoordBuffer);
+		gl.vertexAttribPointer(globalShader.getUVsLocation(), this.textCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
 	    
 
 		//rendering

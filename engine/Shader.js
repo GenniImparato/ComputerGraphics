@@ -45,6 +45,9 @@ class Shader
 		this.normalsLoc = gl.getAttribLocation(this.program, "inNormal");
 		gl.enableVertexAttribArray(this.normalsLoc);
 
+		this.uvsLoc = gl.getAttribLocation(this.program, "inUV");
+		gl.enableVertexAttribArray(this.uvsLoc);
+
 		this.matrixLoc = gl.getUniformLocation(this.program, "matrix");
 		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
 		this.colorLoc = gl.getUniformLocation(this.program, "color");
@@ -62,6 +65,7 @@ class Shader
 	//getters for attributes locations
 	getPositionsLocation()		{ return this.positionLoc; }
 	getNormalsLocation()		{ return this.normalsLoc; }
+	getUVsLocation()			{ return this.uvsLoc; }
 	getMatrixLocation()			{ return this.matrixLoc; }
 	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
 
