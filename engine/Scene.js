@@ -146,8 +146,8 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    light = new DirectionalLight('LA', -1, 1, 1 );
-	    // light = new PointLight('LA', 0, 30, 80, 10, 0.4 );
+	    // light = new DirectionalLight('LA', -1, 1, 1 );
+	    light = new PointLight('LA', 0, 30, 80, 10, 0.4 );
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 

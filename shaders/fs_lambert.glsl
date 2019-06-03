@@ -10,8 +10,6 @@ uniform vec3 LAPos;
 uniform vec3 LAColor;	
 uniform float LADecay;
 uniform float LATarget;
-uniform mat4 LADirMatrix;
-uniform mat4 LAPosMatrix;
 uniform vec3 cameraPos;
 uniform vec3 LAType; // x is for directional, y for point and z for spot
 
@@ -35,9 +33,8 @@ void main()
  	vec3 normalVec = normalize(fsNormal);
 
  	// move light to camera space
-	vec3 lightDir = normalize(mat3(LADirMatrix) * LADir);
-	vec4 lightPos4 = LAPosMatrix * vec4(LAPos, 1.0);
-	vec3 lightPos = lightPos4.xyz;
+	vec3 lightDir = normalize(LADir);
+	vec3 lightPos = LAPos;
 
 	// point light direction
 	float pointDistance = length(lightPos - fs_pos);

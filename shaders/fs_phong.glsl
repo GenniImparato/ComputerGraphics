@@ -10,8 +10,6 @@ uniform vec3 LAPos;
 uniform vec3 LAColor;	
 uniform float LADecay;
 uniform float LATarget;
-uniform mat4 LADirMatrix;
-uniform mat4 LAPosMatrix;
 uniform vec3 cameraPos;
 uniform vec3 LAType; // x is for directional, y for point and z for spot
 
@@ -34,6 +32,7 @@ vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diff
 
 vec4 applyPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec4 specularColor, float specularShine) {
 	vec3 reflection = -reflect(lightDir, normalVec);
+
 	vec4 phongSpecular = vec4(lightCol, 1.0) * pow(clamp(dot(reflection, eyedirVec), 0.0, 1.0), specularShine ) * specularColor;
 	return          phongSpecular;
 }
@@ -42,30 +41,29 @@ void main()
 {
  	vec3 normalVec = normalize(fsNormal);
 
- 	// move light to camera space
-	vec3 lightDir = normalize(mat3(LADirMatrix) * LADir);
-	vec4 lightPos4 = LAPosMatrix * vec4(LAPos, 1.0);
-	vec3 lightPos = lightPos4.xyz;
+	vec3 dirLightDir = normalize(LADir);
+	vec3 dirLightPos = LAPos;
 
 	// point light direction
-	float pointDistance = length(lightPos - fs_pos);
-	vec3 pointLightDir = normalize(lightPos - fs_pos);
+	float pointDistance = length(LAPos - fs_pos);
+	vec3 pointLightDir = normalize(LAPos - fs_pos);
 	vec3 pointLightColor = clamp(LAColor * pow(LATarget/pointDistance, LADecay), 0.0, 1.0);
 
-	vec3 eyeDirVec = normalize(	- fs_pos);
+	vec3 spotLightDir = normalize(LAPos - fs_pos);
+	vec3 eyeDirVec = -normalize(fs_pos);
 	
 	
 	// compute different diffuse components
 	// directionalLight
-	vec3 dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LAColor, normalVec, mDiffColor.rgb);
-	vec4 dirSpecularPhong = applyPhongSpecular(lightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
+	vec3 dirLambertDiffuseColor = applyLambertDiffuse(dirLightDir, LAColor, normalVec, mDiffColor.rgb);
+	vec4 dirSpecularPhong = applyPhongSpecular(dirLightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	// pointLight 
-	vec3 pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
+	vec3 pointLambertDiffuseColor = applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
 	vec4 pointSpecularPhong = applyPhongSpecular(pointLightDir, pointLightColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 	// spotLight
-	vec3 spotLambertDiffuseColor = vec3(1.0, 1.0, 1.0);
-	vec4 spotSpecularPhong = applyPhongSpecular(lightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
+	vec3 spotLambertDiffuseColor = vec3(0.0, 0.0, 1.0);
+	vec4 spotSpecularPhong = applyPhongSpecular(spotLightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	
 	// select correct diffuse component
