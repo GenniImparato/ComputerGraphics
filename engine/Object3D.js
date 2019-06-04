@@ -4,6 +4,7 @@ class Object3D
 	{
 		//reference to a loaded mesh
 		this.mesh = mesh;
+		
 
 		//hierarchy
 		this.parent = null;
@@ -87,6 +88,7 @@ class Object3D
 		//bounding boxes specified, creates bounding boxes from bBoxPositions
 		else if(this.mesh != null)
 		{
+
 			var bBoxesCount = this.mesh.bBoxesPositions.length/(24*3);
 			var indicesCount = this.mesh.bBoxesPositions/bBoxesCount;
 
