@@ -22,7 +22,6 @@ var Scene =
 
 	loadGlobalAssets()
 	{
-
 		unitCubeMesh = Mesh.loadFromOBJFile("u_cube.obj");
 	},
 
@@ -42,6 +41,8 @@ var Scene =
 		var rock0Mesh		= Mesh.loadFromOBJFile("rock0.obj");
 		var house0Mesh 		= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
 		var house0MeshNB	= Mesh.loadFromOBJFile("house0.obj");
+		var tree0TrunkMesh	= Mesh.loadFromOBJFile("tree0_trunk.obj");
+		var tree0LeafsMesh 	= Mesh.loadFromOBJFile("tree0_leafs.obj");
 
 		var unitCubeTexMesh = Mesh.loadFromOBJFile("u_cube_tex.obj");
 
@@ -161,8 +162,36 @@ var Scene =
 		var tmpObj = new Object3D(house0MeshNB, redMaterial);
 		tmpObj.setPosition(40, 0, 300);
 		tmpObj.setScale(0.5, 0.5, 0.5);
-		tmpObj.setRotation(0, 0, 0);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		//trees
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(40, 0, 240);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-10, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(5, 0, 300);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-30, 0, 210);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(25, 0, 250);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-50, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(50, 0, 280);
+		tmpObj.setScale(5, 5, 5);
 		tmpObj.addToScene();
 
 		//player
