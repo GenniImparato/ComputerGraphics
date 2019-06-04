@@ -9,6 +9,7 @@ class Player extends Object3D
 {
 	constructor(mainMesh, gearMesh, material)
 	{
+		console.log({mainMesh})
 		super(mainMesh, material);
 		this.changeBBColor = true;
 		this.boundingBoxes[0].setColor([255, 255, 0, 255]);
