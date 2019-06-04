@@ -332,7 +332,7 @@ class Object3D
 		object.penetrationZ = 0;
 
 		//collision from y++
-		if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].maxY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].maxY	&& object.speedY<0)
+		if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].maxY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].maxY	&& object.speedY<=0)
 		{
 			object.collisionY = true;
 			object.penetrationY = this.boundingBoxes[bboxNum].maxY - object.boundingBoxes[0].minY;

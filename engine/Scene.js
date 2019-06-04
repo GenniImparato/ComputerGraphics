@@ -53,7 +53,6 @@ var Scene =
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
-		var playerTexture = new TextureMaterial("crate.png");
 
 
 		////		CREATE OBJECTS 3D
@@ -170,7 +169,6 @@ var Scene =
 		player  = new Player(unitCubeMesh, gearMesh);
 		player.setPosition(0, 40, 200);
 		player.setMaterial(yellowMaterial);
-		player.setMaterial(playerTexture);
 		player.enableCollisionWith(objects);
 
 		
