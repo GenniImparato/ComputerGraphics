@@ -14,7 +14,7 @@ class AutomaticBridge3D extends GroupObject3D
 		this.animator.addKeyFrame(0, 0, 0);
 
 		//trigger
-		this.trigger = new TriggerBox3D(this.boundingBox.dx+triggDx, this.boundingBox.dy+triggDy, this.boundingBox.dz+triggDz, this);
+		this.trigger = new TriggerBox3D(this.boundingBoxes[0].dx+triggDx, this.boundingBoxes[0].dy+triggDy, this.boundingBoxes[0].dz+triggDz, this);
 		this.addObject3D(this.trigger);
 
 		this.trigger.onTrigger = this.activate;

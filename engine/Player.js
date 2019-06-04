@@ -11,8 +11,8 @@ class Player extends Object3D
 	{
 		super(mainMesh, material);
 		this.changeBBColor = true;
-		this.boundingBox.setColor([255, 255, 0, 255]);
-		this.boundingBox.setScaleCorrection(1.1, 1.1, 1.1);
+		this.boundingBoxes[0].setColor([255, 255, 0, 255]);
+		this.boundingBoxes[0].setScaleCorrection(1.1, 1.1, 1.1);
 		this.enableGravity(true);
 		this.enablePhysics(true);
 		this.setScale(2, 2, 2);
@@ -24,7 +24,7 @@ class Player extends Object3D
 		this.gear.setParent(this);
 		this.gear.setPosition(2, 1, 0);
 		this.gear.setScale(2, 2, 2);
-		this.gear.boundingBox.setScaleCorrection(0, 0, 0);
+		this.gear.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 
 		this.moveSpeed = standardMoveSpeed;
 		this.gearRotSpeed = idleGearRotSpeed;

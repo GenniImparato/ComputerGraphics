@@ -40,6 +40,8 @@ var Scene =
 		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
 		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
 		var rock0Mesh		= Mesh.loadFromOBJFile("rock0.obj");
+		var house0Mesh 		= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
+		var house0MeshNB	= Mesh.loadFromOBJFile("house0.obj");
 
 
 		////		CREATE MATERIALS
@@ -57,16 +59,16 @@ var Scene =
 		//small plant
 		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, 5);
-		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//big plant
 		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, -5);
 		tmpObj.setScale(2, 2, 2);
-		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//house
@@ -74,7 +76,7 @@ var Scene =
 		tmpObj.setPosition(-7, 0, 0);
 		tmpObj.setScale(0.4, 0.6, 0.5);
 		tmpObj.addToScene();
-		tmpObj.boundingBox.setScaleCorrection(0.95, 1, 0.95);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.95, 1, 0.95);
 
 		//wall
 		var tmpObj = new Box3D(2, 10, 8);
@@ -86,7 +88,7 @@ var Scene =
 		tmpObj.setPosition(0, -5, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new Box3D(100, 10, 200, greenMaterial);
+		var tmpObj = new Box3D(200, 10, 200, greenMaterial);
 		tmpObj.setPosition(0, -5, 250);
 		tmpObj.addToScene();
 
@@ -127,27 +129,43 @@ var Scene =
 		//bridge
 		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
 		tmpObj.setPosition(0, -6, 140);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
 		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
 		tmpObj.setPosition(10, -5, 130);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
 		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
 		tmpObj.setPosition(4, -6, 120);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
 		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
 		tmpObj.setPosition(5, -5, 110);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		//house0 with custom bbox
+		var tmpObj = new Object3D(house0Mesh, redMaterial);
+		tmpObj.setPosition(40, 0, 200);
+		tmpObj.setScale(0.5, 0.5, 0.5);
+		tmpObj.setRotation(0, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+		
+		//house0 with default bbox
+		var tmpObj = new Object3D(house0MeshNB, redMaterial);
+		tmpObj.setPosition(40, 0, 300);
+		tmpObj.setScale(0.5, 0.5, 0.5);
+		tmpObj.setRotation(0, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
 		//player
 		player  = new Player(unitCubeMesh, gearMesh);
-		player.setPosition(0, 40, 170);
+		player.setPosition(0, 40, 200);
 		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
 
@@ -165,9 +183,9 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    // light = new DirectionalLight('LA', -1, 1, 1 );
+	    light = new DirectionalLight('LA', -1, 1, 1 );
 
-	    light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
+	    //light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 

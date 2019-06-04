@@ -26,22 +26,22 @@ class Castle3D extends GroupObject3D
 		if(direction == "U")
 		{
 			if(this.objectsCount > 0)
-				this.currZ += this.objects[this.objectsCount-1].boundingBox.dz;
+				this.currZ += this.objects[this.objectsCount-1].boundingBoxes[0].dz;
 		}
 		else if(direction == "D")
 		{
 			if(this.objectsCount > 0)
-				this.currZ -= this.objects[this.objectsCount-1].boundingBox.dz;
+				this.currZ -= this.objects[this.objectsCount-1].boundingBoxes[0].dz;
 		}
 		else if(direction == "L")
 		{
 			if(this.objectsCount > 0)
-				this.currX -= this.objects[this.objectsCount-1].boundingBox.dz;
+				this.currX -= this.objects[this.objectsCount-1].boundingBoxes[0].dz;
 		}
 		else if(direction == "R")
 		{
 			if(this.objectsCount > 0)
-				this.currX += this.objects[this.objectsCount-1].boundingBox.dz;
+				this.currX += this.objects[this.objectsCount-1].boundingBoxes[0].dz;
 		}
 
 		for(var i=0; i<count; i++)
@@ -55,34 +55,34 @@ class Castle3D extends GroupObject3D
 			if(direction == "R")
 			{
 				if(i < count-1)
-					this.currX += tmp.boundingBox.dz;
+					this.currX += tmp.boundingBoxes[0].dz;
 				else
-					this.currX += tmp.boundingBox.dz/2;
+					this.currX += tmp.boundingBoxes[0].dz/2;
 
 				tmp.setRotation(90, 0, 0);
 			}
 			else if(direction == "L")
 			{
 				if(i < count-1)
-					this.currX -= tmp.boundingBox.dz;
+					this.currX -= tmp.boundingBoxes[0].dz;
 				else
-					this.currX -= tmp.boundingBox.dz/2;
+					this.currX -= tmp.boundingBoxes[0].dz/2;
 
 				tmp.setRotation(-90, 0, 0);
 			}
 			else if(direction == "U")
 			{
 				if(i < count-1)
-					this.currZ += tmp.boundingBox.dz;
+					this.currZ += tmp.boundingBoxes[0].dz;
 				else
-					this.currZ += tmp.boundingBox.dz/2;
+					this.currZ += tmp.boundingBoxes[0].dz/2;
 			}
 			else if(direction == "D")
 			{
 				if(i < count-1)
-					this.currZ -= tmp.boundingBox.dz;
+					this.currZ -= tmp.boundingBoxes[0].dz;
 				else
-					this.currZ -= tmp.boundingBox.dz/2;
+					this.currZ -= tmp.boundingBoxes[0].dz/2;
 			}
 		}
 

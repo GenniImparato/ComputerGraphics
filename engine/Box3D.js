@@ -5,7 +5,7 @@ class Box3D extends Object3D
 	{
 		super(unitCubeMesh, material);
 		this.setScale(dimX, dimY, dimZ);
-		this.boundingBox.setScaleCorrection(1, 1, 1);
+		this.boundingBoxes[0].setScaleCorrection(1, 1, 1);
 	}
 }
 
@@ -15,7 +15,7 @@ class TriggerBox3D extends Box3D
 	constructor(dimX, dimY, dimZ, instance)
 	{
 		super(dimX, dimY, dimZ);
-		this.boundingBox.nonCollidedColor = [0, 255, 0, 255];
+		this.boundingBoxes[0].nonCollidedColor = [0, 255, 0, 255];
 		this.setVisible(false);
 
 		this.triggered = false;

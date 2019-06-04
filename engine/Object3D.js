@@ -43,10 +43,13 @@ class Object3D
 		else 
 			this.material = new SimpleMaterial(20,20,20,255);
 
-		if(this.mesh != null)
+		//support multiple bounding boxes
+		this.boundingBoxes = [];
+
+		//if no bounding box file specified, creates a single default bbox that fills the whole mesh inside
+		if(this.mesh != null	&& 		this.mesh.bBoxesPositions == null)
 		{
 			//computes a default bbox centred in the center of the mesh
-			//bounding box coordinates
 			var minX = mesh.positions[0];
 			var maxX = mesh.positions[0];
 			var minY = mesh.positions[1];
@@ -76,14 +79,62 @@ class Object3D
 			var cY = (maxY-minY)/2.0 + minY;
 			var cZ = (maxZ-minZ)/2.0 + minZ;
 
-			this.boundingBox = new BoundingBox(cX, cY, cZ, 
+			this.boundingBoxes[0] = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
-			this.boundingBox.update(this.x, this.y, this.z, 
+			this.boundingBoxes[0].update(this.x, this.y, this.z, 
 								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		}
+		//bounding boxes specified, creates bounding boxes from bBoxPositions
+		else if(this.mesh != null)
+		{
+			var bBoxesCount = this.mesh.bBoxesPositions.length/(24*3);
+			var indicesCount = this.mesh.bBoxesPositions/bBoxesCount;
+
+			console.log(mesh.bBoxesPositions);
+			console.log(mesh.bBoxesIndices);
+
+			for(var i=0; i<bBoxesCount; i++)
+			{
+				//computes i bbox coords
+				var minX = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3];
+				var maxX = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3];
+				var minY = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3+1];
+				var maxY = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3+1];
+				var minZ = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3+2];
+				var maxZ = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i]*3+2];
+				//computes bounding box coords
+				for(var j=0; j<36; j++)
+				{
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3]<minX)
+						minX = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3];
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3]>maxX)
+						maxX = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3];
+
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+1]<minY)
+						minY = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+1];
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+1]>maxY)
+						maxY = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+1];
+
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+2]<minZ)
+						minZ = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+2];
+					if(mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+2]>maxZ)
+						maxZ = mesh.bBoxesPositions[mesh.bBoxesIndices[36*i + j]*3+2];
+				}
+
+				//computes center of the current bbox
+				var cX = (maxX-minX)/2.0 + minX;
+				var cY = (maxY-minY)/2.0 + minY;
+				var cZ = (maxZ-minZ)/2.0 + minZ;
+
+				this.boundingBoxes[i] = new BoundingBox(cX, cY, cZ, 
+											minX, maxX, minY, maxY, minZ, maxZ);
+				this.boundingBoxes[i].update(this.x, this.y, this.z, 
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+			}
 		}
 		//no mesh
 		else
-			this.boundingBox = new BoundingBox(0, 0, 0, 0, 0, 0, 0, 0, 0);	
+			this.boundingBoxes[0] = new BoundingBox(0, 0, 0, 0, 0, 0, 0, 0, 0);	
 		
 	}
 
@@ -99,15 +150,13 @@ class Object3D
 	setPosition(x, y, z)
 	{
 		this.x = x;		this.y = y;		this.z = z;
-		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		this.updateBoundingBoxes(this.x, this.y, this.z);
 	}
 
 	move(x, y, z)
 	{
 		this.x += x;	this.y += y;	this.z += z;
-		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		this.updateBoundingBoxes(this.x, this.y, this.z);
 	}
 
 	setRotation(x, y, z)
@@ -123,8 +172,7 @@ class Object3D
 	setScale(x, y, z)
 	{
 		this.scaleX = x; this.scaleY = y; this.scaleZ = z;
-		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		
 	}
 
 	setSpeed(x, y, z)
@@ -154,6 +202,16 @@ class Object3D
 
 	setMaterial(material) {
 		this.material = material;
+	}
+
+	///			BOUNDING BOXES
+	///________________________________
+
+	updateBoundingBoxes(x, y, z)
+	{
+		for(var i=0; i<this.boundingBoxes.length; i++)
+			this.boundingBoxes[i].update(x, y, z, 
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	///			RECURSIVE HIERARCHY
@@ -197,12 +255,12 @@ class Object3D
 		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
 
-		this.boundingBox.update(transormedPos[0], transormedPos[1], transormedPos[2], 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2]);
 		
 		//renders bounding box
 		if(showBoundingBoxes)
-			this.boundingBox.render();
+			for(var i=0; i<this.boundingBoxes.length; i++)
+				this.boundingBoxes[i].render();
 
 		//doesn't render invisible objects
 		if(this.visible)
@@ -223,9 +281,9 @@ class Object3D
 	////____________________________
 
 	//boolean collision check
-	checkCollision(object)
+	checkCollision(object, bBoxNum)
 	{
-		return this.boundingBox.checkCollision(object.boundingBox);
+	 	return this.boundingBoxes[0].checkCollision(object.boundingBoxes[bBoxNum]);;
 	}
 
 	enableCollisionWith(objects)
@@ -241,61 +299,65 @@ class Object3D
 			//doens't collide with itself
 			if(this.collisionObjects[i] != this)
 			{
-				if(this.changeBBColor)
-						this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.nonCollidedColor);	
-
-				if(this.checkCollision(this.collisionObjects[i]))
+				for(var bBoxNum=0; bBoxNum<this.collisionObjects[i].boundingBoxes.length; bBoxNum++)
 				{
-					this.solveCollision(this.collisionObjects[i]);
-
 					if(this.changeBBColor)
-					this.collisionObjects[i].boundingBox.setColor(this.collisionObjects[i].boundingBox.collidedColor);				
-				}	
+						this.collisionObjects[i].boundingBoxes[bBoxNum].setColor(this.collisionObjects[i].boundingBoxes[bBoxNum].nonCollidedColor);	
+
+					if(this.checkCollision(this.collisionObjects[i], bBoxNum))
+					{
+						this.solveCollision(this.collisionObjects[i], bBoxNum);
+
+						if(this.changeBBColor)
+							this.collisionObjects[i].boundingBoxes[bBoxNum].setColor(this.collisionObjects[i].boundingBoxes[bBoxNum].collidedColor);				
+					}
+				}
+					
 			}
 		}
 	}
 
 
 	//solve the collision for this object using the handler of the collided object
-	solveCollision(object)
+	solveCollision(object, bBoxNum)
 	{
-		object.collisionHandler(this);
+		object.collisionHandler(this, bBoxNum);
 	}
 
 	//defines the reponse of this object when another objects collides with it
 	//can be override
 	//default acts as a rigid body that stops colliding objects
-	collisionHandler(object)
+	collisionHandler(object, bboxNum)
 	{
 		object.penetrationZ = 0;
 
 		//collision from y++
-		if(object.boundingBox.maxY >= this.boundingBox.maxY	&& 	object.boundingBox.minY <= this.boundingBox.maxY	&& object.speedY<0)
+		if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].maxY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].maxY	&& object.speedY<0)
 		{
 			object.collisionY = true;
-			object.penetrationY = this.boundingBox.maxY - object.boundingBox.minY;
+			object.penetrationY = this.boundingBoxes[bboxNum].maxY - object.boundingBoxes[0].minY;
 		}
 		else
 		{
 			//collision from x++
-			if(object.boundingBox.maxX >= this.boundingBox.maxX	&& 	object.boundingBox.minX <= this.boundingBox.maxX	&&	object.speedX<0) 
+			if(object.boundingBoxes[0].maxX >= this.boundingBoxes[bboxNum].maxX	&& 	object.boundingBoxes[0].minX <= this.boundingBoxes[bboxNum].maxX	&&	object.speedX<0) 
 				object.collisionX = true;
 			//collision from x--
-			if(object.boundingBox.maxX >= this.boundingBox.minX	&& 	object.boundingBox.minX <= this.boundingBox.minX	&&	object.speedX>0)
+			if(object.boundingBoxes[0].maxX >= this.boundingBoxes[bboxNum].minX	&& 	object.boundingBoxes[0].minX <= this.boundingBoxes[bboxNum].minX	&&	object.speedX>0)
 				object.collisionX = true;
 
 			//collision from z++
-			if(object.boundingBox.maxZ >= this.boundingBox.maxZ	&& 	object.boundingBox.minZ <= this.boundingBox.maxZ	&&	object.speedZ<0)
+			if(object.boundingBoxes[0].maxZ >= this.boundingBoxes[bboxNum].maxZ	&& 	object.boundingBoxes[0].minZ <= this.boundingBoxes[bboxNum].maxZ	&&	object.speedZ<0)
 				object.collisionZ = true;
 
 			//collision from z--
-			if(object.boundingBox.maxZ >= this.boundingBox.minZ	&& 	object.boundingBox.minZ <= this.boundingBox.minZ	&&	object.speedZ>0) 
-				object.collisionZ = true;
+			if(object.boundingBoxes[0].maxZ >= this.boundingBoxes[bboxNum].minZ	&& 	object.boundingBoxes[0].minZ <= this.boundingBoxes[bboxNum].minZ	&&	object.speedZ>0) 
+					object.collisionZ = true;
 		}
 		
 
 			//collision from y--
-			if(object.boundingBox.maxY >= this.boundingBox.minY	&& 	object.boundingBox.minY <= this.boundingBox.minY 	&& object.speedY>0) 
+			if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].minY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].minY 	&& object.speedY>0) 
 				object.collisionY = true;
 	}
 
@@ -339,8 +401,7 @@ class Object3D
 			this.z += this.speedZ;
 		}		
 
-		this.boundingBox.update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ);
+		this.updateBoundingBoxes(this.x, this.y, this.z);
 	}
 
 }
