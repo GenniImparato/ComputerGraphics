@@ -43,6 +43,8 @@ var Scene =
 		var house0Mesh 		= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
 		var house0MeshNB	= Mesh.loadFromOBJFile("house0.obj");
 
+		var unitCubeTexMesh = Mesh.loadFromOBJFile("u_cube_tex.obj");
+
 
 		////		CREATE MATERIALS
 		////__________________________________
@@ -51,6 +53,7 @@ var Scene =
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
+		var playerTexture = new TextureMaterial("crate.png");
 
 
 		////		CREATE OBJECTS 3D
@@ -167,6 +170,7 @@ var Scene =
 		player  = new Player(unitCubeMesh, gearMesh);
 		player.setPosition(0, 40, 200);
 		player.setMaterial(yellowMaterial);
+		player.setMaterial(playerTexture);
 		player.enableCollisionWith(objects);
 
 		
