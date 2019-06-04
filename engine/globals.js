@@ -4,6 +4,7 @@ var aspectRatio;
 
 var OBJModelsDir 	= "http://127.0.0.1:8887/models/";
 var shaderDir 		= "http://127.0.0.1:8887/shaders/";
+const textureDir = "http://127.0.0.1:8887/textures/"
 
 //global matrices
 var perspectiveMatrix;
@@ -19,3 +20,10 @@ var unitCubeMesh;			//loaded in Scene.init()
 var showBoundingBoxes = false;
 
 var gravityAccelY = -0.02;
+
+// utility to avoid CORS problems
+function requestCORSIfNotSameOrigin(img, url) {
+  if ((new URL(url)).origin !== window.location.origin) {
+    img.crossOrigin = "";
+  }
+}	
