@@ -1,11 +1,15 @@
 var keys = [];
 var clickedKeys = [];
 var mouseState = false;
-var lastMouseX = -100;
-var lastMouseY = -100;
+var lastMouseX = 0;
+var lastMouseY = 0;
 var mouseDx = 0;
 var mouseDy = 0;
 var mouseWheelD = 0;
+
+var pointerLocked = 'pointerLockElement' in document ||
+    				'mozPointerLockElement' in document ||
+    				'webkitPointerLockElement' in document;
 
 var Input =
 {
@@ -23,15 +27,18 @@ var Input =
 	SHIFT_KEY:      16,
 
 	B_KEY:          66,
+	C_KEY:          67,
 
 	init: function()
 	{
 		window.addEventListener("keyup", Input.keyUp, false);
 		window.addEventListener("keydown", Input.keyDown, false);
-		canvas.addEventListener("mousedown", Input.mouseDown, false);
+		/*canvas.addEventListener("mousedown", Input.mouseDown, false);
 		canvas.addEventListener("mouseup", Input.mouseUp, false);
 		canvas.addEventListener("mousemove", Input.mouseMove, false);
-		canvas.addEventListener("mousewheel", Input.mouseWheel, false);
+		canvas.addEventListener("mousewheel", Input.mouseWheel, false);*/
+
+		Input.enableMousePointerLock();
 	},
 
 	keyUp: function(e)
@@ -70,15 +77,49 @@ var Input =
 
 	mouseMove: function(event) 
 	{
-		mouseDx = event.pageX - lastMouseX;
-		mouseDy = lastMouseY - event.pageY;
-		lastMouseX = event.pageX;
-		lastMouseY = event.pageY;
+		mouseDx = event.movementX || event.mozMovementX || 0;
+		mouseDy = event.movementY || event.mozMovementY ||  0;
+		
+		console.log(event);
 	},
 
  	mouseWheel: function(event) 
  	{
 		mouseWheelD = event.wheelDelta/100;
+	},
+
+	//mouse pointer lock
+	enableMousePointerLock()
+	{
+		canvas.onclick = function() 
+		{
+  			canvas.requestPointerLock = canvas.requestPointerLock ||
+                            canvas.mozRequestPointerLock;
+            canvas.requestPointerLock();
+		}
+
+		document.addEventListener('pointerlockchange', lockChangeAlert, false);
+		document.addEventListener('mozpointerlockchange', lockChangeAlert, false);
+
+		function lockChangeAlert() 
+		{
+ 			if(document.pointerLockElement == canvas ||
+  				document.mozPointerLockElement == canvas) 
+ 			{
+    			document.addEventListener("mousedown", Input.mouseDown, false);
+				document.addEventListener("mouseup", Input.mouseUp, false);
+				document.addEventListener("mousemove", Input.mouseMove, false);
+				document.addEventListener("mousewheel", Input.mouseWheel, false);
+  			} 
+  			else
+  			{
+  				document.removeEventListener("mousedown", Input.mouseDown, false);
+				document.removeEventListener("mouseup", Input.mouseUp, false);
+				document.removeEventListener("mousemove", Input.mouseMove, false);
+				document.removeEventListener("mousewheel", Input.mouseWheel, false);
+  			}
+ 		}
+		
 	},
 
 

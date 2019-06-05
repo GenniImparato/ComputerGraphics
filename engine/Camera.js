@@ -1,10 +1,34 @@
-class LookAtCamera
+class Camera
+{
+	constructor() 
+	{
+		this.angle 		= 0.0;
+		this.elevation 	= 0.0;
+	}
+
+	setAngle(angle)
+	{
+		this.angle = angle;
+	}
+
+	setElevation(elevation)
+	{
+		this.elevation = elevation;
+	}
+
+	look()
+	{
+	}
+
+}
+
+class LookAtCamera extends Camera
 {
 	constructor() 
 	{	
+		super();
+
 		this.lookRadius	= 10.0;
-		this.angle 		= 0.0;
-		this.elevation 	= 0.0;
 
 		this.xLook 		= 0.0;
 		this.yLook		= 0.0;
@@ -23,22 +47,9 @@ class LookAtCamera
 		this.zLook = z;
 	}
 
-	setAngle(angle)
-	{
-		this.angle = angle;
-	}
-
-	setElevation(elevation)
-	{
-		this.elevation = elevation;
-	}
-
 	handleInput()
 	{
-		if(Input.isMouseDown())
-		{
-			this.elevation -= Input.getMouseDiffY() * 0.4;
-		}
+		this.elevation += Input.getMouseDiffY() * 0.2;
 		this.lookRadius -= Input.getMouseWheelDiff() * 0.6;
 	}
 
@@ -58,9 +69,40 @@ class LookAtCamera
 
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
-	        
+	}
+}
 
+class FirstPersonCamera  extends Camera
+{
+	constructor() 
+	{	
+		super();
 
+		this.angle 		= 0.0;
+		this.elevation 	= 0;
 
+		this.x		= 0.0;
+		this.y		= 0.0;
+		this.z 	    = 0.0;
+	}
+
+	setPosition(x, y, z)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	handleInput()
+	{
+		this.elevation += Input.getMouseDiffY() * 0.2;
+	}
+
+	look()
+	{
+		this.handleInput();
+
+		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
+		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
 	}
 }

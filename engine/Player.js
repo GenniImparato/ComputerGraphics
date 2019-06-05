@@ -9,7 +9,6 @@ class Player extends Object3D
 {
 	constructor(mainMesh, gearMesh, material)
 	{
-		console.log({mainMesh})
 		super(mainMesh, material);
 		this.changeBBColor = true;
 		this.boundingBoxes[0].setColor([255, 255, 0, 255]);
@@ -68,10 +67,12 @@ class Player extends Object3D
 		}
 
 		//rotations
-		if(Input.isKeyDown(Input.A_KEY))
+		/*if(Input.isKeyDown(Input.A_KEY))
 			this.rotate(-2.0, 0, 0);
 		else if(Input.isKeyDown(Input.D_KEY))
-			this.rotate(2.0, 0, 0);
+			this.rotate(2.0, 0, 0);*/
+
+		this.rotate(Input.getMouseDiffX() * 0.2, 0, 0);
 
 		//jump
 		if(Input.isKeyClicked(Input.SPACE_KEY))

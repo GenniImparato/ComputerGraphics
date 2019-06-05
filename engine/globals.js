@@ -18,6 +18,8 @@ var unitCubeMesh;			//loaded in Scene.init()
 
 //flag to show/hide bounding boxes of every object in the scene
 var showBoundingBoxes = false;
+//flag to toggle fpcamera/lookatcamera, first person = true;
+var cameraMode = true;
 
 var gravityAccelY = -0.02;
 

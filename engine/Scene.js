@@ -1,4 +1,6 @@
-var camera;
+var firstPersonCamera;
+var lookAtCamera;
+
 var light;
 //stores all Objects3D in the scene
 var objects = [];
@@ -211,11 +213,15 @@ var Scene =
 		///			CAMERA
 		///_______________________
 
-		camera = new LookAtCamera();
-		camera.setLookRadius(15.0);
-		camera.setElevation(35.0);
-		camera.setLookPoint(0, 0, 0);
-		camera.look();
+		lookAtCamera = new LookAtCamera();
+		lookAtCamera.setLookRadius(15.0);
+		lookAtCamera.setElevation(35.0);
+		lookAtCamera.setLookPoint(0, 0, 0);
+
+		firstPersonCamera = new FirstPersonCamera();
+		firstPersonCamera.setElevation(35.0);
+		firstPersonCamera.setPosition(0, 0, 0);
+		firstPersonCamera.look();
 
 		///			LIGHTS
 		///___________________________
@@ -248,16 +254,30 @@ var Scene =
 			objects[i].update();
 		}
 
-		//set camera to follow player
-		camera.setAngle(player.rotx);
-		camera.setLookPoint(player.x, player.y, player.z);
-		camera.look();
+		if(cameraMode)
+		{
+			firstPersonCamera.setAngle(player.rotx);
+			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
+			firstPersonCamera.look();
+		}
+		else
+		{
+			lookAtCamera.setAngle(player.rotx);
+			lookAtCamera.setLookPoint(player.x, player.y, player.z);
+			lookAtCamera.look();
+		}
+
 		light.setLightPosition(player.x, player.y+10, player.z);
  	    light.moveToCameraSpace(viewMatrix);
+		
 
 		//toggle showing of bounding boxes
 		if(Input.isKeyClicked(Input.B_KEY))
 			showBoundingBoxes = !showBoundingBoxes;
+
+		//toggle camera modes
+		if(Input.isKeyClicked(Input.C_KEY))
+			cameraMode = !cameraMode;
 
 
 		for(var i=0; i<objectsCount; i++)
