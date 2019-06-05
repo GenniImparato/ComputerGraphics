@@ -24,6 +24,6 @@ class GroupObject3D extends Object3D
 		Scene.addObject3D(this);
 
 		for(var i=0; i<this.objectsCount; i++)
-			Scene.addObject3D(this.objects[i]);
+			this.objects[i].addToScene();
 	}
 }

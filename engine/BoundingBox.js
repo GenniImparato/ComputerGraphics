@@ -53,7 +53,7 @@ class BoundingBox
 		this.z = z + (this.offZ + this.posCZ) * scaleZ;
 
 		//invert bb axis at 90 degrees
-		if(rotX == 90 || rotX == -90)
+		if((rotX >= 45 && rotX <= 135) || (rotX <= -45 && rotX >= -135))
 		{
 			//swap dx/dz
 			this.dx = this.dz_ * scaleX * this.scaleCX;

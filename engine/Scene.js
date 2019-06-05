@@ -43,6 +43,7 @@ var Scene =
 		var house0MeshNB	= Mesh.loadFromOBJFile("house0.obj");
 		var tree0TrunkMesh	= Mesh.loadFromOBJFile("tree0_trunk.obj");
 		var tree0LeafsMesh 	= Mesh.loadFromOBJFile("tree0_leafs.obj");
+		var doorMesh		= Mesh.loadFromOBJFile("wooden_door.obj");
 
 		var unitCubeTexMesh = Mesh.loadFromOBJFile("u_cube_leather.obj");
 
@@ -195,10 +196,15 @@ var Scene =
 		tmpObj.setScale(5, 5, 5);
 		tmpObj.addToScene();
 
+		//door
+		var tmpObj = new Door3D(doorMesh, redMaterial);
+		tmpObj.setPosition(3, 0, 190);
+		tmpObj.addToScene();
+
 		//player
 		player  = new Player(unitCubeTexMesh, gearMesh);
 		player.setPosition(0, 40, 200);
-		player.setMaterial(textureMaterial);
+		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
 
 		

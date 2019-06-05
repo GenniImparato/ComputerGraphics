@@ -62,4 +62,14 @@ class TriggerBox3D extends Box3D
 
 	onCollide(instance)
 	{}
+
+	isTriggered()
+	{
+		return this.triggered;
+	}
+
+	isColliding()
+	{
+		return this.colliding;
+	}
 }

@@ -19,7 +19,13 @@ class KeyFrame
 	{
 		return new KeyFrame(this.x + (nextframe.x - this.x)*interpolatePosition,
 							this.y + (nextframe.y - this.y)*interpolatePosition,
-							this.z + (nextframe.z- this.z)*interpolatePosition, 0, 0, 0, 0, 0, 0);
+							this.z + (nextframe.z- this.z)*interpolatePosition, 
+							this.rotX + (nextframe.rotX - this.rotX)*interpolatePosition,
+							this.rotY + (nextframe.rotY - this.rotY)*interpolatePosition,
+							this.rotZ + (nextframe.rotZ- this.rotZ)*interpolatePosition, 
+							this.scaleX + (nextframe.scaleX - this.scaleX)*interpolatePosition,
+							this.scaleY + (nextframe.scaleY - this.scaleY)*interpolatePosition,
+							this.scaleZ + (nextframe.scaleZ- this.scaleZ)*interpolatePosition);
 
 	}
 }
@@ -91,5 +97,7 @@ class LinearAnimator
 
 		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/30);
 		this.object.setPosition(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
+		this.object.setRotation(interpolatedFrame.rotX, interpolatedFrame.rotY, interpolatedFrame.rotZ);
+		this.object.setScale(interpolatedFrame.scaleX, interpolatedFrame.scaleY, interpolatedFrame.scaleZ);
 	}
 }

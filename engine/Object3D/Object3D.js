@@ -209,11 +209,11 @@ class Object3D
 	///			BOUNDING BOXES
 	///________________________________
 
-	updateBoundingBoxes(x, y, z)
+	updateBoundingBoxes(x, y, z, rotx)
 	{
 		for(var i=0; i<this.boundingBoxes.length; i++)
 			this.boundingBoxes[i].update(x, y, z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, rotx);
 	}
 
 	///			RECURSIVE HIERARCHY
@@ -257,7 +257,7 @@ class Object3D
 		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
 
-		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2]);
+		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2], transormedRot[0]);
 		
 		//renders bounding box
 		if(showBoundingBoxes)
