@@ -6,14 +6,14 @@ function isPowerOf2(value) {
 
 class TextureMaterial extends SimpleMaterial {
 
-	constructor(txFile) {
-	    super(255, 255, 255, 255);
-		// default white specular
-		this.specR = 1.0;
-		this.specG = 1.0;
-		this.specB = 1.0;
-		this.specA = 1.0;
-		this.gamma = 100;
+    constructor(txFile) {
+	super(255, 255, 255, 255);
+	// default white specular
+	this.specR = 1.0;
+	this.specG = 1.0;
+	this.specB = 1.0;
+	this.specA = 1.0;
+	this.gamma = 100;
 
 		if(!textureShader)
 	    {
@@ -47,16 +47,16 @@ class TextureMaterial extends SimpleMaterial {
 		this.texture = texture;
 
 	    
-	}
+    }
 
-	setRepeat(boolean) {
-		if(boolean) {
-			this.wrap = gl.REPEAT;
-		}
-		else {
-			this.wrap = gl.CLAMP_TO_EDGE;
-		}
+    setRepeat(boolean) {
+	if(boolean) {
+	    this.wrap = gl.REPEAT;
 	}
+	else {
+	    this.wrap = gl.CLAMP_TO_EDGE;
+	}
+    }
 
     bindShader() {	
 	    this.shader.use();

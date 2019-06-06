@@ -64,6 +64,7 @@ var Scene =
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
 		var textureMaterial = new TextureMaterial("leather.tif");
 
+	    console.log("Loaded texture");
 
 		////		CREATE OBJECTS 3D
 		////__________________________________
@@ -185,8 +186,8 @@ var Scene =
 		tmpObj.addToScene();
 
 		//player
-		player  = new Player(unitCubeTexMesh, gearMesh);
-		player.setPosition(0, 40, 200);
+		player  = new Player(unitCubeMesh, gearMesh);
+		player.setPosition(0, 40, 170);
 		player.setMaterial(yellowMaterial);
 		player.enableCollisionWith(objects);
 
