@@ -1,8 +1,25 @@
 var textureShader;
 var textureDiffuseShader;
 
+var texturesCount = 0;
+
+
 function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
+}
+
+ function textureLoaderCallback () {
+	this.txId = gl.createTexture();
+	gl.activeTexture(gl.TEXTURE0 + this.txNum);
+	gl.bindTexture(gl.TEXTURE_2D, this.txId);		
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);		
+	if (isPowerOf2(this.width) &&
+    	isPowerOf2(this.height)) {
+    		gl.generateMipmap(gl.TEXTURE_2D);
+	} else {
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+	}
 }
 
 class TextureMaterial extends SimpleMaterial {
@@ -22,22 +39,13 @@ class TextureMaterial extends SimpleMaterial {
 	    }
 	    this.shader  = textureShader;
 
-		this.texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-             this.prefetchingTexturePixels);
-		
-
 		this.image = new Image();
+		this.image.txNum = texturesCount;
+		texturesCount++;
 		this.powerOf2 = false;
 		requestCORSIfNotSameOrigin(this.image, textureDir + txFile);
 		this.image.src = textureDir + txFile;
-		this.image.onload = function(){
-              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 		   gl.generateMipmap(gl.TEXTURE_2D);
-		};
+		this.image.onload = textureLoaderCallback;
     }
 
     setRepeat(boolean) {
@@ -52,19 +60,8 @@ class TextureMaterial extends SimpleMaterial {
     bindShader() {	
 	    this.shader.use();
 	    // setup texture
-	    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-	     gl.activeTexture(gl.TEXTURE0);
 
-	     if(this.image.complete) {
-    	
-    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 		gl.generateMipmap(gl.TEXTURE_2D);
- 		} else {
- 			this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
- 		}
- 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.texture);
+ 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
 	    light.bind(this.shader);
 		
@@ -89,28 +86,19 @@ class TextureDiffuse extends SimpleMaterial {
 	this.specA = 1.0;
 	this.gamma = 100;
 
-		if(!textureShader)
+		if(!textureDiffuseShader)
 	    {
-			textureShader = new Shader("vs_tex.glsl", "fs_tex_diffuse.glsl", true);
+			textureDiffuseShader = new Shader("vs_tex.glsl", "fs_tex_diffuse.glsl", true);
 	    }
-	    this.shader  = textureShader;
-
-		this.texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-             this.prefetchingTexturePixels);
-		
+	    this.shader  = textureDiffuseShader;
 
 		this.image = new Image();
+		this.image.txNum = texturesCount;
+		texturesCount++;
 		this.powerOf2 = false;
 		requestCORSIfNotSameOrigin(this.image, textureDir + txFile);
 		this.image.src = textureDir + txFile;
-		this.image.onload = function(){
-              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 		   gl.generateMipmap(gl.TEXTURE_2D);
-		};
+		this.image.onload = textureLoaderCallback;
     }
 
     setRepeat(boolean) {
@@ -125,19 +113,7 @@ class TextureDiffuse extends SimpleMaterial {
     bindShader() {	
 	    this.shader.use();
 	    // setup texture
-	    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-	     gl.activeTexture(gl.TEXTURE0);
-
-	     if(this.image.complete) {
-    	
-    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 		gl.generateMipmap(gl.TEXTURE_2D);
- 		} else {
- 			this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
- 		}
- 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.texture);
+ 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
 	    light.bind(this.shader);
 		

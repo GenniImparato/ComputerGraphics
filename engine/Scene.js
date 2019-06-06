@@ -63,12 +63,14 @@ var Scene =
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
 		var textureMaterial = new TextureMaterial("crate.png");
+		var castleInteriorTex = new TextureDiffuse("castle_interior.jpg");
+		var castleExteriorTex = new TextureDiffuse("castle_exterior.jpg");
+		var castleDoorsTex = new TextureDiffuse("castle_towers_doors.jpg");
 
 	    console.log("Loaded texture");
 
 		////		CREATE OBJECTS 3D
 		////__________________________________
-
 
 
 		//floors
@@ -108,9 +110,9 @@ var Scene =
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleExteriorMesh, yellowMaterial, 
-						castleInteriorMesh, redMaterial, 
-						castleTowersMesh, greenSpecMaterial,
+		var tmpObj = new Castle3D(castleExteriorMesh, castleExteriorTex, 
+						castleInteriorMesh, castleInteriorTex, 
+						castleTowersMesh, castleDoorsTex,
 						castleDoorRMesh, castleDoorLMesh, redMaterial);
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
