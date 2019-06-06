@@ -27,7 +27,6 @@ var Canvas =
         }
         else
             alert("Error: WebGL not supported by your browser!");
-
     },
 
 
@@ -36,8 +35,11 @@ var Canvas =
         // set canvas dimensions
         var canvas = document.getElementById("canvas");
 
-        canvas.width  = window.innerWidth - 16;
-        canvas.height = window.innerHeight - 20;
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.left = "0";
+        canvas.style.top = "0";
+        canvas.style.position = "absolute";
     
         var w = canvas.clientWidth;
         var h = canvas.clientHeight;

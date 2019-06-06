@@ -1,31 +1,51 @@
 class Mesh
 {
 	//factory for creating mesh from .obj file
-	static loadFromOBJFile(file)
+	static loadFromOBJFile(modelFile, boundingBoxesFile)
 	{
-		var obj;
+		var modelObj, bBoxObj;
 
-		utils.loadFile(OBJModelsDir + file, 0, 
+		//load model
+		utils.loadFile(OBJModelsDir + modelFile, 0, 
 							function (fileText) 
 							{
-      							obj = new OBJ.Mesh(fileText);
-      							OBJ.initMeshBuffers(gl, obj);
+      							modelObj = new OBJ.Mesh(fileText);
+      							OBJ.initMeshBuffers(gl, modelObj);
       						});
 
-		return new Mesh(obj.vertices, obj.vertexBuffer,
-						obj.normalBuffer,
-						obj.textureBuffer,
-						obj.indexBuffer);
+		var bBoxesPositions = null;
+		var bBoxesIndices = null;
+
+		if(boundingBoxesFile)
+		{
+			//load bounding boxes
+			utils.loadFile(OBJModelsDir + boundingBoxesFile, 0, 
+							function (fileText) 
+							{
+      							bBoxObj = new OBJ.Mesh(fileText);
+      							bBoxesPositions = bBoxObj.vertices;
+      							bBoxesIndices = bBoxObj.indices;
+      						});
+		}
+		
+
+		return new Mesh(modelObj.vertices, modelObj.vertexBuffer,
+						modelObj.normalBuffer,
+						modelObj.textureBuffer,
+						modelObj.indexBuffer, 
+						bBoxesPositions, bBoxesIndices);
 	}
 
 	//creates a mesh  
-	constructor(positions, positionBuffer, normalBuffer, textCoordBuffer, indexBuffer)
+	constructor(positions, positionBuffer, normalBuffer, textCoordBuffer, indexBuffer, bBoxesPositions, bBoxesIndices)
 	{
 		this.positions = positions;
 		this.positionBuffer = positionBuffer;
 		this.normalBuffer = normalBuffer;
 		this.textCoordBuffer = textCoordBuffer;
 		this.indexBuffer = indexBuffer;
+		this.bBoxesPositions = bBoxesPositions;
+		this.bBoxesIndices = bBoxesIndices;
 	}
 
 	//draws the mesh

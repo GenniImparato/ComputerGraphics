@@ -1,4 +1,6 @@
-var camera;
+var firstPersonCamera;
+var lookAtCamera;
+
 var light;
 //stores all Objects3D in the scene
 var objects = [];
@@ -22,7 +24,6 @@ var Scene =
 
 	loadGlobalAssets()
 	{
-
 		unitCubeMesh = Mesh.loadFromOBJFile("u_cube.obj");
 	},
 
@@ -33,14 +34,24 @@ var Scene =
 
 		Scene.loadGlobalAssets();
 
-		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
-		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
-		var gearMesh 		= Mesh.loadFromOBJFile("gear.obj");
-		var castleTowerMesh	= Mesh.loadFromOBJFile("castle_tower.obj");
-		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
-		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
-		var rock0Mesh		= Mesh.loadFromOBJFile("rock0.obj");
-		var unitCubeTexMesh = Mesh.loadFromOBJFile("u_cube_tex.obj");
+		var plantMesh 			= Mesh.loadFromOBJFile("plant.obj");
+		var houseMesh 			= Mesh.loadFromOBJFile("house.obj");
+		var gearMesh 			= Mesh.loadFromOBJFile("gear.obj");
+		var castleTowerMesh		= Mesh.loadFromOBJFile("castle_tower.obj");
+		var castleWallMesh		= Mesh.loadFromOBJFile("castle_wall.obj");
+		var woodBox				= Mesh.loadFromOBJFile("wood_box.obj");
+		var rock0Mesh			= Mesh.loadFromOBJFile("rock0.obj");
+		var house0Mesh 			= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
+		var house0MeshNB		= Mesh.loadFromOBJFile("house0.obj");
+		var tree0TrunkMesh		= Mesh.loadFromOBJFile("tree0_trunk.obj");
+		var tree0LeafsMesh 		= Mesh.loadFromOBJFile("tree0_leafs.obj");
+		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
+
+		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj");
+		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj");
+		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj");
+
+		var unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
 
 
 		////		CREATE MATERIALS
@@ -50,7 +61,7 @@ var Scene =
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
-		var playerTexture = new TextureMaterial("crate.png");
+		var textureMaterial = new TextureMaterial("leather.tif");
 
 	    console.log("Loaded texture");
 
@@ -60,16 +71,16 @@ var Scene =
 		//small plant
 		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, 5);
-		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//big plant
 		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
 		tmpObj.setPosition(5, 0, -5);
 		tmpObj.setScale(2, 2, 2);
-		tmpObj.boundingBox.setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBox.setPositionCorrection(-0.1, 0, -0.5);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
 		tmpObj.addToScene();
 
 		//house
@@ -77,7 +88,7 @@ var Scene =
 		tmpObj.setPosition(-7, 0, 0);
 		tmpObj.setScale(0.4, 0.6, 0.5);
 		tmpObj.addToScene();
-		tmpObj.boundingBox.setScaleCorrection(0.95, 1, 0.95);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0.95, 1, 0.95);
 
 		//wall
 		var tmpObj = new Box3D(2, 10, 8);
@@ -89,7 +100,7 @@ var Scene =
 		tmpObj.setPosition(0, -5, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new Box3D(100, 10, 200, greenMaterial);
+		var tmpObj = new Box3D(200, 10, 200, greenMaterial);
 		tmpObj.setPosition(0, -5, 250);
 		tmpObj.addToScene();
 
@@ -117,35 +128,78 @@ var Scene =
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleTowerMesh, yellowMaterial, castleWallMesh, yellowMaterial, 12, 12, 12);
+		var tmpObj = new Castle3D(castleExteriorMesh, yellowMaterial, castleInteriorMesh, redMaterial, castleTowersMesh, greenSpecMaterial);
 		tmpObj.setPosition(-10, 0, 10);
-		tmpObj.insertWalls(5, "U");
-		tmpObj.insertWalls(2, "L");
-		tmpObj.insertWalls(3, "D");
-		tmpObj.insertWalls(2, "L");
-		tmpObj.insertWalls(1, "D");
-		tmpObj.insertWalls(4, "R");
 		tmpObj.addToScene();
 
 		//bridge
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(0, -6, 140);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(0, -15, 140);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(10, -5, 130);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(10, -10, 130);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(4, -6, 120);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(4, -4, 115);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(5, -5, 110);
-		tmpObj.boundingBox.setPositionCorrection(-1, 0, 0);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(1, -9, 103);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		//house0 with custom bbox
+		var tmpObj = new Object3D(house0Mesh, redMaterial);
+		tmpObj.setPosition(40, 0, 200);
+		tmpObj.setScale(0.5, 0.5, 0.5);
+		tmpObj.setRotation(0, 0, 0);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+		
+		//house0 with default bbox
+		var tmpObj = new Object3D(house0MeshNB, redMaterial);
+		tmpObj.setPosition(40, 0, 300);
+		tmpObj.setScale(0.5, 0.5, 0.5);
+		tmpObj.addToScene();
+
+		//trees
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(40, 0, 240);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-10, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(5, 0, 300);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-30, 0, 210);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(25, 0, 250);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(-50, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
+		tmpObj.setPosition(50, 0, 280);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+
+		//door
+		var tmpObj = new Door3D(doorMesh, redMaterial);
+		tmpObj.setPosition(3, 0, 190);
 		tmpObj.addToScene();
 
 		//player
@@ -158,19 +212,23 @@ var Scene =
 		///			CAMERA
 		///_______________________
 
-		camera = new LookAtCamera();
-		camera.setLookRadius(15.0);
-		camera.setElevation(35.0);
-		camera.setLookPoint(0, 0, 0);
-		camera.look();
+		lookAtCamera = new LookAtCamera();
+		lookAtCamera.setLookRadius(15.0);
+		lookAtCamera.setElevation(35.0);
+		lookAtCamera.setLookPoint(0, 0, 0);
+
+		firstPersonCamera = new FirstPersonCamera();
+		firstPersonCamera.setElevation(35.0);
+		firstPersonCamera.setPosition(0, 0, 0);
+		firstPersonCamera.look();
 
 		///			LIGHTS
 		///___________________________
 
 		//creates first light 
-	    // light = new DirectionalLight('LA', -1, 1, 1 );
+	    light = new DirectionalLight('LA', -1, 1, 1 );
 
-	    light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
+	    //light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 
@@ -195,16 +253,30 @@ var Scene =
 			objects[i].update();
 		}
 
-		//set camera to follow player
-		camera.setAngle(player.rotx);
-		camera.setLookPoint(player.x, player.y, player.z);
-		camera.look();
+		if(cameraMode)
+		{
+			firstPersonCamera.setAngle(player.rotx);
+			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
+			firstPersonCamera.look();
+		}
+		else
+		{
+			lookAtCamera.setAngle(player.rotx);
+			lookAtCamera.setLookPoint(player.x, player.y, player.z);
+			lookAtCamera.look();
+		}
+
 		light.setLightPosition(player.x, player.y+10, player.z);
  	    light.moveToCameraSpace(viewMatrix);
+		
 
 		//toggle showing of bounding boxes
 		if(Input.isKeyClicked(Input.B_KEY))
 			showBoundingBoxes = !showBoundingBoxes;
+
+		//toggle camera modes
+		if(Input.isKeyClicked(Input.C_KEY))
+			cameraMode = !cameraMode;
 
 
 		for(var i=0; i<objectsCount; i++)

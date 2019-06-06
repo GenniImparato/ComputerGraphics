@@ -3,7 +3,7 @@
 precision mediump float;
 
 in vec3 fsNormal;
-in vec3 fsPosition; 
+in vec3 fs_pos; 
 in vec2 uv_coord;
 out vec4 outColor;
 uniform sampler2D u_texture;

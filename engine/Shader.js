@@ -1,7 +1,7 @@
 class Shader
 {
 	//creates a shader from .vs and .fs files
-	constructor(vsFile, fsFile)
+	constructor(vsFile, fsFile, use_texture)
 	{
 		var locProgram;
 		var vertexShader;
@@ -50,8 +50,12 @@ class Shader
 		gl.enableVertexAttribArray(this.normalsLoc);
 
 		this.uvsLoc = gl.getAttribLocation(this.program, "inUV");
-		gl.enableVertexAttribArray(this.uvsLoc);
-
+		if (use_texture) {
+			gl.enableVertexAttribArray(this.uvsLoc);
+		}
+		else {
+			gl.disableVertexAttribArray(this.uvsLoc);
+		}
 		this.matrixLoc = gl.getUniformLocation(this.program, "worldProjectionMatrix");
 	    this.wvMatrixLoc = gl.getUniformLocation(this.program, "worldViewMatrix");
 		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
