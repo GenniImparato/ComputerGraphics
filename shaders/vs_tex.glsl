@@ -7,14 +7,15 @@ out vec3 fsNormal;
 out vec3 fs_pos;
 out vec2 uv_coord;
 
-uniform mat4 matrix; 
+uniform mat4 worldProjectionMatrix; 
 uniform mat4 nMatrix;
+uniform mat4 worldViewMatrix;
 
 void main() 
 {
-  fsNormal = mat3(nMatrix) * inNormal; 
-  vec4 fs_pos4 = matrix * vec4(inPosition, 1.0);
-  fs_pos = fs_pos4.xyz;
+   fsNormal = mat3(nMatrix) * inNormal; 
+  fs_pos = (worldViewMatrix * vec4(inPosition, 1.0)).xyz;
+  gl_Position = worldProjectionMatrix * vec4(inPosition, 1.0);
   uv_coord = inUV;
-  	gl_Position = fs_pos4;
+
 }

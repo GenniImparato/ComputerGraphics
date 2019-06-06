@@ -14,5 +14,4 @@ void main()
   fsNormal = mat3(nMatrix) * inNormal; 
   fs_pos = (worldViewMatrix * vec4(inPosition, 1.0)).xyz;
   gl_Position = worldProjectionMatrix * vec4(inPosition, 1.0);
-
 }

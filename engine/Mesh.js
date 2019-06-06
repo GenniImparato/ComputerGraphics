@@ -70,9 +70,10 @@ class Mesh
 		gl.vertexAttribPointer(shader.getNormalsLocation(), this.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 		//uv
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.textCoordBuffer);
-		gl.vertexAttribPointer(shader.getUVsLocation(), this.textCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
+		if (shader.getUVsLocation() != -1) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.textCoordBuffer);
+			gl.vertexAttribPointer(shader.getUVsLocation(), this.textCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		}	
 	    
 
 		//rendering

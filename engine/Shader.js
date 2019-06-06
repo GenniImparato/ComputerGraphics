@@ -52,15 +52,12 @@ class Shader
 		this.uvsLoc = gl.getAttribLocation(this.program, "inUV");
 		if (use_texture) {
 			gl.enableVertexAttribArray(this.uvsLoc);
-		}
-		else {
-			gl.disableVertexAttribArray(this.uvsLoc);
-		}
+		}		
+		this.textureLoc = gl.getUniformLocation(this.program, "uTexture");
+
 		this.matrixLoc = gl.getUniformLocation(this.program, "worldProjectionMatrix");
 	    this.wvMatrixLoc = gl.getUniformLocation(this.program, "worldViewMatrix");
 		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
-		this.colorLoc = gl.getUniformLocation(this.program, "color");
-		this.textureLoc = gl.getUniformLocation(this.program, "u_texture");
 
 		//gl.enableVertexAttribArray(getAttributeLocation("inTextCoord");
 

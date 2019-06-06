@@ -61,27 +61,13 @@ var Scene =
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
-		var textureMaterial = new TextureMaterial("leather.tif");
+		var textureMaterial = new TextureMaterial("crate.png");
 
 	    console.log("Loaded texture");
 
 		////		CREATE OBJECTS 3D
 		////__________________________________
 
-		//small plant
-		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
-		tmpObj.setPosition(5, 0, 5);
-		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
-		tmpObj.addToScene();
-
-		//big plant
-		var tmpObj = new Object3D(plantMesh, greenSpecMaterial);
-		tmpObj.setPosition(5, 0, -5);
-		tmpObj.setScale(2, 2, 2);
-		tmpObj.boundingBoxes[0].setScaleCorrection(0.2, 1, 0.3);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-0.1, 0, -0.5);
-		tmpObj.addToScene();
 
 		//house
 		var tmpObj = new Object3D(houseMesh, redMaterial);
@@ -203,9 +189,9 @@ var Scene =
 		tmpObj.addToScene();
 
 		//player
-		player  = new Player(unitCubeMesh, gearMesh);
+		player  = new Player(unitCubeTexMesh, gearMesh);
 		player.setPosition(0, 40, 170);
-		player.setMaterial(yellowMaterial);
+		player.setMaterial(textureMaterial);
 		player.enableCollisionWith(objects);
 
 		
