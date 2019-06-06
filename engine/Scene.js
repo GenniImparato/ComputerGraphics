@@ -46,8 +46,8 @@ var Scene =
 		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
 
 		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
-		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj");
-		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj");
+		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
+		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
 		var castleDoorRMesh		= Mesh.loadFromOBJFile("castle_doorR.obj");
 		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
 
