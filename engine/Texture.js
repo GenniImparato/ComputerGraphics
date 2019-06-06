@@ -9,15 +9,17 @@ function isPowerOf2(value) {
 }
 
  function textureLoaderCallback () {
-	var textureId = gl.createTexture();
+	this.txId = gl.createTexture();
 	gl.activeTexture(gl.TEXTURE0 + this.txNum);
-	gl.bindTexture(gl.TEXTURE_2D, textureId);		
+	gl.bindTexture(gl.TEXTURE_2D, this.txId);		
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);		
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-    gl.generateMipmap(gl.TEXTURE_2D);
+	if (isPowerOf2(this.width) &&
+    	isPowerOf2(this.height)) {
+    		gl.generateMipmap(gl.TEXTURE_2D);
+	} else {
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+	}
 }
 
 class TextureMaterial extends SimpleMaterial {
@@ -36,13 +38,6 @@ class TextureMaterial extends SimpleMaterial {
 			textureShader = new Shader("vs_tex.glsl", "fs_tex.glsl", true);
 	    }
 	    this.shader  = textureShader;
-
-		this.texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-             this.prefetchingTexturePixels);
-		
 
 		this.image = new Image();
 		this.image.txNum = texturesCount;
@@ -65,6 +60,7 @@ class TextureMaterial extends SimpleMaterial {
     bindShader() {	
 	    this.shader.use();
 	    // setup texture
+
  		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
 	    light.bind(this.shader);
@@ -96,13 +92,6 @@ class TextureDiffuse extends SimpleMaterial {
 	    }
 	    this.shader  = textureDiffuseShader;
 
-		this.texture = gl.createTexture();
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
-             this.prefetchingTexturePixels);
-		
-
 		this.image = new Image();
 		this.image.txNum = texturesCount;
 		texturesCount++;
@@ -124,19 +113,7 @@ class TextureDiffuse extends SimpleMaterial {
     bindShader() {	
 	    this.shader.use();
 	    // setup texture
-	    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-	     gl.activeTexture(gl.TEXTURE0);
-
-	     if(this.image.complete) {
-    	
-    	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
- 		gl.generateMipmap(gl.TEXTURE_2D);
- 		} else {
- 			this.prefetchingTexturePixels = new Uint8Array([0, 0, 255, 255]);
- 		}
- 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.texture);
+ 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
 	    light.bind(this.shader);
 		
