@@ -34,20 +34,24 @@ var Scene =
 
 		Scene.loadGlobalAssets();
 
-		var plantMesh 		= Mesh.loadFromOBJFile("plant.obj");
-		var houseMesh 		= Mesh.loadFromOBJFile("house.obj");
-		var gearMesh 		= Mesh.loadFromOBJFile("gear.obj");
-		var castleTowerMesh	= Mesh.loadFromOBJFile("castle_tower.obj");
-		var castleWallMesh	= Mesh.loadFromOBJFile("castle_wall.obj");
-		var woodBox			= Mesh.loadFromOBJFile("wood_box.obj");
-		var rock0Mesh		= Mesh.loadFromOBJFile("rock0.obj");
-		var house0Mesh 		= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
-		var house0MeshNB	= Mesh.loadFromOBJFile("house0.obj");
-		var tree0TrunkMesh	= Mesh.loadFromOBJFile("tree0_trunk.obj");
-		var tree0LeafsMesh 	= Mesh.loadFromOBJFile("tree0_leafs.obj");
-		var doorMesh		= Mesh.loadFromOBJFile("wooden_door.obj");
+		var plantMesh 			= Mesh.loadFromOBJFile("plant.obj");
+		var houseMesh 			= Mesh.loadFromOBJFile("house.obj");
+		var gearMesh 			= Mesh.loadFromOBJFile("gear.obj");
+		var castleTowerMesh		= Mesh.loadFromOBJFile("castle_tower.obj");
+		var castleWallMesh		= Mesh.loadFromOBJFile("castle_wall.obj");
+		var woodBox				= Mesh.loadFromOBJFile("wood_box.obj");
+		var rock0Mesh			= Mesh.loadFromOBJFile("rock0.obj");
+		var house0Mesh 			= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
+		var house0MeshNB		= Mesh.loadFromOBJFile("house0.obj");
+		var tree0TrunkMesh		= Mesh.loadFromOBJFile("tree0_trunk.obj");
+		var tree0LeafsMesh 		= Mesh.loadFromOBJFile("tree0_leafs.obj");
+		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
 
-		var unitCubeTexMesh = Mesh.loadFromOBJFile("u_cube_leather.obj");
+		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj");
+		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj");
+		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj");
+
+		var unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
 
 
 		////		CREATE MATERIALS
@@ -123,34 +127,28 @@ var Scene =
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleTowerMesh, yellowMaterial, castleWallMesh, yellowMaterial, 12, 12, 12);
+		var tmpObj = new Castle3D(castleExteriorMesh, yellowMaterial, castleInteriorMesh, redMaterial, castleTowersMesh, greenSpecMaterial);
 		tmpObj.setPosition(-10, 0, 10);
-		tmpObj.insertWalls(5, "U");
-		tmpObj.insertWalls(2, "L");
-		tmpObj.insertWalls(3, "D");
-		tmpObj.insertWalls(2, "L");
-		tmpObj.insertWalls(1, "D");
-		tmpObj.insertWalls(4, "R");
 		tmpObj.addToScene();
 
 		//bridge
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(0, -6, 140);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(0, -15, 140);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(10, -5, 130);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(10, -10, 130);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(4, -6, 120);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(4, -4, 115);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(30, 100, 30, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(5, -5, 110);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		tmpObj.setPosition(1, -9, 103);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 

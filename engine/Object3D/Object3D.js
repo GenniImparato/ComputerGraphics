@@ -152,13 +152,15 @@ class Object3D
 	setPosition(x, y, z)
 	{
 		this.x = x;		this.y = y;		this.z = z;
-		this.updateBoundingBoxes(this.x, this.y, this.z);
+		this.updateBoundingBoxes(this.x, this.y, this.z,
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	move(x, y, z)
 	{
 		this.x += x;	this.y += y;	this.z += z;
-		this.updateBoundingBoxes(this.x, this.y, this.z);
+		this.updateBoundingBoxes(this.x, this.y, this.z,
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 	setRotation(x, y, z)
@@ -209,11 +211,11 @@ class Object3D
 	///			BOUNDING BOXES
 	///________________________________
 
-	updateBoundingBoxes(x, y, z, rotx)
+	updateBoundingBoxes(x, y, z, scaleX, scaleY, scaleZ, rotx)
 	{
 		for(var i=0; i<this.boundingBoxes.length; i++)
 			this.boundingBoxes[i].update(x, y, z, 
-								this.scaleX, this.scaleY, this.scaleZ, rotx);
+								scaleX, scaleY, scaleZ, rotx);
 	}
 
 	///			RECURSIVE HIERARCHY
@@ -223,9 +225,9 @@ class Object3D
 	{
 		if(this.parent != null)
 		{
-			var parentWorldMat = utils.MakeWorld(this.parent.x, this.parent.y, this.parent.z, 
+			var parentWorldMat = utils.MakeWorld_(this.parent.x, this.parent.y, this.parent.z, 
 										this.parent.rotx, this.parent.roty, this.parent.rotz, 
-										1.0);
+										this.parent.scaleX, this.parent.scaleY, this.parent.scaleZ);
 
 			var transformedPosition = utils.multiplyMatrixVector(parentWorldMat, position);
 
@@ -248,6 +250,18 @@ class Object3D
 			return rotation;
 	}
 
+	recursiveScaleTransform(scale)
+	{
+		if(this.parent != null)
+			return this.parent.recursiveScaleTransform(
+														[scale[0] * this.parent.scaleX,
+														scale[1] * this.parent.scaleY,
+														scale[2] * this.parent.scaleZ]
+													);
+		else
+			return scale;
+	}
+
 	////_____________________________________
 
 
@@ -256,8 +270,10 @@ class Object3D
 		//values that needs to be recursivley summed by hierarchy
 		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
+		var transormedSca = this.recursiveScaleTransform([this.scaleX, this.scaleY, this.scaleZ]);
 
-		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2], transormedRot[0]);
+		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2], 
+							transormedSca[0], transormedSca[1], transormedSca[2], transormedRot[0]);
 		
 		//renders bounding box
 		if(showBoundingBoxes)
@@ -270,7 +286,7 @@ class Object3D
 			//renders object
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
 										transormedRot[0], transormedRot[1], transormedRot[2], 
-										this.scaleX, this.scaleY, this.scaleZ);
+										transormedSca[0], transormedSca[1], transormedSca[2]);
 				
 	            this.material.bindShader();
 			if(this.mesh != null)
@@ -403,7 +419,8 @@ class Object3D
 			this.z += this.speedZ;
 		}		
 
-		this.updateBoundingBoxes(this.x, this.y, this.z);
+		this.updateBoundingBoxes(this.x, this.y, this.z,
+								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
 }

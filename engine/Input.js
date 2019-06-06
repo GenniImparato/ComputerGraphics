@@ -78,9 +78,7 @@ var Input =
 	mouseMove: function(event) 
 	{
 		mouseDx = event.movementX || event.mozMovementX || 0;
-		mouseDy = event.movementY || event.mozMovementY ||  0;
-		
-		console.log(event);
+		mouseDy = event.movementY || event.mozMovementY || 0;
 	},
 
  	mouseWheel: function(event) 

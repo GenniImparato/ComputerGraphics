@@ -44,6 +44,7 @@ class LinearAnimator
 		this.reverse = false;
 
 		this.object = object;
+		this.duration = 1;
 	}
 
 	addKeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ)
@@ -52,16 +53,18 @@ class LinearAnimator
 		this.kfCount++;
 	}
 
-	playAnimation()
+	playAnimation(duration)
 	{
 		this.playing = true;
 		this.reverse = false;
+		this.duration = duration;
 	}
 
-	playReverseAnimation()
+	playReverseAnimation(duration)
 	{
 		this.playing = true;
 		this.reverse = true;
+		this.duration = duration;
 	}
 
 	stopAnimation()
@@ -78,14 +81,14 @@ class LinearAnimator
 			else
 				this.currTime++;
 
-			if(this.reverse && (this.currTime <= this.currFrame*30))
+			if(this.reverse && (this.currTime <= this.currFrame*this.duration))
 			{
 				if(this.currFrame == 0)
 					this.stopAnimation();
 				else
 					this.currFrame--;
 			}
-			if(this.currTime >= this.currFrame*30)
+			if(this.currTime >= this.currFrame*this.duration)
 			{
 				if(this.currFrame == this.kfCount-1)
 					this.stopAnimation();
@@ -95,7 +98,7 @@ class LinearAnimator
 
 		}
 
-		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/30);
+		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/this.duration);
 		this.object.setPosition(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
 		this.object.setRotation(interpolatedFrame.rotX, interpolatedFrame.rotY, interpolatedFrame.rotZ);
 		this.object.setScale(interpolatedFrame.scaleX, interpolatedFrame.scaleY, interpolatedFrame.scaleZ);

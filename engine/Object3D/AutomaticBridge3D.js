@@ -10,8 +10,8 @@ class AutomaticBridge3D extends GroupObject3D
 
 		//animation
 		this.animator = new LinearAnimator(this.mainObj);
-		this.animator.addKeyFrame(0, -30, 0, 0, 0, 0, 1, 1, 1);
-		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1, 1, 1);
+		this.animator.addKeyFrame(0, -50, 0, 0, 0, 0, 1.6, 1.6, 1.6);
+		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1.6, 1.6, 1.6);
 
 		//trigger
 		this.trigger = new TriggerBox3D(this.boundingBoxes[0].dx+triggDx, this.boundingBoxes[0].dy+triggDy, this.boundingBoxes[0].dz+triggDz, this);
@@ -28,11 +28,11 @@ class AutomaticBridge3D extends GroupObject3D
 
 	activate(instance)
 	{
-		instance.animator.playAnimation();
+		instance.animator.playAnimation(50);
 	}
 
 	deactivate(instance)
 	{
-		instance.animator.playReverseAnimation();
+		instance.animator.playReverseAnimation(50);
 	}
 }

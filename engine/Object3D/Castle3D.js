@@ -1,5 +1,16 @@
 class Castle3D extends GroupObject3D
 {
+	constructor(exteriorMesh, exteriorMaterial, interiorMesh, interiorMaterial, towersMesh, towersMaterial)
+	{
+		super();
+		this.addObject3D(new Object3D(exteriorMesh, exteriorMaterial));
+		this.addObject3D(new Object3D(interiorMesh, interiorMaterial));
+		this.addObject3D(new Object3D(towersMesh, towersMaterial));
+	}
+}
+
+/*class Castle3D extends GroupObject3D
+{
 	constructor(towerMesh, towerMaterial, wallMesh, wallMaterial, scaleX, scaleY, scaleZ)
 	{	
 		super();
@@ -96,4 +107,4 @@ class Castle3D extends GroupObject3D
 		tmp.setPosition(this.currX, this.currY, this.currZ);
 		this.addObject3D(tmp);
 	}
-}
+}*/
