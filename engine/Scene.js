@@ -70,18 +70,6 @@ var Scene =
 		////__________________________________
 
 
-		//house
-		var tmpObj = new Object3D(houseMesh, redMaterial);
-		tmpObj.setPosition(-7, 0, 0);
-		tmpObj.setScale(0.4, 0.6, 0.5);
-		tmpObj.addToScene();
-		tmpObj.boundingBoxes[0].setScaleCorrection(0.95, 1, 0.95);
-
-		//wall
-		var tmpObj = new Box3D(2, 10, 8);
-		tmpObj.setPosition(0, 5, -10);
-		tmpObj.addToScene();
-
 
 		//floors
 		var tmpObj = new Box3D(200, 100, 190, greenMaterial);
