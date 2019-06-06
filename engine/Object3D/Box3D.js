@@ -51,14 +51,10 @@ class TriggerBox3D extends Box3D
 	}
 
 	onTrigger(instance)
-	{
-		console.log("triggered");
-	}
+	{}
 
 	onUntrigger(instance)
-	{
-		console.log("un-triggered");
-	}
+	{}
 
 	onCollide(instance)
 	{}
