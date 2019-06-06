@@ -34,8 +34,6 @@ var Scene =
 
 		Scene.loadGlobalAssets();
 
-		var plantMesh 			= Mesh.loadFromOBJFile("plant.obj");
-		var houseMesh 			= Mesh.loadFromOBJFile("house.obj");
 		var gearMesh 			= Mesh.loadFromOBJFile("gear.obj");
 		var castleTowerMesh		= Mesh.loadFromOBJFile("castle_tower.obj");
 		var castleWallMesh		= Mesh.loadFromOBJFile("castle_wall.obj");
@@ -47,9 +45,11 @@ var Scene =
 		var tree0LeafsMesh 		= Mesh.loadFromOBJFile("tree0_leafs.obj");
 		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
 
-		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj");
+		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
 		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj");
 		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj");
+		var castleDoorRMesh		= Mesh.loadFromOBJFile("castle_doorR.obj");
+		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
 
 		var unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
 
@@ -59,6 +59,7 @@ var Scene =
 		var greenSpecMaterial = new SpecularMaterial(0.0, 255, 10, 255);
 	    var greenMaterial = new DiffuseMaterial(0.0, 255, 10, 255);
 		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
+		var lavaMaterial = new SpecularMaterial(255, 0, 0, 255);
 		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
 		var textureMaterial = new TextureMaterial("crate.png");
@@ -81,41 +82,50 @@ var Scene =
 		tmpObj.setPosition(0, 5, -10);
 		tmpObj.addToScene();
 
+
 		//floors
-		var tmpObj = new Box3D(200, 10, 190, greenMaterial);
-		tmpObj.setPosition(0, -5, 0);
+		var tmpObj = new Box3D(200, 100, 190, greenMaterial);
+		tmpObj.setPosition(0, -50, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new Box3D(200, 10, 200, greenMaterial);
-		tmpObj.setPosition(0, -5, 250);
+		var tmpObj = new Box3D(200, 100, 200, greenMaterial);
+		tmpObj.setPosition(0, -50, 250);
 		tmpObj.addToScene();
 
+		//lava
+		var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
+		tmpObj.setPosition(0, -25, 0);
+		tmpObj.addToScene();
 
 		//mobile wood boxes
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
-		tmpObj.setPosition(-25, 50, 50);
+		tmpObj.setPosition(-25, 50, 40);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
-		tmpObj.setPosition(-23, 80, 50);
+		tmpObj.setPosition(-23, 80, 40);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
-		tmpObj.setPosition(-45, 100, 45);
+		tmpObj.setPosition(-45, 100, 35);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
 		//castle
-		var tmpObj = new Castle3D(castleExteriorMesh, yellowMaterial, castleInteriorMesh, redMaterial, castleTowersMesh, greenSpecMaterial);
-		tmpObj.setPosition(-10, 0, 10);
+		var tmpObj = new Castle3D(castleExteriorMesh, yellowMaterial, 
+						castleInteriorMesh, redMaterial, 
+						castleTowersMesh, greenSpecMaterial,
+						castleDoorRMesh, castleDoorLMesh, redMaterial);
+		tmpObj.setPosition(0, 0, 8);
+		tmpObj.setScale(3, 3, 3);
 		tmpObj.addToScene();
 
 		//bridge
@@ -135,7 +145,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
-		tmpObj.setPosition(1, -9, 103);
+		tmpObj.setPosition(-8, -9, 108);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
@@ -212,7 +222,7 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    light = new DirectionalLight('LA', -1, 1, 1 );
+	    light = new DirectionalLight('LA', 0, 0.5, 1);
 
 	    //light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
 	    light.setColor(255, 255, 255);
@@ -223,10 +233,6 @@ var Scene =
 	render: function()
 	{
 		gl.clear(gl.COLOR_BUFFER_BIT);
-
-		//rotates plants
-		objects[0].rotate(1.5, 0, 0);
-		objects[1].rotate(-1.5, 0, 0);
 
 		player.handleInput();
 

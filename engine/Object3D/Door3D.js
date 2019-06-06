@@ -1,6 +1,6 @@
 class Door3D extends GroupObject3D
 {
-	constructor(mesh, material)
+	constructor(mesh, material, openFromRight)
 	{ 
 		super();
 
@@ -9,8 +9,12 @@ class Door3D extends GroupObject3D
 		//door object
 		var door = new Object3D(mesh, material);
 		door.setParent(doorPar);
-		door.setPosition(-door.boundingBoxes[0].dx/2, 0, 0);
-		door.setScale(1.5, 1.5, 1.5);
+
+		if(!openFromRight)
+			door.setPosition(-door.boundingBoxes[0].dx/2, 0, 0);
+		else
+			door.setPosition(door.boundingBoxes[0].dx/2, 0, 0);
+
 		doorPar.addObject3D(door);
 		this.addObject3D(doorPar);
 
@@ -26,20 +30,27 @@ class Door3D extends GroupObject3D
 		this.addObject3D(this.backTrigger);
 
 		this.animator = new LinearAnimator(doorPar);
+		this.animator.enablePositionAnimation(false);
+		this.animator.enableScaleAnimation(false);
+
+
 		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1, 1, 1);
-		this.animator.addKeyFrame(0, 0, 0, -90, 0, 0, 1, 1, 1);
+
+		if(!openFromRight)
+			this.animator.addKeyFrame(0, 0, 0, -90, 0, 0, 1, 1, 1);
+		else
+			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0, 1, 1, 1);
 
 		this.frontTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
 		this.frontTrigger.onUntrigger = function(inst)
 						{
-							if(!inst.backTrigger.isColliding())
 								inst.animator.playReverseAnimation(30);
 						}
 
 		this.backTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
 		this.backTrigger.onUntrigger = function(inst)
 						{
-							if(!inst.frontTrigger.isColliding())
+						
 								inst.animator.playReverseAnimation(30);
 						}
 	}
