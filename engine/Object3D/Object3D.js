@@ -208,6 +208,11 @@ class Object3D
 		this.material = material;
 	}
 
+	getWorldPosition()
+	{
+		return this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
+	}
+
 	///			BOUNDING BOXES
 	///________________________________
 

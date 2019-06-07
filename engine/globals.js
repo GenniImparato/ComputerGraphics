@@ -13,6 +13,7 @@ var projectionMatrix;
 
 //global mesh of a cube with unitary dimensions
 var unitCubeMesh;			//loaded in Scene.init()
+var unitCubeTexMesh;
 
 //global shader for bounding boxes
 

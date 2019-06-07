@@ -1,9 +1,9 @@
 const standardMoveSpeed		= 0.2;
 const sprintMoveSpeed		= 0.6;
 
-class Player extends Object3D
+class Player extends GroupObject3D
 {
-	constructor(mainMesh, gearMesh, material)
+	constructor(mainMesh, material)
 	{
 		super(mainMesh, material);
 		this.changeBBColor = true;
@@ -64,9 +64,7 @@ class Player extends Object3D
 			this.setSpeed(this.speedX, 0.5, this.speedZ);
 	}
 
-	//override
-	render()
+	preUpdate()
 	{
-		super.render();
 	}
 }

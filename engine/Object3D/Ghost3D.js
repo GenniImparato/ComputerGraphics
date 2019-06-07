@@ -34,7 +34,7 @@ class Ghost3D extends GroupObject3D
 		distX = distX/distXZ;
 		distZ = distZ/distXZ;
 
-		if(distXZ<100 && distXZ>5)
+		if(distXZ<100 && distXZ>25)
 		{
 			//follow player
 			this.setSpeed(distX*ghostMoveSpeed, 0, distZ*ghostMoveSpeed);

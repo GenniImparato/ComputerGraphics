@@ -2,9 +2,9 @@
 //all objects in the group are linked in hieararchy to the group
 class GroupObject3D extends Object3D
 {
-	constructor()
+	constructor(mesh, material)
 	{
-		super(null);
+		super(mesh, material);
 
 		this.objects = [];
 		this.objectsCount = 0;

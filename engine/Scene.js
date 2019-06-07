@@ -24,7 +24,8 @@ var Scene =
 
 	loadGlobalAssets()
 	{
-		unitCubeMesh = Mesh.loadFromOBJFile("u_cube.obj");
+		unitCubeMesh 		= Mesh.loadFromOBJFile("u_cube.obj");
+		unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
 	},
 
 	init: function()
@@ -53,8 +54,6 @@ var Scene =
 
 		var ghostMesh			= Mesh.loadFromOBJFile("ghost.obj");
 
-		var unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
-
 
 		////		CREATE MATERIALS
 		////__________________________________
@@ -75,6 +74,11 @@ var Scene =
 		////		CREATE OBJECTS 3D
 		////__________________________________
 
+		//player
+		player  = new Player(unitCubeTexMesh, textureMaterial);
+		player.setPosition(0, 40, 170);
+		player.enableCollisionWith(objects);
+		player.addToScene();
 
 		//floors
 		var tmpObj = new Box3D(200, 100, 190, greenMaterial);
@@ -196,12 +200,6 @@ var Scene =
 		tmpObj.setPosition(-20, 5, 170);
 		tmpObj.addToScene();
 
-		//player
-		player  = new Player(unitCubeTexMesh, gearMesh);
-		player.setPosition(0, 40, 170);
-		player.setMaterial(textureMaterial);
-		player.enableCollisionWith(objects);
-
 		
 		///			CAMERA
 		///_______________________
@@ -212,7 +210,7 @@ var Scene =
 		lookAtCamera.setLookPoint(0, 0, 0);
 
 		firstPersonCamera = new FirstPersonCamera();
-		firstPersonCamera.setElevation(35.0);
+		firstPersonCamera.setElevation(0.0);
 		firstPersonCamera.setPosition(0, 0, 0);
 		firstPersonCamera.look();
 
@@ -221,10 +219,10 @@ var Scene =
 
 		//creates first light 
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.5, 1, 50, 0.7 ));
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
 	    //lights.push(new DirectionalLight('LB', 0, 0.5, 1));
-	    lights[0].setCone(0.4, 0.2)
+	    lights[0].setCone(0.4, 0.2);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 255, 255);
 	    Light.moveAllLights(viewMatrix);
@@ -238,8 +236,6 @@ var Scene =
 		player.handleInput();
 
 		//physics and collisions
-		player.solveCollisions();		//only solve collisions with enabled objects
-		player.update();
 		for(var i=0; i<objectsCount; i++)
 		{
 			objects[i].solveCollisions();		//only solve collisions with enabled objects
@@ -258,7 +254,7 @@ var Scene =
 			lookAtCamera.setAngle(player.rotx);
 			lookAtCamera.setLookPoint(player.x, player.y, player.z);
 			lookAtCamera.look();
-		        lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
+		    lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
 		}
 
 		lights[0].setPosition(player.x, player.y+5, player.z);
@@ -273,12 +269,9 @@ var Scene =
 		if(Input.isKeyClicked(Input.C_KEY))
 			cameraMode = !cameraMode;
 
-
+		//render all the objects in the scene
 		for(var i=0; i<objectsCount; i++)
-			objects[i].render();
-
-		player.render();
-		
+			objects[i].render();	
 	
 		window.requestAnimationFrame(Scene.render);
 	},

@@ -3,9 +3,8 @@ class Box3D extends Object3D
 	//construct a box by given dimensions
 	constructor(dimX, dimY, dimZ, material)
 	{
-		super(unitCubeMesh, material);
+		super(unitCubeTexMesh, material);
 		this.setScale(dimX, dimY, dimZ);
-		this.boundingBoxes[0].setScaleCorrection(1, 1, 1);
 	}
 }
 
