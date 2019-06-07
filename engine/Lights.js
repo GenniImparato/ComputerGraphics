@@ -20,7 +20,7 @@ class Light {
     }
 
     setRotation(angle, elevation) {
-	this.rotation = utils.multiplyMatrices(utils.MakeRotateYMatrix(angle),utils.MakeRotateXMatrix(elevation));
+	this.rotation = utils.multiplyMatrices(utils.MakeRotateYMatrix(angle),utils.MakeRotateXMatrix(-elevation));
 	 
     }
 
