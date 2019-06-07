@@ -219,10 +219,10 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    //light = new DirectionalLight('LA', 0, 0.5, 1);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.5, 1, 50, 0.7 ));
-	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
+	    //lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
+	    lights.push(new DirectionalLight('LB', 0, 0.5, 1));
 	    lights[0].setCone(0.4, 0.2)
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 255, 255);
@@ -249,16 +249,18 @@ var Scene =
 		{
 			firstPersonCamera.setAngle(player.rotx);
 			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
-			firstPersonCamera.look();
+		    firstPersonCamera.look();
+		    lights[0].setRotation(firstPersonCamera.angle, firstPersonCamera.elevation);
 		}
 		else
 		{
 			lookAtCamera.setAngle(player.rotx);
 			lookAtCamera.setLookPoint(player.x, player.y, player.z);
 			lookAtCamera.look();
+		        lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
 		}
 
-		lights[0].setLightPosition(player.x, player.y+10, player.z-10);
+		lights[0].setPosition(player.x, player.y+5, player.z);
 	    Light.moveAllLights(viewMatrix);
 		
 

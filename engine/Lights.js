@@ -10,24 +10,22 @@ class Light {
 		this.Bcolor = 1.0;		
 	   this.movedPosition = [x, y, z, 1.0];
 	    this.on = 1.0;
+	    this.rotation = utils.MakeRotateXMatrix(0);
 	}
 
-    setLightPosition(x, y, z){
+    setPosition(x, y, z){
 		this.x = x;
 		this.y = y;
 	    this.z = z;
     }
 
-    rotateLight(angle, elevation) {
-	var rotationMatrix = utils.sub3x3from4x4(utils.multiplyMatrices(utils.MakeRotateYMatrix(angle),utils.MakeRotateYMatrix(elevation)));
-	var newDir  = utils.multiplyMatrix3Vector3(rotationMatrix, [this.dirx, this.diry, this.dirz]);
-	this.dirx = newDir[0];
-	this.diry = newDir[1];
-	this.dirz = newDir[2];
+    setRotation(angle, elevation) {
+	this.rotation = utils.multiplyMatrices(utils.MakeRotateYMatrix(angle),utils.MakeRotateXMatrix(elevation));
+	 
     }
 
 
-    setLightDirection(dirx, diry, dirz) {
+    setDirection(dirx, diry, dirz) {
 	var length = Math.sqrt(dirx * dirx + diry * diry + dirz * dirz);
 		this.dirx = dirx / length;
 		this.diry = diry / length;
@@ -53,8 +51,29 @@ class Light {
 	var lightDirMatrix = utils.invertMatrix(utils.transposeMatrix(viewMatrix));
 	var lightPosMatrix = viewMatrix; 
 	this.movedPosition = utils.multiplyMatrixVector(lightPosMatrix, [this.x, this.y, this.z, 1.0]);
-	this.movedDir = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), [this.dirx, this.diry, this.dirz]);
+	var rotatedDir = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(this.rotation), [this.dirx, this.diry, this.dirz]);
+	this.movedDir = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), rotatedDir);
 	}
+
+
+    bind(shader) {
+		var directionLoc = shader.getUniformLocation(this.name + 'Dir');
+		var colorLoc = shader.getUniformLocation(this.name + 'Color');
+		var positionLoc = shader.getUniformLocation(this.name + 'Pos');
+		var targetLoc = shader.getUniformLocation(this.name + 'Target');
+		var decayLoc = shader.getUniformLocation(this.name + 'Decay');
+		var coneInLoc = shader.getUniformLocation(this.name + 'ConeIn');
+		var coneOutLoc = shader.getUniformLocation(this.name + 'ConeOut');
+	        var lightOnLoc = shader.getUniformLocation(this.name + "On");
+	        gl.uniform1f(lightOnLoc,this.on);
+		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
+		gl.uniform3f(directionLoc, this.movedDir[0], this.movedDir[1], this.movedDir[2]);
+	        gl.uniform3f(positionLoc, this.movedPosition[0], this.movedPosition[1], this.movedPosition[2]);
+		gl.uniform1f(targetLoc, this.targetDistance);
+		gl.uniform1f(decayLoc, this.decay);
+		gl.uniform1f(coneInLoc, this.coneIn);
+		gl.uniform1f(coneOutLoc, this.coneOut);
+    }
 
     static moveAllLights(viewMatrix) {
 	lights.forEach(function (light) {light.moveToCameraSpace(viewMatrix);});
@@ -64,32 +83,30 @@ class Light {
 	lights.forEach(function (light) {light.bind(shader);})
     }
 
+    
+
 }
 
 class DirectionalLight extends Light {
 	constructor(name, dirx, diry, dirz) {
 	    super(name, 0.0 ,0.0 ,0.0);
-
 	    var length = Math.sqrt(dirx * dirx +
 				   diry * diry +
 				   dirz * dirz);
 		this.dirx = dirx / length;
 		this.diry = diry / length;
 		this.dirz = dirz / length ; 
+	    this.coneIn = 1.0;
+	    this.coneOut = 0.0;
+	    this.targetDistance = 1.0;
+	    this.decay = 0.0;
 	    
 	}
 
 	bind(shader) { // bind gl variables 
+	    super.bind(shader);
 		var lightTypeLoc = shader.getUniformLocation(this.name + "Type");
-		var directionLoc = shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = shader.getUniformLocation(this.name + 'Color');
-	    var lightOnLoc = shader.getUniformLocation(this.name + "On");
-	    gl.uniform1f(lightOnLoc,this.on);
-	    gl.uniformMatrix4v(lightViewMatrixLoc, utils.transposeMatrix(this.lightPosMatrix));
-	    gl.uniformMatrix3v(lightRotationMatrix, utils.transposeMatrix3(this.lightDirMatrix));
 	        gl.uniform3f(lightTypeLoc, 1.0, 0.0, 0.0);   
-		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);
-		gl.uniform3f(directionLoc, this.movedDir[0], this.movedDir[1], this.movedDir[2]);
 	}
 
 }
@@ -102,24 +119,15 @@ class PointLight extends Light {
 		this.dirx = 0.0;
 		this.diry = 0.0;
 		this.dirz = 0.0; 
+	    this.coneIn = 0.0;
+	    this.coneOut = 0.0;
 
 	}
 
 	bind(shader) { // bind gl variables 
+	    super.bind(shader);
 		var lightTypeLoc = shader.getUniformLocation(this.name + "Type");
-		var directionLoc = shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = shader.getUniformLocation(this.name + 'Color');
-		var targetLoc = shader.getUniformLocation(this.name + 'Target');
-		var positionLoc = shader.getUniformLocation(this.name + 'Pos');
-		var decayLoc = shader.getUniformLocation(this.name + 'Decay');
-	    var lightOnLoc = shader.getUniformLocation(this.name + "On");
-	    gl.uniform1f(lightOnLoc, this.on);
 		gl.uniform3f(lightTypeLoc, 0.0, 1.0, 0.0);   
-		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
-		gl.uniform3f(directionLoc, this.movedDir[0], this.movedDir[1], this.movedDir[2]);
-		gl.uniform1f(targetLoc, this.targetDistance);
-		gl.uniform1f(decayLoc, this.decay);
-	        gl.uniform3f(positionLoc, this.movedPosition[0], this.movedPosition[1], this.movedPosition[2]);
 	}
 
 }
@@ -153,24 +161,9 @@ class SpotLight extends Light {
 
 
 	bind(shader) { // bind gl variables 
+	    super.bind(shader);
 		var lightTypeLoc = shader.getUniformLocation(this.name + "Type");
-		var directionLoc = shader.getUniformLocation(this.name + 'Dir');
-		var colorLoc = shader.getUniformLocation(this.name + 'Color');
-		var targetLoc = shader.getUniformLocation(this.name + 'Target');
-		var positionLoc = shader.getUniformLocation(this.name + 'Pos');
-		var coneInLoc = shader.getUniformLocation(this.name + 'ConeIn');
-		var coneOutLoc = shader.getUniformLocation(this.name + 'ConeOut');
-		var decayLoc = shader.getUniformLocation(this.name + 'Decay');
-	    var lightOnLoc = shader.getUniformLocation(this.name + "On");
-	    gl.uniform1f(lightOnLoc,this.on);
 		gl.uniform3f(lightTypeLoc, 0.0, 0.0, 1.0);
-		gl.uniform3f(colorLoc, this.Rcolor, this.Gcolor, this.Bcolor);	
-		gl.uniform3f(directionLoc, this.movedDir[0], this.movedDir[1], this.movedDir[2]);
-	        gl.uniform3f(positionLoc, this.movedPosition[0], this.movedPosition[1], this.movedPosition[2]);
-		gl.uniform1f(targetLoc, this.targetDistance);
-		gl.uniform1f(coneInLoc, this.coneIn);
-		gl.uniform1f(coneOutLoc, this.coneOut);
-		gl.uniform1f(decayLoc, this.decay);	
 	}
 
 }
