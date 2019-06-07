@@ -51,6 +51,8 @@ var Scene =
 		var castleDoorRMesh		= Mesh.loadFromOBJFile("castle_doorR.obj");
 		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
 
+		var ghostMesh			= Mesh.loadFromOBJFile("ghost.obj");
+
 		var unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
 
 
@@ -186,6 +188,11 @@ var Scene =
 		//door
 		var tmpObj = new Door3D(doorMesh, redMaterial);
 		tmpObj.setPosition(3, 0, 190);
+		tmpObj.addToScene();
+
+		//ghost
+		var tmpObj = new Ghost3D(ghostMesh, redMaterial);
+		tmpObj.setPosition(-20, 5, 170);
 		tmpObj.addToScene();
 
 		//player

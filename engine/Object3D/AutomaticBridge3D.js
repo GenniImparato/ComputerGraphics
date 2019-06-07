@@ -28,11 +28,11 @@ class AutomaticBridge3D extends GroupObject3D
 
 	activate(instance)
 	{
-		instance.animator.playAnimation(50);
+		instance.animator.playAnimation(50, false);
 	}
 
 	deactivate(instance)
 	{
-		instance.animator.playReverseAnimation(50);
+		instance.animator.playReverseAnimation(50, false);
 	}
 }
