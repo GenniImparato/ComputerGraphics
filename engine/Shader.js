@@ -42,24 +42,16 @@ class Shader
 
 		this.program = locProgram;
 
-		//enable and link shader attributes
-		this.positionsLoc = gl.getAttribLocation(this.program, "inPosition");
-		gl.enableVertexAttribArray(this.positionsLoc);
+	    //enable and link shader attributes
+	    	gl.enableVertexAttribArray(gl.getAttribLocation(this.program, "inPosition"));
 
-		this.normalsLoc = gl.getAttribLocation(this.program, "inNormal");
-		gl.enableVertexAttribArray(this.normalsLoc);
+		gl.enableVertexAttribArray(gl.getAttribLocation(this.program, "inNormal"));
 
-		this.uvsLoc = gl.getAttribLocation(this.program, "inUV");
-		if (use_texture) {
-			gl.enableVertexAttribArray(this.uvsLoc);
+		var uvsLoc = gl.getAttribLocation(this.program, "inUV");
+		if (uvsLoc != -1) {
+			gl.enableVertexAttribArray(uvsLoc);
+		        this.textureLoc = gl.getUniformLocation(this.program, "uTexture");
 		}		
-		this.textureLoc = gl.getUniformLocation(this.program, "uTexture");
-
-		this.matrixLoc = gl.getUniformLocation(this.program, "worldProjectionMatrix");
-	    this.wvMatrixLoc = gl.getUniformLocation(this.program, "worldViewMatrix");
-		this.nMatrixLoc = gl.getUniformLocation(this.program, "nMatrix");
-
-		//gl.enableVertexAttribArray(getAttributeLocation("inTextCoord");
 
 	}
 
@@ -70,18 +62,15 @@ class Shader
 	}
 
 	//getters for attributes locations
-	getPositionsLocation()		{ return this.positionLoc; }
-	getNormalsLocation()		{ return this.normalsLoc; }
-	getUVsLocation()			{ return this.uvsLoc; }
-
-	getMatrixLocation()			{ return this.matrixLoc; }
-	getWorldViewMatrixLocation()			{ return this.wvMatrixLoc; }
-	getNormalMatrixLocation()	{ return this.nMatrixLoc; }
-
-	getColorLocation()			{ return this.colorLoc; }
-	getTextureLocation()		{return this.textureLoc;}
-	getUniformLocation(locationName) {
-		return gl.getUniformLocation(this.program, locationName);}
+    getPositionsLocation()		{ return gl.getAttribLocation(this.program, "inPosition"); }
+    getNormalsLocation()		{ return gl.getAttribLocation(this.program, "inNormal"); }
+    getUVsLocation()			{ return gl.getAttribLocation(this.program, "inUV"); }
+    getMatrixLocation()			{ return gl.getUniformLocation(this.program, "worldProjectionMatrix"); }
+    getWorldViewMatrixLocation()			{ return gl.getUniformLocation(this.program, "worldViewMatrix"); }
+    getNormalMatrixLocation()	{ return gl.getUniformLocation(this.program, "nMatrix"); }
+    getTextureLocation()		{return gl.getUniformLocation(this.program, "uTexture");}
+    getUniformLocation(locationName) {
+	return gl.getUniformLocation(this.program, locationName);}
 
 }
 

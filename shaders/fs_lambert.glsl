@@ -8,6 +8,8 @@ in vec3 fs_pos;
 uniform vec3 LADir;		
 uniform vec3 LAPos;	
 uniform vec3 LAColor;	
+uniform float LAConeIn;
+uniform float LAConeOut;
 uniform float LADecay;
 uniform float LATarget;
 uniform vec3 cameraPos;
@@ -35,11 +37,16 @@ void main()
  	// move light to camera space
 	vec3 lightDir = normalize(LADir);
 	vec3 lightPos = LAPos;
+	float lightDistance = length(lightPos - fs_pos);
 
 	// point light direction
-	float pointDistance = length(lightPos - fs_pos);
 	vec3 pointLightDir = normalize(lightPos - fs_pos);
-	vec3 pointLightColor = clamp(LAColor * pow(LATarget/pointDistance, LADecay), 0.0, 1.0);
+	vec3 pointLightColor = clamp(LAColor * pow(LATarget/lightDistance, LADecay), 0.0, 1.0);
+
+	// spot light direction and color
+	vec3 spotLightDir = lightDir;
+	float cosAlpha = dot(pointLightDir, spotLightDir);
+	vec3 spotLightColor = LAColor * pow(LATarget/lightDistance, LADecay) * clamp( (cosAlpha - LAConeOut)/(LAConeIn - LAConeOut),0.0, 1.0) ;
 
 	vec3 eyeDirVec = normalize(	- fs_pos);
 	
@@ -51,7 +58,7 @@ void main()
 	// pointLight 
 	vec3 pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
 	// spotLight
-	vec3 spotLambertDiffuseColor = vec3(1.0, 1.0, 1.0);
+	vec3 spotLambertDiffuseColor = applyLambertDiffuse(spotLightDir, spotLightColor, normalVec, mDiffColor.rgb);
 
 	
 	// select correct diffuse component
