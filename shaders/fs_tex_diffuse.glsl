@@ -36,7 +36,8 @@ vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diff
 
 void main() {
 	vec3 normalVec = normalize(fsNormal);
-	vec4 texColor =  texture(uTexture, uv_coord);
+	vec2 flippedUv = vec2(uv_coord.x, 1.0 - uv_coord.y);
+	vec4 texColor =  texture(uTexture, flippedUv);
 
  	// move light to camera space
 	vec3 lightDir = normalize(LADir);

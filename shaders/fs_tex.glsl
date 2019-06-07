@@ -19,6 +19,8 @@ uniform float mSpecPower; //power of specular ref
 
 void main() {
 
-  outColor = texture(uTexture, uv_coord);
+     vec2 flippedUv = vec2(uv_coord.x, 1.0 - uv_coord.y);
+
+  outColor = texture(uTexture, flippedUv);  
 
 }
