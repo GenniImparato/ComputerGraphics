@@ -45,6 +45,7 @@ class LinearAnimator
 
 		this.object = object;
 		this.duration = 1;
+		this.loop = false;
 
 		this.animatePosition = true;
 		this.animateRotation = true;
@@ -72,18 +73,20 @@ class LinearAnimator
 		this.animateScale = boolean;
 	}
 
-	playAnimation(duration)
+	playAnimation(duration, loop)
 	{
 		this.playing = true;
 		this.reverse = false;
 		this.duration = duration;
+		this.loop = loop;
 	}
 
-	playReverseAnimation(duration)
+	playReverseAnimation(duration, loop)
 	{
 		this.playing = true;
 		this.reverse = true;
 		this.duration = duration;
+		this.loop = loop;
 	}
 
 	stopAnimation()
@@ -104,8 +107,13 @@ class LinearAnimator
 			{
 				if(this.currFrame == 0)
 				{
-					this.stopAnimation();
 					this.currTime = 0;
+
+					if(!this.loop)
+						this.stopAnimation();
+					else
+						this.playAnimation(this.duration, true);
+					
 				}
 				else
 					this.currFrame--;
@@ -114,8 +122,13 @@ class LinearAnimator
 			{
 				if(this.currFrame == this.kfCount-1)
 				{
-					this.stopAnimation();
 					this.currTime = this.duration;
+
+					if(!this.loop)
+						this.stopAnimation();
+					else
+						this.playReverseAnimation(this.duration, true);
+
 				}
 				else
 					this.currFrame++;

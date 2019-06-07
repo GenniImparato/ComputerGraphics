@@ -44,22 +44,16 @@ class Door3D extends GroupObject3D
 		this.frontTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
 		this.frontTrigger.onUntrigger = function(inst)
 						{
-								inst.animator.playReverseAnimation(30);
+								inst.animator.playReverseAnimation(30, false);
 						}
 
 		this.backTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
 		this.backTrigger.onUntrigger = function(inst)
 						{
 						
-								inst.animator.playReverseAnimation(30);
+								inst.animator.playReverseAnimation(30, false);
 						}
 	}
-
-	/*setScale(scaleX, scaleY, scaleZ)
-	{
-		this.objects[0].setScale(scaleX, scaleY, scaleZ);
-		this.objects[1].setScale(scaleX, scaleY, scaleZ);
-	}*/
 
 	preUpdate()
 	{
