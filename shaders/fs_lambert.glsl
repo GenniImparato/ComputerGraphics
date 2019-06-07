@@ -5,6 +5,8 @@ precision mediump float;
 in vec3 fsNormal;
 in vec3 fs_pos;			
 
+// first light
+uniform float LAOn;
 uniform vec3 LADir;		
 uniform vec3 LAPos;	
 uniform vec3 LAColor;	
@@ -12,13 +14,24 @@ uniform float LAConeIn;
 uniform float LAConeOut;
 uniform float LADecay;
 uniform float LATarget;
-uniform vec3 cameraPos;
 uniform vec3 LAType; // x is for directional, y for point and z for spot
+
+
+uniform float LBOn;
+uniform vec3 LBDir;		
+uniform vec3 LBPos;	
+uniform vec3 LBColor;	
+uniform float LBConeIn;
+uniform float LBConeOut;
+uniform float LBDecay;
+uniform float LBTarget;
+uniform vec3 LBType; // x is for directional, y for point and z for spot
 
 // Final color is returned into:
 
 uniform vec4 mDiffColor;
 uniform vec4 mEmitColor;
+
 
 
 out vec4 outColor;
@@ -62,12 +75,42 @@ void main()
 
 	
 	// select correct diffuse component
-	vec3 lambertDiffuseColor = dirLambertDiffuseColor * LAType.x +
+	vec3 lambertDiffuseColor1 = dirLambertDiffuseColor * LAType.x +
 						pointLambertDiffuseColor * LAType.y +
 						spotLambertDiffuseColor * LAType.z;
 
+        // Second light
+	lightDir = normalize(LBDir);
+	lightPos = LBPos;
+	lightDistance = length(lightPos - fs_pos);
+
+	// point light direction
+	pointLightDir = normalize(lightPos - fs_pos);
+	pointLightColor = clamp(LBColor * pow(LBTarget/lightDistance, LBDecay), 0.0, 1.0);
+
+	// spot light direction and color
+	spotLightDir = lightDir;
+	cosAlpha = dot(pointLightDir, spotLightDir);
+	spotLightColor = LBColor * pow(LBTarget/lightDistance, LBDecay) * clamp( (cosAlpha - LBConeOut)/(LBConeIn - LBConeOut),0.0, 1.0) ;
+
+	eyeDirVec = normalize(	- fs_pos);
+	
+	
+	// compute different diffuse components
+	// directionalLight
+	dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LBColor, normalVec, mDiffColor.rgb);
+
+	// pointLight 
+	pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
+	// spotLight
+	spotLambertDiffuseColor = applyLambertDiffuse(spotLightDir, spotLightColor, normalVec, mDiffColor.rgb);
+
+	vec3 lambertDiffuseColor2 = dirLambertDiffuseColor * LBType.x +
+						pointLambertDiffuseColor * LBType.y +
+						spotLambertDiffuseColor * LBType.z;
+
 
 	// lambert diffuse without specular
-	  outColor = clamp(vec4(lambertDiffuseColor, mDiffColor.a),0.0, 1.0);
+	  outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn, mDiffColor.a),0.0, 1.0);
 	
 }

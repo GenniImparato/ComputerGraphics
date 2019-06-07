@@ -59,7 +59,7 @@ class TextureMaterial extends SimpleMaterial {
 
  		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 		
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
 		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
@@ -111,7 +111,7 @@ class TextureDiffuse extends SimpleMaterial {
 	    // setup texture
  		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
 
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 		
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
 		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");

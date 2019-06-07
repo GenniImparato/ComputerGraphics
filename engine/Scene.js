@@ -1,7 +1,7 @@
 var firstPersonCamera;
 var lookAtCamera;
 
-var light;
+var lights = []; // should have maximum 3 lights
 //stores all Objects3D in the scene
 var objects = [];
 var objectsCount = 0;
@@ -214,11 +214,12 @@ var Scene =
 		//creates first light 
 	    //light = new DirectionalLight('LA', 0, 0.5, 1);
 
-	    // light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
-	    light = new SpotLight('LA', 0, 20, 30, 0, 0.5, 1, 50, 0.7 );
-	    light.setCone(0.4, 0.2)
-	    light.setColor(255, 255, 255);
-	    light.moveToCameraSpace(viewMatrix);
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.5, 1, 50, 0.7 ));
+	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
+	    lights[0].setCone(0.4, 0.2)
+	    lights[0].setColor(255, 255, 255);
+	    lights[1].setColor(255, 255, 255);
+	    Light.moveAllLights(viewMatrix);
 
 	},
 
@@ -250,8 +251,8 @@ var Scene =
 			lookAtCamera.look();
 		}
 
-		light.setLightPosition(player.x, player.y+10, player.z-10);
- 	    light.moveToCameraSpace(viewMatrix);
+		lights[0].setLightPosition(player.x, player.y+10, player.z-10);
+	    Light.moveAllLights(viewMatrix);
 		
 
 		//toggle showing of bounding boxes

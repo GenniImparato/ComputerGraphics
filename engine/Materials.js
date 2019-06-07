@@ -31,7 +31,7 @@ class SimpleMaterial {
 	bindShader() {
 
 	    this.shader.use();
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 		var materialDiffLoc = this.shader.getUniformLocation("mColor");
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
 	}
@@ -56,7 +56,7 @@ class DiffuseMaterial extends SimpleMaterial {
 
     bindShader() {
 	    this.shader.use();
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 	    var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
 	    gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
     }
@@ -96,7 +96,7 @@ class SpecularMaterial extends SimpleMaterial {
 
 	bindShader() {
 	    this.shader.use();
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
 		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
 		var specularShineLoc = this.shader.getUniformLocation("mSpecShine");
@@ -129,7 +129,7 @@ class ToonMaterial extends SimpleMaterial {
 
     bindShader() {	
 	    this.shader.use();
-	    light.bind(this.shader);
+	    Light.bindAllLights(this.shader);
 		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
 		var materialSpecularLoc = this.shader.getUniformLocation("mSpecColor");
 		var specularShineLoc = this.shader.getUniformLocation("mSpecShine");
