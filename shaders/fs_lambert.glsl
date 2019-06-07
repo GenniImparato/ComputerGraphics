@@ -92,14 +92,10 @@ void main()
 	spotLightDir = lightDir;
 	cosAlpha = dot(pointLightDir, spotLightDir);
 	spotLightColor = LBColor * pow(LBTarget/lightDistance, LBDecay) * clamp( (cosAlpha - LBConeOut)/(LBConeIn - LBConeOut),0.0, 1.0) ;
-
-	eyeDirVec = normalize(	- fs_pos);
-	
 	
 	// compute different diffuse components
 	// directionalLight
 	dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LBColor, normalVec, mDiffColor.rgb);
-
 	// pointLight 
 	pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
 	// spotLight
