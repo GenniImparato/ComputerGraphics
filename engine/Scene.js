@@ -68,6 +68,7 @@ var Scene =
 		var castleInteriorTex = new TextureDiffuse("castle_interior.jpg");
 		var castleExteriorTex = new TextureDiffuse("castle_exterior.jpg");
 		var castleDoorsTex = new TextureDiffuse("castle_towers_doors.jpg");
+		var house0Tex = new TextureDiffuse("house0.jpg");
 
 	    console.log("Loaded texture");
 
@@ -142,7 +143,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//house0 with custom bbox
-		var tmpObj = new Object3D(house0Mesh, redMaterial);
+		var tmpObj = new Object3D(house0Mesh, house0Tex);
 		tmpObj.setPosition(40, 0, 200);
 		tmpObj.setScale(0.5, 0.5, 0.5);
 		tmpObj.setRotation(0, 0, 0);
@@ -150,7 +151,7 @@ var Scene =
 		tmpObj.addToScene();
 		
 		//house0 with default bbox
-		var tmpObj = new Object3D(house0MeshNB, redMaterial);
+		var tmpObj = new Object3D(house0MeshNB, house0Tex);
 		tmpObj.setPosition(40, 0, 300);
 		tmpObj.setScale(0.5, 0.5, 0.5);
 		tmpObj.addToScene();
