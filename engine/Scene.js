@@ -219,9 +219,11 @@ var Scene =
 		///___________________________
 
 		//creates first light 
-	    light = new DirectionalLight('LA', 0, 0.5, 1);
+	    //light = new DirectionalLight('LA', 0, 0.5, 1);
 
-	    //light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
+	    // light = new PointLight('LA', 0, 20, 30, 50, 0.7 );
+	    light = new SpotLight('LA', 0, 20, 30, 0, 0.5, 1, 50, 0.7 );
+	    light.setCone(0.4, 0.2)
 	    light.setColor(255, 255, 255);
 	    light.moveToCameraSpace(viewMatrix);
 
@@ -255,7 +257,7 @@ var Scene =
 			lookAtCamera.look();
 		}
 
-		light.setLightPosition(player.x, player.y+10, player.z);
+		light.setLightPosition(player.x, player.y+10, player.z-10);
  	    light.moveToCameraSpace(viewMatrix);
 		
 

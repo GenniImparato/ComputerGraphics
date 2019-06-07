@@ -8,6 +8,8 @@ in vec3 fs_pos;
 uniform vec3 LADir;		
 uniform vec3 LAPos;	
 uniform vec3 LAColor;	
+uniform float LAConeIn;
+uniform float LAConeOut;
 uniform float LADecay;
 uniform float LATarget;
 uniform vec3 cameraPos;
@@ -41,28 +43,31 @@ void main()
 {
  	vec3 normalVec = normalize(fsNormal);
 
-	vec3 dirLightDir = normalize(LADir);
-	vec3 dirLightPos = LAPos;
+	vec3 lightDir = normalize(LADir);
+	float lightDistance = length(LAPos - fs_pos);
 
 	// point light direction
-	float pointDistance = length(LAPos - fs_pos);
 	vec3 pointLightDir = normalize(LAPos - fs_pos);
-	vec3 pointLightColor = clamp(LAColor * pow(LATarget/pointDistance, LADecay), 0.0, 1.0);
+	vec3 pointLightColor = clamp(LAColor * pow(LATarget/lightDistance, LADecay), 0.0, 1.0);
 
-	vec3 spotLightDir = normalize(LAPos - fs_pos);
+	// spot light direction and color
+	vec3 spotLightDir = lightDir;
+	float cosAlpha = dot(pointLightDir, spotLightDir);
+	vec3 spotLightColor = LAColor * pow(LATarget/lightDistance, LADecay) * clamp( (cosAlpha - LAConeOut)/(LAConeIn - LAConeOut),0.0, 1.0) ;
+
 	vec3 eyeDirVec = -normalize(fs_pos);
 	
 	
 	// compute different diffuse components
 	// directionalLight
-	vec3 dirLambertDiffuseColor = applyLambertDiffuse(dirLightDir, LAColor, normalVec, mDiffColor.rgb);
-	vec4 dirSpecularPhong = applyPhongSpecular(dirLightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
+	vec3 dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LAColor, normalVec, mDiffColor.rgb);
+	vec4 dirSpecularPhong = applyPhongSpecular(lightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	// pointLight 
 	vec3 pointLambertDiffuseColor = applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, mDiffColor.rgb);
 	vec4 pointSpecularPhong = applyPhongSpecular(pointLightDir, pointLightColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 	// spotLight
-	vec3 spotLambertDiffuseColor = vec3(0.0, 0.0, 1.0);
+	vec3 spotLambertDiffuseColor = applyLambertDiffuse(spotLightDir, spotLightColor, normalVec, mDiffColor.rgb);
 	vec4 spotSpecularPhong = applyPhongSpecular(spotLightDir, LAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	
