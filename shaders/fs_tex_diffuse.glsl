@@ -43,6 +43,32 @@ vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diff
      return  diffuseLambert;
 }
 
+vec3 compLightDir(vec3 LDir, vec3 LPos, vec3 LType) {
+  vec3 directDir = normalize(LDir);
+  vec3 pointDir = normalize(LPos - fs_pos);
+  vec3 spotDir = normalize(LDir);
+  return directDir * LType.x +
+    pointDir * LType.y +
+    spotDir * LType.z;
+}
+
+vec3 compLightColor (vec3 LColor, vec3 LDir, float LTarget, vec3 LPos, float LDecay, float LConeIn, float LConeOut, vec3 LType) {
+  vec3 directColor = LColor;
+
+  vec3 lightDir = normalize(LPos - fs_pos);
+  float lightDistance = length(LPos - fs_pos);
+  vec3 pointColor = clamp(LColor * pow(LTarget / lightDistance, LDecay) , 0.0, 1.0);
+
+  float lightConeIn = cos(radians(LConeIn) / 2.0);
+  float lightConeOut = cos(radians(LConeOut) / 2.0);
+  float cosAlpha = dot(lightDir, LDir);
+  vec3 spotColor = clamp(LColor * pow(LTarget/lightDistance, LDecay) * clamp( (cosAlpha - lightConeOut) / (lightConeIn - lightConeOut), 0.0, 1.0), 0.0, 1.0);
+
+  return directColor * LType.x +
+    pointColor * LType.y +
+    spotColor * LType.z;
+  
+}
 
 
 
@@ -58,58 +84,22 @@ void main() {
 	float lightDistance = length(lightPos - fs_pos);
 
 	// point light direction
-	vec3 pointLightDir = normalize(lightPos - fs_pos);
-	vec3 pointLightColor = clamp(LAColor * pow(LATarget/lightDistance, LADecay), 0.0, 1.0);
-
-	// spot light direction and color
-	vec3 spotLightDir = lightDir;
-	float cosAlpha = dot(pointLightDir, spotLightDir);
-	vec3 spotLightColor = clamp(LAColor * pow(LATarget/lightDistance, LADecay) * clamp( (cosAlpha - LAConeOut)/(LAConeIn - LAConeOut),0.0, 1.0), 0.0, 1.0) ;
 
 	vec3 eyeDirVec = normalize(	- fs_pos);
 	
 	
-	// compute different diffuse components
-	// directionalLight
-	vec3 dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LAColor, normalVec, texColor.rgb);
+	vec3 lightADir = compLightDir(LADir, LAPos, LAType);
+	vec3 lightAColor = compLightColor(LAColor, LADir, LATarget, LAPos, LADecay, LAConeIn, LAConeOut, LAType);
 
-	// pointLight 
-	vec3 pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, texColor.rgb);
-	// spotLight
-	vec3 spotLambertDiffuseColor = applyLambertDiffuse(spotLightDir, spotLightColor, normalVec, texColor.rgb);
-
-	
-	// select correct diffuse component
-	vec3 lambertDiffuseColor1 = dirLambertDiffuseColor * LAType.x +
-						pointLambertDiffuseColor * LAType.y +
-						spotLambertDiffuseColor * LAType.z;
-
+	vec3 lambertDiffuseColor1 = applyLambertDiffuse(lightADir, lightAColor, normalVec , texColor.rgb );
 
         // Second light
-	lightDir = normalize(LBDir);
-	lightPos = LBPos;
-	lightDistance = length(lightPos - fs_pos);
 
-	// point light direction
-	pointLightDir = normalize(lightPos - fs_pos);
-	pointLightColor = clamp(LBColor * pow(LBTarget/lightDistance, LBDecay), 0.0, 1.0);
+	vec3 lightBDir = compLightDir(LBDir, LBPos, LBType);
+	vec3 lightBColor = compLightColor(LBColor, LBDir, LBTarget, LBPos, LBDecay, LBConeIn, LBConeOut, LBType);
 
-	// spot light direction and color
-	spotLightDir = lightDir;
-	cosAlpha = dot(pointLightDir, spotLightDir);
-	spotLightColor = LBColor * pow(LBTarget/lightDistance, LBDecay) * clamp( (cosAlpha - LBConeOut)/(LBConeIn - LBConeOut),0.0, 1.0) ;
-	
-	// compute different diffuse components
-	// directionalLight
-	dirLambertDiffuseColor = applyLambertDiffuse(lightDir, LBColor, normalVec, texColor.rgb);
-	// pointLight 
-	pointLambertDiffuseColor =applyLambertDiffuse(pointLightDir, pointLightColor, normalVec, texColor.rgb);
-	// spotLight
-	spotLambertDiffuseColor = applyLambertDiffuse(spotLightDir, spotLightColor, normalVec, texColor.rgb);
 
-	vec3 lambertDiffuseColor2 = dirLambertDiffuseColor * LBType.x +
-						pointLambertDiffuseColor * LBType.y +
-						spotLambertDiffuseColor * LBType.z;
+	vec3 lambertDiffuseColor2 = applyLambertDiffuse(lightBDir, lightBColor, normalVec, texColor.rgb);
 
 
 

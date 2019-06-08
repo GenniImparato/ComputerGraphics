@@ -235,7 +235,7 @@ var Scene =
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
 	    //lights.push(new DirectionalLight('LB', 0, 0.5, 1));
-	    lights[0].setCone(0.4, 0.2);
+	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 100, 0);
 	    Light.moveAllLights(viewMatrix);
