@@ -45,11 +45,16 @@ var Canvas =
         var h = canvas.clientHeight;
 
         aspectRatio = w/h;
-
-        perspectiveMatrix = utils.MakePerspective(60, aspectRatio, 0.1, 2000.0);
+        
+        Canvas.makePerspectiveMatrix();
         
         gl.viewport(0.0, 0.0, w, h);
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);   
     },
+
+    makePerspectiveMatrix: function()
+    {
+        perspectiveMatrix = utils.MakePerspective(60, aspectRatio, 0.1, 2000.0);
+    }
 }

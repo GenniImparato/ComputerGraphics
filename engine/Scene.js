@@ -77,6 +77,8 @@ var Scene =
 
 	    console.log("Loaded texture");
 
+	    InterfaceOverlay.init();
+
 		////		CREATE OBJECTS 3D
 		////__________________________________
 
@@ -244,6 +246,8 @@ var Scene =
 	{
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
+		Canvas.makePerspectiveMatrix();
+
 		player.handleInput();
 
 		//physics and collisions
@@ -283,6 +287,8 @@ var Scene =
 		//render all the objects in the scene
 		for(var i=0; i<objectsCount; i++)
 			objects[i].render();	
+
+		InterfaceOverlay.render();
 	
 		window.requestAnimationFrame(Scene.render);
 	},
