@@ -96,8 +96,8 @@ class DirectionalLight extends Light {
 		this.dirx = dirx / length;
 		this.diry = diry / length;
 		this.dirz = dirz / length ; 
-	    this.coneIn = 1.0;
-	    this.coneOut = 0.0;
+	    this.coneIn = 45;
+	    this.coneOut = 0;
 	    this.targetDistance = 1.0;
 	    this.decay = 0.0;
 	    
@@ -116,12 +116,12 @@ class PointLight extends Light {
 		super(name, x, y, z);
 		this.targetDistance = target;
 		this.decay = decay;
-		this.dirx = 0.0;
+		this.dirx = 1.0;
 		this.diry = 0.0;
 		this.dirz = 0.0; 
-	    this.coneIn = 0.0;
-	    this.coneOut = 0.0;
-
+	    this.coneIn = 45;
+	    this.coneOut = 0;
+	    
 	}
 
 	bind(shader) { // bind gl variables 
