@@ -22,8 +22,8 @@ var Canvas =
   			gl.enable(gl.DEPTH_TEST);
   			gl.cullFace(gl.BACK);
 
-  			//gl.enable(gl.BLEND);
-  			//gl.blendFunc(gl.ONE_MINUS_SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  			gl.enable(gl.BLEND);
+  			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         }
         else
             alert("Error: WebGL not supported by your browser!");
@@ -46,7 +46,7 @@ var Canvas =
 
         aspectRatio = w/h;
 
-        perspectiveMatrix = utils.MakePerspective(60, aspectRatio, 0.1, 1000.0);
+        perspectiveMatrix = utils.MakePerspective(60, aspectRatio, 0.1, 2000.0);
         
         gl.viewport(0.0, 0.0, w, h);
         gl.clearColor(0.0, 0.0, 0.0, 1.0);

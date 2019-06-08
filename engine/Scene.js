@@ -45,29 +45,35 @@ var Scene =
 		var tree0TrunkMesh		= Mesh.loadFromOBJFile("tree0_trunk.obj");
 		var tree0LeafsMesh 		= Mesh.loadFromOBJFile("tree0_leafs.obj");
 		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
-
 		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
 		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
 		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
 		var castleDoorRMesh		= Mesh.loadFromOBJFile("castle_doorR.obj");
 		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
-
+		var skyboxMesh			= Mesh.loadFromOBJFile("skybox.obj");
 		var ghostMesh			= Mesh.loadFromOBJFile("ghost.obj");
 
 
 		////		CREATE MATERIALS
 		////__________________________________
-		var greenSpecMaterial = new SpecularMaterial(0.0, 255, 10, 255);
-	    var greenMaterial = new DiffuseMaterial(0.0, 255, 10, 255);
-		var redMaterial = new DiffuseMaterial(255, 50, 50, 255);
-		var lavaMaterial = new SpecularMaterial(255, 0, 0, 255);
-		var brownMaterial = new DiffuseMaterial(255, 200, 50, 255);
-		var yellowMaterial = new DiffuseMaterial( 255, 255 , 0, 255);
-		var textureMaterial = new TextureMaterial("crate.png");
-		var castleInteriorTex = new TextureDiffuse("castle_interior.jpg");
-		var castleExteriorTex = new TextureDiffuse("castle_exterior.jpg");
-		var castleDoorsTex = new TextureDiffuse("castle_towers_doors.jpg");
-		var house0Tex = new TextureDiffuse("house0.jpg");
+		var greenSpecMaterial 	= new SpecularMaterial(0.0, 255, 10, 255);
+	    var greenMaterial 		= new DiffuseMaterial(0.0, 255, 10, 255);
+		var redMaterial 		= new DiffuseMaterial(255, 50, 50, 255);
+		var lavaMaterial 		= new SpecularMaterial(255, 0, 0, 255);
+		var brownMaterial 		= new DiffuseMaterial(255, 200, 50, 255);
+		var yellowMaterial 		= new DiffuseMaterial( 255, 255 , 0, 255);
+		var textureMaterial 	= new TextureMaterial("crate.png");
+		var castleInteriorTex 	= new TextureDiffuse("castle_interior.jpg");
+		var castleExteriorTex 	= new TextureDiffuse("castle_exterior.jpg");
+		var castleDoorsTex 		= new TextureDiffuse("castle_towers_doors.jpg");
+		var house0Tex 			= new TextureDiffuse("house0.jpg");
+		var rocksTex 			= new TextureDiffuse("rocks.jpg");
+		var tree0LeafsTex 		= new TextureDiffuse("tree0_leafs.png");
+		var tree0TrunkTex 		= new TextureDiffuse("tree0_trunk.jpg");
+		var skyboxTex			= new TextureMaterial("skybox.jpg");
+		var woodenDoorTex		= new TextureDiffuse("wooden_door.png");
+		var woodenCrateTex		= new TextureDiffuse("wood_crate.png");
+		var ghostMaterial 		= new DiffuseMaterial( 200, 200 , 200, 140);
 
 	    console.log("Loaded texture");
 
@@ -95,21 +101,21 @@ var Scene =
 		tmpObj.addToScene();
 
 		//mobile wood boxes
-		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
+		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
 		tmpObj.setPosition(-25, 50, 40);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
+		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
 		tmpObj.setPosition(-23, 80, 40);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, brownMaterial);
+		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
 		tmpObj.setPosition(-45, 100, 35);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
@@ -120,28 +126,28 @@ var Scene =
 		var tmpObj = new Castle3D(castleExteriorMesh, castleExteriorTex, 
 						castleInteriorMesh, castleInteriorTex, 
 						castleTowersMesh, castleDoorsTex,
-						castleDoorRMesh, castleDoorLMesh, redMaterial);
+						castleDoorRMesh, castleDoorLMesh);
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
 		tmpObj.addToScene();
 
-		//bridge
-		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		//bridge with rocks
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
 		tmpObj.setPosition(0, -15, 140);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
 		tmpObj.setPosition(10, -10, 130);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
 		tmpObj.setPosition(4, -4, 115);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, brownMaterial);
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
 		tmpObj.setPosition(-8, -9, 108);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
@@ -160,45 +166,50 @@ var Scene =
 		tmpObj.setScale(0.5, 0.5, 0.5);
 		tmpObj.addToScene();
 
-		//trees
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(40, 0, 240);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(-10, 0, 200);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(5, 0, 300);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(-30, 0, 210);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(25, 0, 250);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(-50, 0, 200);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-		var tmpObj = new Tree3D(tree0TrunkMesh, brownMaterial, tree0LeafsMesh, greenMaterial);
-		tmpObj.setPosition(50, 0, 280);
-		tmpObj.setScale(5, 5, 5);
-		tmpObj.addToScene();
-
 		//door
-		var tmpObj = new Door3D(doorMesh, redMaterial);
+		var tmpObj = new Door3D(doorMesh, woodenDoorTex);
 		tmpObj.setPosition(3, 0, 190);
 		tmpObj.addToScene();
 
 		//ghost
-		var tmpObj = new Ghost3D(ghostMesh, redMaterial);
+		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
 		tmpObj.setPosition(-20, 5, 170);
 		tmpObj.addToScene();
+
+		//trees
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(40, 0, 240);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(-10, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(5, 0, 300);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(-30, 0, 210);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(25, 0, 250);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(-50, 0, 200);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
+		tmpObj.setPosition(50, 0, 280);
+		tmpObj.setScale(5, 5, 5);
+		tmpObj.addToScene();
+
+		//skybox
+		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
+		tmpObj.addToScene();
+		tmpObj.setScale(350, 350, 350);
 
 		
 		///			CAMERA
@@ -219,12 +230,12 @@ var Scene =
 
 		//creates first light 
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0, 1, 50, 0.8));
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
 	    //lights.push(new DirectionalLight('LB', 0, 0.5, 1));
 	    lights[0].setCone(0.4, 0.2);
 	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(255, 255, 255);
+	    lights[1].setColor(255, 100, 0);
 	    Light.moveAllLights(viewMatrix);
 
 	},
