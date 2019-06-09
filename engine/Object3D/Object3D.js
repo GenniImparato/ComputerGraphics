@@ -33,11 +33,13 @@ class Object3D
 		this.enGravity			= false;
 		this.enPhysics			= false;
 		this.visible			= true;
+		this.avoideProjectiles	= false;
 		this.changeBBColor		= false; //must be only active on one objects
 
 		//Object3D list
 		//objects in the array are collision-checked against this
 		this.collisionObjects = [];
+		this.colliding = false;
 
 		if(material) 
 			this.material = material;
@@ -143,6 +145,11 @@ class Object3D
 	addToScene()
 	{
 		Scene.addObject3D(this);
+	}
+
+	removeFromScene()
+	{
+		Scene.removeObject3D(this);
 	}
 
 	////
@@ -284,9 +291,8 @@ class Object3D
 		if(showBoundingBoxes)
 			for(var i=0; i<this.boundingBoxes.length; i++)
 				this.boundingBoxes[i].render();
-
 		//doesn't render invisible objects
-		if(this.visible)
+		else if(this.visible)
 		{
 			//renders object
 			var worldMatrix = utils.MakeWorld_(transormedPos[0], transormedPos[1], transormedPos[2], 
@@ -306,7 +312,7 @@ class Object3D
 	//boolean collision check
 	checkCollision(object, bBoxNum)
 	{
-	 	return this.boundingBoxes[0].checkCollision(object.boundingBoxes[bBoxNum]);;
+	 	return this.boundingBoxes[0].checkCollision(object.boundingBoxes[bBoxNum]);
 	}
 
 	enableCollisionWith(objects)
@@ -353,6 +359,7 @@ class Object3D
 	collisionHandler(object, bboxNum)
 	{
 		object.penetrationZ = 0;
+		object.colliding = true;
 
 		//collision from y++
 		if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].maxY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].maxY	&& object.speedY<=0)
@@ -393,6 +400,7 @@ class Object3D
 	update()
 	{
 		this.preUpdate();
+		this.colliding = false;
 		
 		//gravity
 		if(this.enGravity)

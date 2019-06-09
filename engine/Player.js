@@ -1,9 +1,11 @@
 const standardMoveSpeed		= 0.2;
 const sprintMoveSpeed		= 0.6;
 
+const projectileSpeed		= 1.2;
+
 class Player extends GroupObject3D
 {
-	constructor(mainMesh, material)
+	constructor(mainMesh, material, projectileMesh, projectileMaterial)
 	{
 		super(mainMesh, material);
 		this.changeBBColor = true;
@@ -11,7 +13,10 @@ class Player extends GroupObject3D
 		this.boundingBoxes[0].setScaleCorrection(1.1, 1.1, 1.1);
 		this.enableGravity(true);
 		this.enablePhysics(true);
-		this.setScale(2, 2, 2);
+		this.setScale(2, 6, 2);
+
+		this.projectileMesh = projectileMesh;
+		this.projectileMaterial = projectileMaterial;
 
 		this.moveSpeed = standardMoveSpeed;
 		this.health = 1.0;
@@ -70,7 +75,6 @@ class Player extends GroupObject3D
 		}		
 		else
 			this.setSpeed(0, this.speedY, 0);
-
 		
 
 		this.rotate(Input.getMouseDiffX() * 0.2, 0, 0);
@@ -78,9 +82,29 @@ class Player extends GroupObject3D
 		//jump
 		if(Input.isKeyClicked(Input.SPACE_KEY))
 			this.setSpeed(this.speedX, 0.5, this.speedZ);
+
+		//fire
+		if(Input.isMouseClicked())
+		{
+			var projectile = new Projectile3D(this.projectileMesh, this.projectileMaterial, 10);
+			projectile.setPosition(this.x, this.y+5, this.z);
+			projectile.setScale(2, 2, 2);
+			projectile.setSpeed(-projectileSpeed * Math.sin(utils.degToRad(-this.rotx)), 
+							-projectileSpeed * Math.sin(utils.degToRad(firstPersonCamera.elevation)), 
+							-projectileSpeed * Math.cos(utils.degToRad(this.rotx)));
+			projectile.enableCollisionWith(objects.slice(1, objects.length));
+			Scene.addObject3D_(projectile);
+		}
 	}
 
 	preUpdate()
 	{
+	}
+
+	damage(val)
+	{
+		this.health -= val;
+		if(this.health < 0)
+			this.health = 0;
 	}
 }

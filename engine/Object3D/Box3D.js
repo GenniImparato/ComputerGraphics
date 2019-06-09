@@ -14,31 +14,31 @@ class TriggerBox3D extends Box3D
 	constructor(dimX, dimY, dimZ, instance)
 	{
 		super(dimX, dimY, dimZ);
-		this.boundingBoxes[0].nonCollidedColor = [0, 255, 0, 255];
+		this.boundingBoxes[0].nonCollidedColor = [0, 255, 0, 240];
 		this.setVisible(false);
+		this.avoidProjectiles = true;
 
 		this.triggered = false;
-		this.colliding = false;
-
 		this.instance = instance;
 	}
 
 	preUpdate()
 	{
-		if(!this.colliding && this.triggered)
+		if(!this.collided && this.triggered)
 		{
 			this.triggered = false;
 			this.onUntrigger(this.instance);
 		}
 
-		this.colliding = false;
+		this.collided = false;
 	}
 
 	//override default collision handler
 	//doensn't stop the collider
 	collisionHandler(object)
 	{
-		this.colliding = true;
+		this.collided = true;
+		object.colliding = true;
 
 		if(!this.triggered)
 		{

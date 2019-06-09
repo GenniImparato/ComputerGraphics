@@ -10,16 +10,23 @@ var player;
 
 var Scene = 
 {
+	//add at the end
 	addObject3D: function(object)
 	{
-		objects[objectsCount] = object;
-		objectsCount++;
+		objects.push(object);
 	},
 
-	addObjects3D: function(objects)
+	//add at the beginning
+	addObject3D_: function(object)
 	{
-		for(this.objectsCount; this.objectsCount<objects.length; this.objectsCount++)
-			objects[objectsCount] = object;
+		objects.unshift(object);
+	},
+
+	removeObject3D: function(object)
+	{
+		for(var i=0; i<objects.length; i++)
+			if(objects[i] == object)
+				objects.splice(i, 1);
 	},
 
 	loadGlobalAssets()
@@ -40,6 +47,7 @@ var Scene =
 		var castleWallMesh		= Mesh.loadFromOBJFile("castle_wall.obj");
 		var woodBox				= Mesh.loadFromOBJFile("wood_box.obj");
 		var rock0Mesh			= Mesh.loadFromOBJFile("rock0.obj");
+		var rock1Mesh			= Mesh.loadFromOBJFile("rock1.obj");
 		var house0Mesh 			= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
 		var house0MeshNB		= Mesh.loadFromOBJFile("house0.obj");
 		var tree0TrunkMesh		= Mesh.loadFromOBJFile("tree0_trunk.obj");
@@ -52,6 +60,7 @@ var Scene =
 		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
 		var skyboxMesh			= Mesh.loadFromOBJFile("skybox.obj");
 		var ghostMesh			= Mesh.loadFromOBJFile("ghost.obj");
+		var bombMesh			= Mesh.loadFromOBJFile("bomb.obj");
 
 
 		////		CREATE MATERIALS
@@ -59,7 +68,7 @@ var Scene =
 		var greenSpecMaterial 	= new SpecularMaterial(0.0, 255, 10, 255);
 	    var greenMaterial 		= new DiffuseMaterial(0.0, 255, 10, 255);
 		var redMaterial 		= new DiffuseMaterial(255, 50, 50, 255);
-		var lavaMaterial 		= new SpecularMaterial(255, 0, 0, 255);
+		var lavaMaterial 		= new SimpleMaterial(255, 0, 0, 255);
 		var brownMaterial 		= new DiffuseMaterial(255, 200, 50, 255);
 		var yellowMaterial 		= new DiffuseMaterial( 255, 255 , 0, 255);
 		var textureMaterial 	= new TextureMaterial("crate.png");
@@ -68,12 +77,14 @@ var Scene =
 		var castleDoorsTex 		= new TextureDiffuse("castle_towers_doors.jpg");
 		var house0Tex 			= new TextureDiffuse("house0.jpg");
 		var rocksTex 			= new TextureDiffuse("rocks.jpg");
+		var rock1Tex 			= new TextureDiffuse("rock1.jpg");
 		var tree0LeafsTex 		= new TextureDiffuse("tree0_leafs.png");
 		var tree0TrunkTex 		= new TextureDiffuse("tree0_trunk.jpg");
 		var skyboxTex			= new TextureMaterial("skybox.jpg");
 		var woodenDoorTex		= new TextureDiffuse("wooden_door.png");
 		var woodenCrateTex		= new TextureDiffuse("wood_crate.png");
 		var ghostMaterial 		= new DiffuseMaterial( 200, 200 , 200, 140);
+		var bombMaterial 		= new SpecularMaterial(100, 100, 100, 255);
 
 	    console.log("Loaded texture");
 
@@ -83,7 +94,7 @@ var Scene =
 		////__________________________________
 
 		//player
-		player  = new Player(unitCubeTexMesh, textureMaterial);
+		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
 		player.setPosition(0, 40, 170);
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -176,6 +187,16 @@ var Scene =
 		//ghost
 		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
 		tmpObj.setPosition(-20, 5, 170);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
+		tmpObj.setPosition(-10, 8, 230);
+		tmpObj.addToScene();
+		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
+		tmpObj.setPosition(25, 5, 109);
+		tmpObj.addToScene();
+		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
+		tmpObj.setPosition(50, 5, 250);
 		tmpObj.addToScene();
 
 		//trees
@@ -212,6 +233,7 @@ var Scene =
 		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
 		tmpObj.addToScene();
 		tmpObj.setScale(350, 350, 350);
+		tmpObj.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 
 		
 		///			CAMERA
@@ -251,7 +273,7 @@ var Scene =
 		player.handleInput();
 
 		//physics and collisions
-		for(var i=0; i<objectsCount; i++)
+		for(var i=0; i<objects.length; i++)
 		{
 			objects[i].solveCollisions();		//only solve collisions with enabled objects
 			objects[i].update();
@@ -285,11 +307,12 @@ var Scene =
 			cameraMode = !cameraMode;
 
 		//render all the objects in the scene
-		for(var i=0; i<objectsCount; i++)
+		for(var i=0; i<objects.length; i++)
 			objects[i].render();	
 
 		InterfaceOverlay.render();
 	
-		window.requestAnimationFrame(Scene.render);
+		if(player.health > 0.0)
+			window.requestAnimationFrame(Scene.render);
 	},
 }

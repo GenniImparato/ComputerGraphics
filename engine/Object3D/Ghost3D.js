@@ -12,6 +12,19 @@ class Ghost3D extends GroupObject3D
 		var mainObj = new Object3D(mesh, material);
 		this.addObject3D(mainObj);
 
+		var ref = this;
+		mainObj.collisionHandler = 
+			function(object)
+			{
+				object.colliding = true;
+				
+				if(object.health)
+				{
+					object.damage(0.4);
+					ref.removeFromScene();
+				}
+			}
+
 		this.animator = new LinearAnimator(mainObj);
 		this.animator.enablePositionAnimation(true);
 		this.animator.enableRotationAnimation(false);
@@ -30,14 +43,15 @@ class Ghost3D extends GroupObject3D
 		var distZ = player.z - this.z;
 
 		//normalize
-		var distXZ = Math.sqrt(distX*distX + distZ*distZ);	
-		distX = distX/distXZ;
-		distZ = distZ/distXZ;
+		var dist = Math.sqrt(distX*distX + distZ*distZ + distY*distY);	
+		distX = distX/dist;
+		distZ = distZ/dist;
+		distY = distY/dist;
 
-		if(distXZ<100 && distXZ>15)
+		if(dist<100 && dist>15)
 		{
 			//follow player
-			this.setSpeed(distX*ghostMoveSpeed, 0, distZ*ghostMoveSpeed);
+			this.setSpeed(distX*ghostMoveSpeed, distY*ghostMoveSpeed, distZ*ghostMoveSpeed);
 			this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
 		}
 		else
@@ -46,4 +60,5 @@ class Ghost3D extends GroupObject3D
 
 		this.animator.update();
 	}
+
 }

@@ -142,6 +142,13 @@ var Input =
 		return mouseState;
 	},
 
+	isMouseClicked()
+	{
+		var ret = mouseState;
+		mouseState = false;
+		return ret;
+	},
+
 	getMouseDiffX()
 	{
 		var ret = mouseDx;

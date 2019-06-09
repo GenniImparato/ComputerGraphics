@@ -15,6 +15,9 @@ var InterfaceOverlay =
 		this.energyBar = new Box3D(0.32, 0.8, 0, new SimpleMaterial(10, 100, 255, 150));
 		this.energyBar.setPosition(0.21, 0.07, 0);
 		this.energyBar.setParent(this.bar);
+
+		this.gameOverScreen = new Box3D(2, 2, 0, new TextureMaterial("gameover.jpg"));
+		this.gameOverScreen.setRotation(0, 0, 90);
 	},
 
 	render()
@@ -27,9 +30,15 @@ var InterfaceOverlay =
 		this.healthBar.setScale(0.32, 0.8*player.health, 0);
 		this.energyBar.setScale(0.32, 0.8*player.energy, 0);
 
-		//this.energyBar.render();
-		this.healthBar.render();
-		this.energyBar.render();
-		this.bar.render();
-	}
+		//show game over screen
+		if(player.health <= 0)
+			this.gameOverScreen.render();
+		else
+		{
+			//this.energyBar.render();
+			this.healthBar.render();
+			this.energyBar.render();
+			this.bar.render();
+		}
+	},
 }

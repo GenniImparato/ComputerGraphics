@@ -7,6 +7,5 @@ class Lava3D extends Box3D
 
 	collisionHandler(object)
 	{
-		object.setPosition(0, 40, 200);
 	}
 }
