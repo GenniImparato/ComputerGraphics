@@ -4,8 +4,9 @@ class Object3D
 	{
 		//reference to a loaded mesh
 		this.mesh = mesh;
-		
 
+		this.health = 1.0;
+		
 		//hierarchy
 		this.parent = null;
 
@@ -436,5 +437,8 @@ class Object3D
 								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
 	}
 
+	//to override
+	damage(val)
+	{}
 }
 

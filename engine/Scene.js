@@ -187,7 +187,6 @@ var Scene =
 		//ghost
 		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
 		tmpObj.setPosition(-20, 5, 170);
-		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
 		tmpObj.setPosition(-10, 8, 230);

@@ -19,7 +19,6 @@ class Player extends GroupObject3D
 		this.projectileMaterial = projectileMaterial;
 
 		this.moveSpeed = standardMoveSpeed;
-		this.health = 1.0;
 		this.energy = 1.0;
 	}
 

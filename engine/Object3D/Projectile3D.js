@@ -61,6 +61,8 @@ class Projectile3D extends Object3D
 				Scene.addObject3D_(frag);
 			}
 
+			object.damage(0.3);
+
 			//removes projectile
 			this.removeFromScene();	
 		}

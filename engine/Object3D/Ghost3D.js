@@ -1,5 +1,49 @@
 const ghostMoveSpeed = 0.12;
 
+class Ghost3D_ extends Object3D
+{
+	constructor(mesh, material)
+	{
+		super(mesh, material);	
+
+		this.damagedMaterial = new DiffuseMaterial(255, 0, 0, 200);
+		this.standardMaterial = material;
+		this.damagedTime = 0;
+	}
+
+	collisionHandler(object)
+	{
+		object.colliding = true;
+
+		if(object == player)
+		{
+			object.damage(0.4);
+			this.removeFromScene();
+		}
+	}
+
+	preUpdate()
+	{
+		this.damagedTime++;
+
+		if(this.damagedTime > 15)
+		{
+			this.setMaterial(this.standardMaterial);
+		}
+	}
+
+	damage(val)
+	{
+		this.setMaterial(this.damagedMaterial);
+		this.damagedTime = 0;
+
+		this.health -= val;
+		if(this.health < 0)
+			this.health = 0;
+	}
+}
+
+
 class Ghost3D extends GroupObject3D
 {
 	constructor(mesh, material)
@@ -9,21 +53,8 @@ class Ghost3D extends GroupObject3D
 		this.enablePhysics(true);
 		this.enableGravity(false);
 
-		var mainObj = new Object3D(mesh, material);
+		var mainObj = new Ghost3D_(mesh, material);
 		this.addObject3D(mainObj);
-
-		var ref = this;
-		mainObj.collisionHandler = 
-			function(object)
-			{
-				object.colliding = true;
-				
-				if(object.health)
-				{
-					object.damage(0.4);
-					ref.removeFromScene();
-				}
-			}
 
 		this.animator = new LinearAnimator(mainObj);
 		this.animator.enablePositionAnimation(true);
@@ -59,6 +90,9 @@ class Ghost3D extends GroupObject3D
 
 
 		this.animator.update();
+
+		if(this.objects[0].health == 0)
+			this.removeFromScene();
 	}
 
 }
