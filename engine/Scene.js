@@ -48,6 +48,7 @@ var Scene =
 		var woodBox					= Mesh.loadFromOBJFile("wood_box.obj");
 		var rock0Mesh				= Mesh.loadFromOBJFile("rock0.obj");
 		var rock1Mesh				= Mesh.loadFromOBJFile("rock1.obj");
+		var stone0Mesh				= Mesh.loadFromOBJFile("stone0.obj");
 		var house0Mesh 				= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
 		var house0MeshNB			= Mesh.loadFromOBJFile("house0.obj");
 		var tree0TrunkMesh			= Mesh.loadFromOBJFile("tree0_trunk.obj");
@@ -82,6 +83,7 @@ var Scene =
 		var house0Tex 				= new TextureDiffuse("house0.jpg");
 		var rocksTex 				= new TextureDiffuse("rocks.jpg");
 		var rock1Tex 				= new TextureDiffuse("rock1.jpg");
+		var stone0Tex 				= new TextureDiffuse("stone0.jpg");
 		var tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png");
 		var tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg");
 		var skyboxTex				= new TextureMaterial("skybox.jpg");
@@ -113,23 +115,51 @@ var Scene =
 		tmpObj.setPosition(0, -25, 0);
 		tmpObj.addToScene();*/
 
-		//mobile wood boxes
-		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
+		//rocks with gravity
+		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
+		tmpObj.setPosition(-38, 150, 0);
+		tmpObj.setScale(0.3, 0.35, 0.4);
+		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+
+		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
+		tmpObj.setPosition(-45, 150, 35);
+		tmpObj.setScale(0.2, 0.2, 0.3);
+		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+
+		//destroyable wood boxes
+		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-25, 50, 40);
+		tmpObj.setScale(2, 2, 2);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
+		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-23, 80, 40);
+		tmpObj.setScale(2, 3, 2);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 
-		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
+		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
+		tmpObj.setPosition(-38, 105, 0);
+		tmpObj.setScale(3, 3, 3);
+		tmpObj.enableGravity(true);
+		tmpObj.enablePhysics(true);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+
+		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-45, 100, 35);
+		tmpObj.setScale(4, 3, 5);
 		tmpObj.enableGravity(true);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);

@@ -41,18 +41,17 @@ class Door3D extends GroupObject3D
 		else
 			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0, 1, 1, 1);
 
-		this.frontTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
-		this.frontTrigger.onUntrigger = function(inst)
-						{
-								inst.animator.playReverseAnimation(30, false);
-						}
+		this.frontTrigger.onTrigger = function(inst)	
+		{	inst.animator.playAnimation(30);	}
+		
+		this.frontTrigger.onUntrigger = function(inst)	
+		{	inst.animator.playReverseAnimation(30, false);	}
 
-		this.backTrigger.onTrigger = function(inst){inst.animator.playAnimation(30);}
+		this.backTrigger.onTrigger = function(inst)
+		{	inst.animator.playAnimation(30);	}
+		
 		this.backTrigger.onUntrigger = function(inst)
-						{
-						
-								inst.animator.playReverseAnimation(30, false);
-						}
+		{	inst.animator.playReverseAnimation(30, false);	}
 	}
 
 	preUpdate()
