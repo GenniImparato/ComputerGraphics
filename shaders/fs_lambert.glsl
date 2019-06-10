@@ -29,6 +29,7 @@ uniform vec3 LBType; // x is for directional, y for point and z for spot
 
 
 uniform vec4 mDiffColor;
+uniform vec4 mAmbientColor;
 uniform vec4 mEmitColor;
 
 
@@ -95,6 +96,6 @@ void main()
 
 
 	// lambert diffuse without specular
-	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn, mDiffColor.a),0.0, 1.0);
+	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn + mAmbientColor.rgb + mEmitColor.rgb, mDiffColor.a),0.0, 1.0);
 	
 }

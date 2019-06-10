@@ -67,28 +67,51 @@ var Scene =
 
 		////		CREATE MATERIALS
 		////__________________________________
+		const ambientColor = [0, 0, 20, 1.0]
 		var greenSpecMaterial 		= new SpecularMaterial(0.0, 255, 10, 255);
+		greenSpecMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 	    var greenMaterial 			= new DiffuseMaterial(0.0, 255, 10, 255);
+	    greenMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var redMaterial 			= new DiffuseMaterial(255, 50, 50, 255);
+		redMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var lavaMaterial 			= new SimpleMaterial(255, 0, 0, 255);
+		lavaMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var brownMaterial 			= new DiffuseMaterial(255, 200, 50, 255);
+		brownMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var yellowMaterial 			= new DiffuseMaterial( 255, 255 , 0, 255);
+		yellowMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var textureMaterial 		= new TextureMaterial("crate.png");
+		textureMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleInteriorTex 		= new TextureDiffuse("castle_interior.jpg");
+		castleInteriorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleExteriorTex 		= new TextureDiffuse("castle_exterior.jpg");
+		castleExteriorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleDoorsTex 			= new TextureDiffuse("castle_towers_doors.jpg");
+		castleDoorsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg");
+		castleDungeonWallsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var grassTex				= new TextureDiffuse("grass.jpg");
+		grassTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var house0Tex 				= new TextureDiffuse("house0.jpg");
+		house0Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var rocksTex 				= new TextureDiffuse("rocks.jpg");
+		rocksTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var rock1Tex 				= new TextureDiffuse("rock1.jpg");
+		rock1Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png");
+		tree0LeafsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg");
+		tree0TrunkTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var skyboxTex				= new TextureMaterial("skybox.jpg");
+		skyboxTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var woodenDoorTex			= new TextureDiffuse("wooden_door.png");
+		woodenDoorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var woodenCrateTex			= new TextureDiffuse("wood_crate.png");
+		woodenCrateTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140);
+		ghostMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var bombMaterial 			= new SpecularMaterial(100, 100, 100, 255);
+		bombMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 
 	    console.log("Loaded texture");
 
