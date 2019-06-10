@@ -42,49 +42,53 @@ var Scene =
 
 		Scene.loadGlobalAssets();
 
-		var gearMesh 			= Mesh.loadFromOBJFile("gear.obj");
-		var castleTowerMesh		= Mesh.loadFromOBJFile("castle_tower.obj");
-		var castleWallMesh		= Mesh.loadFromOBJFile("castle_wall.obj");
-		var woodBox				= Mesh.loadFromOBJFile("wood_box.obj");
-		var rock0Mesh			= Mesh.loadFromOBJFile("rock0.obj");
-		var rock1Mesh			= Mesh.loadFromOBJFile("rock1.obj");
-		var house0Mesh 			= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
-		var house0MeshNB		= Mesh.loadFromOBJFile("house0.obj");
-		var tree0TrunkMesh		= Mesh.loadFromOBJFile("tree0_trunk.obj");
-		var tree0LeafsMesh 		= Mesh.loadFromOBJFile("tree0_leafs.obj");
-		var doorMesh			= Mesh.loadFromOBJFile("wooden_door.obj");
-		var castleExteriorMesh	= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
-		var castleInteriorMesh	= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
-		var castleTowersMesh	= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
-		var castleDoorRMesh		= Mesh.loadFromOBJFile("castle_doorR.obj");
-		var castleDoorLMesh		= Mesh.loadFromOBJFile("castle_doorL.obj");
-		var skyboxMesh			= Mesh.loadFromOBJFile("skybox.obj");
-		var ghostMesh			= Mesh.loadFromOBJFile("ghost.obj");
-		var bombMesh			= Mesh.loadFromOBJFile("bomb.obj");
+		var gearMesh 				= Mesh.loadFromOBJFile("gear.obj");
+		var castleTowerMesh			= Mesh.loadFromOBJFile("castle_tower.obj");
+		var castleWallMesh			= Mesh.loadFromOBJFile("castle_wall.obj");
+		var woodBox					= Mesh.loadFromOBJFile("wood_box.obj");
+		var rock0Mesh				= Mesh.loadFromOBJFile("rock0.obj");
+		var rock1Mesh				= Mesh.loadFromOBJFile("rock1.obj");
+		var house0Mesh 				= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
+		var house0MeshNB			= Mesh.loadFromOBJFile("house0.obj");
+		var tree0TrunkMesh			= Mesh.loadFromOBJFile("tree0_trunk.obj");
+		var tree0LeafsMesh 			= Mesh.loadFromOBJFile("tree0_leafs.obj");
+		var doorMesh				= Mesh.loadFromOBJFile("wooden_door.obj");
+		var castleExteriorMesh		= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
+		var castleInteriorMesh		= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
+		var castleTowersMesh		= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
+		var castleDoorRMesh			= Mesh.loadFromOBJFile("castle_doorR.obj");
+		var castleDoorLMesh			= Mesh.loadFromOBJFile("castle_doorL.obj");
+		var castleDungeonWallsMesh	= Mesh.loadFromOBJFile("castle_dungeon_walls.obj", "castle_dungeon_bBoxes.obj");
+		var castleFloorMesh			= Mesh.loadFromOBJFile("castle_floor.obj", "castle_floor.obj");
+		var skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
+		var ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
+		var bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
 
 
 		////		CREATE MATERIALS
 		////__________________________________
-		var greenSpecMaterial 	= new SpecularMaterial(0.0, 255, 10, 255);
-	    var greenMaterial 		= new DiffuseMaterial(0.0, 255, 10, 255);
-		var redMaterial 		= new DiffuseMaterial(255, 50, 50, 255);
-		var lavaMaterial 		= new SimpleMaterial(255, 0, 0, 255);
-		var brownMaterial 		= new DiffuseMaterial(255, 200, 50, 255);
-		var yellowMaterial 		= new DiffuseMaterial( 255, 255 , 0, 255);
-		var textureMaterial 	= new TextureMaterial("crate.png");
-		var castleInteriorTex 	= new TextureDiffuse("castle_interior.jpg");
-		var castleExteriorTex 	= new TextureDiffuse("castle_exterior.jpg");
-		var castleDoorsTex 		= new TextureDiffuse("castle_towers_doors.jpg");
-		var house0Tex 			= new TextureDiffuse("house0.jpg");
-		var rocksTex 			= new TextureDiffuse("rocks.jpg");
-		var rock1Tex 			= new TextureDiffuse("rock1.jpg");
-		var tree0LeafsTex 		= new TextureDiffuse("tree0_leafs.png");
-		var tree0TrunkTex 		= new TextureDiffuse("tree0_trunk.jpg");
-		var skyboxTex			= new TextureMaterial("skybox.jpg");
-		var woodenDoorTex		= new TextureDiffuse("wooden_door.png");
-		var woodenCrateTex		= new TextureDiffuse("wood_crate.png");
-		var ghostMaterial 		= new DiffuseMaterial( 200, 200 , 200, 140);
-		var bombMaterial 		= new SpecularMaterial(100, 100, 100, 255);
+		var greenSpecMaterial 		= new SpecularMaterial(0.0, 255, 10, 255);
+	    var greenMaterial 			= new DiffuseMaterial(0.0, 255, 10, 255);
+		var redMaterial 			= new DiffuseMaterial(255, 50, 50, 255);
+		var lavaMaterial 			= new SimpleMaterial(255, 0, 0, 255);
+		var brownMaterial 			= new DiffuseMaterial(255, 200, 50, 255);
+		var yellowMaterial 			= new DiffuseMaterial( 255, 255 , 0, 255);
+		var textureMaterial 		= new TextureMaterial("crate.png");
+		var castleInteriorTex 		= new TextureDiffuse("castle_interior.jpg");
+		var castleExteriorTex 		= new TextureDiffuse("castle_exterior.jpg");
+		var castleDoorsTex 			= new TextureDiffuse("castle_towers_doors.jpg");
+		var castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg");
+		var grassTex				= new TextureDiffuse("grass.jpg");
+		var house0Tex 				= new TextureDiffuse("house0.jpg");
+		var rocksTex 				= new TextureDiffuse("rocks.jpg");
+		var rock1Tex 				= new TextureDiffuse("rock1.jpg");
+		var tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png");
+		var tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg");
+		var skyboxTex				= new TextureMaterial("skybox.jpg");
+		var woodenDoorTex			= new TextureDiffuse("wooden_door.png");
+		var woodenCrateTex			= new TextureDiffuse("wood_crate.png");
+		var ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140);
+		var bombMaterial 			= new SpecularMaterial(100, 100, 100, 255);
 
 	    console.log("Loaded texture");
 
@@ -100,18 +104,14 @@ var Scene =
 		player.addToScene();
 
 		//floors
-		var tmpObj = new Box3D(200, 100, 190, greenMaterial);
-		tmpObj.setPosition(0, -50, 0);
-		tmpObj.addToScene();
-
 		var tmpObj = new Box3D(200, 100, 200, greenMaterial);
 		tmpObj.setPosition(0, -50, 250);
 		tmpObj.addToScene();
 
 		//lava
-		var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
+		/*var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
 		tmpObj.setPosition(0, -25, 0);
-		tmpObj.addToScene();
+		tmpObj.addToScene();*/
 
 		//mobile wood boxes
 		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
@@ -139,7 +139,9 @@ var Scene =
 		var tmpObj = new Castle3D(castleExteriorMesh, castleExteriorTex, 
 						castleInteriorMesh, castleInteriorTex, 
 						castleTowersMesh, castleDoorsTex,
-						castleDoorRMesh, castleDoorLMesh);
+						castleDoorRMesh, castleDoorLMesh,
+						castleFloorMesh, grassTex,
+						castleDungeonWallsMesh, castleDungeonWallsTex);
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
 		tmpObj.addToScene();

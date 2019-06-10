@@ -14,6 +14,7 @@ class Player extends GroupObject3D
 		this.enableGravity(true);
 		this.enablePhysics(true);
 		this.setScale(2, 6, 2);
+		this.setVisible(false);
 
 		this.projectileMesh = projectileMesh;
 		this.projectileMaterial = projectileMaterial;

@@ -42,7 +42,7 @@ class Projectile3D extends Object3D
 	{
 		object.collisionHandler(this, bBoxNum);
 
-		if(this.colliding && !object.avoidProjectiles)
+		if(this.colliding && !object.avoidProjectiles && object!= player)
 		{
 			//creates fragments
 			for(var i=0; i<this.fragmentsCount; i++)
