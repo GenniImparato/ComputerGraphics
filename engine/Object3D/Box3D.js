@@ -37,6 +37,9 @@ class TriggerBox3D extends Box3D
 	//doensn't stop the collider
 	collisionHandler(object)
 	{
+		if(object != player)
+			return;
+		
 		this.collided = true;
 		object.colliding = true;
 

@@ -80,8 +80,9 @@ class Player extends GroupObject3D
 		this.rotate(Input.getMouseDiffX() * 0.2, 0, 0);
 
 		//jump
-		if(Input.isKeyClicked(Input.SPACE_KEY))
+		if(Input.isKeyClicked(Input.SPACE_KEY) && this.collisionYUp)
 			this.setSpeed(this.speedX, 0.5, this.speedZ);
+		this.collisionYUp = false;
 
 		//fire
 		if(Input.isMouseClicked())

@@ -366,6 +366,7 @@ class Object3D
 		if(object.boundingBoxes[0].maxY >= this.boundingBoxes[bboxNum].maxY	&& 	object.boundingBoxes[0].minY <= this.boundingBoxes[bboxNum].maxY	&& object.speedY<=0)
 		{
 			object.collisionY = true;
+			object.collisionYUp = true;
 			object.penetrationY = this.boundingBoxes[bboxNum].maxY - object.boundingBoxes[0].minY;
 		}
 		else
