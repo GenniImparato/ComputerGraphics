@@ -32,7 +32,7 @@ class KeyFrame
 
 class LinearAnimator
 {
-	constructor(object)
+	constructor(object, instance)
 	{
 		this.keyFrames = [];
 		this.kfCount = 0;
@@ -50,6 +50,8 @@ class LinearAnimator
 		this.animatePosition = true;
 		this.animateRotation = true;
 		this.animateScale = true;
+
+		this.instance = instance;
 	}
 
 	addKeyFrame(x, y, z, rotX, rotY, rotZ, scaleX, scaleY, scaleZ)
@@ -92,7 +94,11 @@ class LinearAnimator
 	stopAnimation()
 	{
 		this.playing = false;
+		this.onStop(this.instance);
 	}
+
+	onStop(inst)
+	{}
 
 	update()
 	{
@@ -118,11 +124,11 @@ class LinearAnimator
 				else
 					this.currFrame--;
 			}
-			if(this.currTime >= this.currFrame*this.duration)
+			if(this.currTime >= (this.currFrame+1)*this.duration)
 			{
-				if(this.currFrame == this.kfCount-1)
+				if(this.currFrame == this.kfCount-2)
 				{
-					this.currTime = this.duration;
+					this.currTime = (this.currFrame+1)*this.duration;
 
 					if(!this.loop)
 						this.stopAnimation();
@@ -136,7 +142,9 @@ class LinearAnimator
 
 		}
 
-		var interpolatedFrame = this.keyFrames[0].interpolate(this.keyFrames[1], this.currTime/this.duration);
+		var interpolatedFrame = this.keyFrames[this.currFrame].interpolate(this.keyFrames[this.currFrame+1], (this.currTime - this.currFrame*this.duration)/this.duration);
+
+
 		if(this.animatePosition)
 			this.object.setPosition(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
 		if(this.animateRotation)

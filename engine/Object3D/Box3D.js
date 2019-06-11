@@ -17,9 +17,15 @@ class TriggerBox3D extends Box3D
 		this.boundingBoxes[0].nonCollidedColor = [0, 255, 0, 240];
 		this.setVisible(false);
 		this.avoidProjectiles = true;
+		this.oneShot = false;
 
 		this.triggered = false;
 		this.instance = instance;
+	}
+
+	enableOneShot(bool)
+	{
+		this.oneShot = bool;
 	}
 
 	preUpdate()
@@ -39,7 +45,7 @@ class TriggerBox3D extends Box3D
 	{
 		if(object != player)
 			return;
-		
+
 		this.collided = true;
 		object.colliding = true;
 
@@ -47,6 +53,8 @@ class TriggerBox3D extends Box3D
 		{
 			this.triggered = true;
 			this.onTrigger(this.instance);
+			if(this.oneShot)
+				this.removeFromScene();
 		}
 		
 		this.onCollide(this.instance);

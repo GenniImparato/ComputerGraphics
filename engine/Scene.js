@@ -64,6 +64,8 @@ var Scene =
 		var skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
 		var ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
 		var bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
+		var keyHoleMesh				= Mesh.loadFromOBJFile("keyhole.obj");
+		var keyMesh					= Mesh.loadFromOBJFile("key.obj");
 
 
 		////		CREATE MATERIALS
@@ -113,8 +115,9 @@ var Scene =
 		woodenCrateTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140);
 		ghostMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var bombMaterial 			= new SpecularMaterial(100, 100, 100, 255);
-		bombMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
+		var keyMaterial 			= new SpecularMaterial(200, 200, 0, 255);
+		keyMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
+
 
 	    console.log("Loaded texture");
 
@@ -125,7 +128,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 40, 170);
+		player.setPosition(0, 40, 20);
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -193,7 +196,7 @@ var Scene =
 		var tmpObj = new Castle3D(castleExteriorMesh, castleExteriorTex, 
 						castleInteriorMesh, castleInteriorTex, 
 						castleTowersMesh, castleDoorsTex,
-						castleDoorRMesh, castleDoorLMesh,
+						castleDoorRMesh, castleDoorLMesh, keyHoleMesh, keyMesh, keyMaterial, 
 						castleFloorMesh, grassTex,
 						castleDungeonWallsMesh, castleDungeonWallsTex);
 		tmpObj.setPosition(0, 0, 8);
