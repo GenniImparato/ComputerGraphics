@@ -18,6 +18,10 @@ var InterfaceOverlay =
 
 		this.gameOverScreen = new Box3D(2, 2, 0, new TextureMaterial("gameover.jpg"));
 		this.gameOverScreen.setRotation(0, 0, 90);
+
+		this.key = new Box3D(0.3, 0.5, 0, new TextureMaterial("key.png"));
+		this.key.setPosition(-0.7, -0.4, 0);
+		this.key.setRotation(0, 0, 90);
 	},
 
 	render()
@@ -35,7 +39,9 @@ var InterfaceOverlay =
 			this.gameOverScreen.render();
 		else
 		{
-			//this.energyBar.render();
+			if(player.hasKey)
+				this.key.render();
+
 			this.healthBar.render();
 			this.energyBar.render();
 			this.bar.render();

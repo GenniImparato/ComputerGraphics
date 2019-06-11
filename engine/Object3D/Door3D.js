@@ -95,6 +95,7 @@ class DoorKey3D extends GroupObject3D
 		//keyhole object
 		var keyhole = new Object3D(keyHoleMesh, keyHoleMaterial);
 		keyhole.setScale(5, 5, 5);
+		keyhole.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 		if(!openFromRight)
 			keyhole.setPosition(-door.boundingBoxes[0].dx + keyhole.boundingBoxes[0].dx + 0.5, 
 							door.boundingBoxes[0].dy/2 - keyhole.boundingBoxes[0].dy/2 - 0.5, 
@@ -136,7 +137,6 @@ class DoorKey3D extends GroupObject3D
 		this.frontTrigger = new TriggerBox3D(door.boundingBoxes[0].dx*3, door.boundingBoxes[0].dy, door.boundingBoxes[0].dx*2, this);
 		this.frontTrigger.setPosition(-door.boundingBoxes[0].dx/2, door.boundingBoxes[0].dy/2, door.boundingBoxes[0].dx);
 		this.frontTrigger.boundingBoxes[0].setScaleCorrection(1.1, 1.1, 1.1);
-		this.frontTrigger.enableOneShot(true);
 		this.addObject3D(this.frontTrigger);
 
 		this.animator = new LinearAnimator(doorPar);
@@ -154,8 +154,14 @@ class DoorKey3D extends GroupObject3D
 		this.frontTrigger.onTrigger = function(inst)	
 		{	
 			//plays key animation
-			inst.key.setVisible(true);
-			inst.keyAnim.playAnimation(100, false);	
+			if(player.hasKey)
+			{
+				inst.key.setVisible(true);
+				inst.keyAnim.playAnimation(100, false);	
+				player.hasKey = false;
+				inst.frontTrigger.removeFromScene();
+			}
+			
 		}
 	}
 

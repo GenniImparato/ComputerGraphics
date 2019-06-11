@@ -128,7 +128,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 40, 20);
+		player.setPosition(0, 40, 40);
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -201,6 +201,12 @@ var Scene =
 						castleDungeonWallsMesh, castleDungeonWallsTex);
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
+		tmpObj.addToScene();
+
+		//key
+		var tmpObj = new Key3D(keyMesh, keyMaterial);
+		tmpObj.setPosition(10, 2, 30);
+		tmpObj.setScale(12, 12, 12);
 		tmpObj.addToScene();
 
 		//bridge with rocks

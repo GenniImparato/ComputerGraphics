@@ -20,7 +20,10 @@ class Player extends GroupObject3D
 		this.projectileMaterial = projectileMaterial;
 
 		this.moveSpeed = standardMoveSpeed;
+		
 		this.energy = 1.0;
+		this.hasKey = false;
+
 	}
 
 	handleInput()
