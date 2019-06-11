@@ -51,6 +51,9 @@ class SimpleMaterial {
 
 	}
 
+    isLoaded() {
+	return true;
+    }
 
 	bindShader() {
 

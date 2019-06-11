@@ -14,6 +14,8 @@ function isPowerOf2(value) {
      gl.bindTexture(gl.TEXTURE_2D, this.txId);		
      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);		
      gl.generateMipmap(gl.TEXTURE_2D);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_NEAREST);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
 }
@@ -69,31 +71,18 @@ class TextureMaterial extends SimpleMaterial {
     
 }
 
-class TextureDiffuse extends SimpleMaterial {
+class TextureDiffuse extends TextureMaterial {
 
     constructor(txFile) {
-	super(255, 255, 255, 255);
-	// default white specular
-	this.specR = 1.0;
-	this.specG = 1.0;
-	this.specB = 1.0;
-	this.specA = 1.0;
-	this.gamma = 100;
+	super(txFile);
+	if(!textureDiffuseShader)
+	{
+	    textureDiffuseShader = new Shader("vs_tex.glsl", "fs_tex_diffuse.glsl", true);
+	}
+	this.shader  = textureDiffuseShader;
 
-		if(!textureDiffuseShader)
-	    {
-			textureDiffuseShader = new Shader("vs_tex.glsl", "fs_tex_diffuse.glsl", true);
-	    }
-	    this.shader  = textureDiffuseShader;
-
-		this.image = new Image();
-		this.image.txNum = texturesCount;
-		texturesCount++;
-		this.powerOf2 = false;
-		requestCORSIfNotSameOrigin(this.image, textureDir + txFile);
-		this.image.src = textureDir + txFile;
-		this.image.onload = textureLoaderCallback;
     }
+
 
     setRepeat(boolean) {
 		if(boolean) {
@@ -103,6 +92,7 @@ class TextureDiffuse extends SimpleMaterial {
 		    this.wrap = gl.CLAMP_TO_EDGE;
 		}
     }
+    
 
     bindShader() {	
     	super.bindShader();
