@@ -138,7 +138,7 @@ var Scene =
 		//lava
 		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
 		tmpObj.setPosition(0, -5, 0);
-		tmpObj.setScale(10, 2, 10);
+		tmpObj.setScale(3, 2, 3);
 		tmpObj.addToScene();
 
 		//rocks with gravity
