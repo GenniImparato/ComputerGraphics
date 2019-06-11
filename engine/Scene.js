@@ -131,7 +131,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 40, 40);
+		player.setPosition(0, 40, 190);
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -141,55 +141,74 @@ var Scene =
 		tmpObj.setScale(3, 2, 3);
 		tmpObj.addToScene();
 
+		//trigger for falling rocks/boxes
+		var trigg = new GravityTrigger3D(35, 35, 35);
+		trigg.setPosition(0, 10, 40);
+		trigg.addToScene();
+
 		//rocks with gravity
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
 		tmpObj.setPosition(-38, 150, 0);
 		tmpObj.setScale(0.3, 0.35, 0.4);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
 
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
 		tmpObj.setPosition(-45, 150, 35);
 		tmpObj.setScale(0.2, 0.2, 0.3);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
 
 		//destroyable wood boxes
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-25, 50, 40);
 		tmpObj.setScale(2, 2, 2);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-23, 80, 40);
 		tmpObj.setScale(2, 3, 2);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-38, 105, 0);
 		tmpObj.setScale(3, 3, 3);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-45, 100, 35);
 		tmpObj.setScale(4, 3, 5);
-		tmpObj.enableGravity(true);
-		tmpObj.enablePhysics(true);
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
+
+		//second trigger for falling rocks/boxes
+		var trigg = new GravityTrigger3D(15, 15, 15);
+		trigg.setPosition(-70, 35, -15);
+		trigg.addToScene();
+
+		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
+		tmpObj.setPosition(-75, 100, -60);
+		tmpObj.setScale(2, 2, 2);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
+
+		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
+		tmpObj.setPosition(-75, 150, -60);
+		tmpObj.setScale(0.2, 0.2, 0.3);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+		trigg.registerObject3D(tmpObj);
+
 
 		//castle
 		var tmpObj = new Castle3D(castleExteriorMesh, castleExteriorTex, 
@@ -204,8 +223,8 @@ var Scene =
 
 		//key
 		var tmpObj = new Key3D(keyMesh, keyMaterial);
-		tmpObj.setPosition(10, 2, 30);
-		tmpObj.setScale(12, 12, 12);
+		tmpObj.setPosition(0, 55, -55);
+		tmpObj.setScale(15, 15, 15);
 		tmpObj.addToScene();
 
 		//bridge with rocks
@@ -318,11 +337,11 @@ var Scene =
 		//creates first light 
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', 0, 20, 30, 50, 0.7 ));
+	    lights.push(new PointLight('LB', 0, 10, 120, 40, 0.5 ));
 	    //lights.push(new DirectionalLight('LB', 0, 0.5, 1));
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(255, 100, 0);
+	    lights[1].setColor(255, 60, 0);
 	    Light.moveAllLights(viewMatrix);
 
 	},
