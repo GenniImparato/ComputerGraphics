@@ -66,6 +66,7 @@ var Scene =
 		var bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
 		var keyHoleMesh				= Mesh.loadFromOBJFile("keyhole.obj");
 		var keyMesh					= Mesh.loadFromOBJFile("key.obj");
+		var lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
 
 
 		////		CREATE MATERIALS
@@ -93,7 +94,7 @@ var Scene =
 		castleDoorsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg");
 		castleDungeonWallsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var grassTex				= new TextureDiffuse("terrain.jpg");
+		var grassTex				= new TextureDiffuse("terrain1.jpg");
 		grassTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var house0Tex 				= new TextureDiffuse("house0.jpg");
 		house0Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
@@ -117,6 +118,8 @@ var Scene =
 		ghostMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var keyMaterial 			= new SpecularMaterial(200, 200, 0, 255);
 		keyMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
+		var lavaMaterial 			= new TextureMaterial("lava.png");
+		lavaMaterial.setAmbientColor(100, 0, 0, 255);
 
 
 	    console.log("Loaded texture");
@@ -133,8 +136,9 @@ var Scene =
 		player.addToScene();
 
 		//lava
-		var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
-		tmpObj.setPosition(0, -30, 0);
+		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
+		tmpObj.setPosition(0, -5, 0);
+		tmpObj.setScale(10, 2, 10);
 		tmpObj.addToScene();
 
 		//rocks with gravity
@@ -291,7 +295,7 @@ var Scene =
 		//skybox
 		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
 		tmpObj.addToScene();
-		tmpObj.setScale(350, 350, 350);
+		tmpObj.setScale(350, 350, 450);
 		tmpObj.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 
 		

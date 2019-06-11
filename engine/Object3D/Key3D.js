@@ -4,6 +4,7 @@ class Key3D extends Object3D
 	{
 		super(mesh, material);
 		this.setRotation(0, 90, 0);
+		this.boundingBoxes[0].setScaleCorrection(20, 5, 3);
 	}
 
 	collisionHandler(object)

@@ -1,8 +1,8 @@
-class Lava3D extends Box3D
+class Lava3D extends Object3D
 {
-	constructor(dimX, dimY, dimZ, material)
+	constructor(mesh, material)
 	{
-		super(dimX, dimY, dimZ, material);
+		super(mesh, material);
 	}
 
 	collisionHandler(object)
