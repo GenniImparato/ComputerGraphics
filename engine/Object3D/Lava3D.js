@@ -7,5 +7,10 @@ class Lava3D extends Box3D
 
 	collisionHandler(object)
 	{
+		object.colliding = true;
+		object.collisionY = true;
+
+		if(object == player)
+			object.damage(0.01);
 	}
 }

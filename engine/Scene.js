@@ -93,7 +93,7 @@ var Scene =
 		castleDoorsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg");
 		castleDungeonWallsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var grassTex				= new TextureDiffuse("grass.jpg");
+		var grassTex				= new TextureDiffuse("terrain.jpg");
 		grassTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
 		var house0Tex 				= new TextureDiffuse("house0.jpg");
 		house0Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
@@ -132,15 +132,10 @@ var Scene =
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
-		//floors
-		var tmpObj = new Box3D(200, 100, 200, greenMaterial);
-		tmpObj.setPosition(0, -50, 250);
-		tmpObj.addToScene();
-
 		//lava
-		/*var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
-		tmpObj.setPosition(0, -25, 0);
-		tmpObj.addToScene();*/
+		var tmpObj = new Lava3D(1000, 25, 1000, lavaMaterial);
+		tmpObj.setPosition(0, -30, 0);
+		tmpObj.addToScene();
 
 		//rocks with gravity
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
