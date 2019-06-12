@@ -22,6 +22,15 @@ var InterfaceOverlay =
 		this.key = new Box3D(0.3, 0.5, 0, new TextureMaterial("key.png"));
 		this.key.setPosition(-0.7, -0.4, 0);
 		this.key.setRotation(0, 0, 90);
+
+		//credists screens
+		this.credits1  = new Box3D(0.4, 0.8, 0, new TextureMaterial("credits1.png"));
+		this.credits1.setRotation(0, 0, 90);
+		this.credits1.setPosition(0.5, 0.5, 0);
+
+		this.credits2  = new Box3D(0.4, 0.8, 0, new TextureMaterial("credits2.png"));
+		this.credits2.setRotation(0, 0, 90);
+		this.credits2.setPosition(-0.5, -0.5, 0);
 	},
 
 	render()
@@ -46,5 +55,19 @@ var InterfaceOverlay =
 			this.energyBar.render();
 			this.bar.render();
 		}
+	},
+
+	renderCredits()
+	{
+		//parallel projection
+		viewMatrix = utils.identityMatrix();
+		projectionMatrix = utils.identityMatrix();
+
+		//update health and energy from player
+		this.healthBar.setScale(0.32, 0.8*player.health, 0);
+		this.energyBar.setScale(0.32, 0.8*player.energy, 0);
+
+		this.credits1.render();
+		this.credits2.render();
 	},
 }

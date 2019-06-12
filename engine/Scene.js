@@ -68,7 +68,7 @@ var lookAtCamera;
 var camAnimator;
 
 var player;
-var endCredits = false;
+var endCredits = true;
 
 
 var Scene = 
@@ -495,6 +495,8 @@ var Scene =
 
 		if(!endCredits)
 			InterfaceOverlay.render();
+		else
+			InterfaceOverlay.renderCredits();
 
 		console.log(player.x);
 		console.log(player.y);
