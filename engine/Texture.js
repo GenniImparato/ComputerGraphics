@@ -31,6 +31,8 @@ class TextureMaterial extends SimpleMaterial {
 	this.specA = 1.0;
 	this.gamma = 100;
 
+	this.loaded = false;
+
 		if(!textureShader)
 	    {
 			textureShader = new Shader("vs_tex.glsl", "fs_tex.glsl", true);

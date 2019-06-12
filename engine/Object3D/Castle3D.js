@@ -1,3 +1,6 @@
+var doorToDungeonL;
+var doorToDungeonR;
+
 class Castle3D extends GroupObject3D
 {
 	constructor(exteriorMesh, exteriorMaterial, 
@@ -25,14 +28,14 @@ class Castle3D extends GroupObject3D
 		this.addObject3D(doorR);
 
 		//doors to dungeon
-		var doorL = new Door3D(doorLMesh, towersMaterial, false, true);
-		doorL.setPosition(-2.1, 0, -9);
-		doorL.setScale(0.56, 0.76, 0.5);
-		this.addObject3D(doorL);
+		doorToDungeonL = new Door3D(doorLMesh, towersMaterial, false, true);
+		doorToDungeonL.setPosition(-2.1, 0, -9);
+		doorToDungeonL.setScale(0.56, 0.76, 0.5);
+		this.addObject3D(doorToDungeonL);
 
-		var doorR = new DoorKey3D(doorRMesh, towersMaterial, keyHoleMesh, keyMesh, keyHoleMaterial, doorL, false);
-		doorR.setPosition(1.5, 0, -9);
-		doorR.setScale(0.56, 0.76, 0.5);
-		this.addObject3D(doorR);
+		doorToDungeonR = new DoorKey3D(doorRMesh, towersMaterial, keyHoleMesh, keyMesh, keyHoleMaterial, doorToDungeonL, false);
+		doorToDungeonR.setPosition(1.5, 0, -9);
+		doorToDungeonR.setScale(0.56, 0.76, 0.5);
+		this.addObject3D(doorToDungeonR);
 	}
 }

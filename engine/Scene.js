@@ -1,15 +1,142 @@
+////	GLOBAL ASSETS  ///
+////____________________________________________
+
+///MESHES
+var unitCubeMesh;
+var unitCubeTexMesh;
+var castleTowerMesh;
+var castleWallMesh
+var woodBox;
+var rock0Mesh;
+var rock1Mesh;
+var stone0Mesh;
+var house0Mesh;
+var house0MeshNB;
+var tree0TrunkMesh;
+var tree0LeafsMesh;
+var doorMesh;
+var castleExteriorMesh;
+var castleInteriorMesh;
+var castleTowersMesh;
+var castleDoorRMesh;
+var castleDoorLMesh;
+var castleDungeonWallsMesh;
+var castleFloorMesh;
+var skyboxMesh;
+var ghostMesh;
+var bombMesh;
+var keyHoleMesh;
+var keyMesh;
+var lavaMesh;
+var lanternMesh;
+
+///MATERIALS
+var greenSpecMaterial;
+var greenMaterial;
+var redMaterial;
+var brownMaterial;
+var yellowMaterial;
+var textureMaterial;
+var castleInteriorTex;
+var castleExteriorTex;
+var castleDoorsTex;
+var castleDungeonWallsTex;
+var grassTex;
+var house0Tex;
+var rocksTex;
+var rock1Tex;
+var stone0Tex;
+var tree0LeafsTex;
+var tree0TrunkTex;
+var skyboxTex;
+var woodenDoorTex;
+var woodenCrateTex;
+var ghostMaterial;
+var keyMaterial;
+var lavaMaterial;
+var lanternTex;
+///_________________________________________________________
+
+
+var objects = [];
+var lights = []; // should have maximum 3 lights
+var materials = [];
+
 var firstPersonCamera;
 var lookAtCamera;
 
-var lights = []; // should have maximum 3 lights
-//stores all Objects3D in the scene
-var objects = [];
-var objectsCount = 0;
-
 var player;
+
 
 var Scene = 
 {
+	loadMeshes()
+	{
+		unitCubeMesh 			= Mesh.loadFromOBJFile("u_cube.obj");
+		unitCubeTexMesh 		= Mesh.loadFromOBJFile("u_cube_leather.obj");
+		gearMesh 				= Mesh.loadFromOBJFile("gear.obj");
+		castleTowerMesh			= Mesh.loadFromOBJFile("castle_tower.obj");
+		castleWallMesh			= Mesh.loadFromOBJFile("castle_wall.obj");
+		woodBox					= Mesh.loadFromOBJFile("wood_box.obj");
+		rock0Mesh				= Mesh.loadFromOBJFile("rock0.obj");
+		rock1Mesh				= Mesh.loadFromOBJFile("rock1.obj");
+		stone0Mesh				= Mesh.loadFromOBJFile("stone0.obj");
+		house0Mesh 				= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
+		house0MeshNB			= Mesh.loadFromOBJFile("house0.obj");
+		tree0TrunkMesh			= Mesh.loadFromOBJFile("tree0_trunk.obj");
+		tree0LeafsMesh 			= Mesh.loadFromOBJFile("tree0_leafs.obj");
+		doorMesh				= Mesh.loadFromOBJFile("wooden_door.obj");
+		castleExteriorMesh		= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
+		castleInteriorMesh		= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
+		castleTowersMesh		= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
+		castleDoorRMesh			= Mesh.loadFromOBJFile("castle_doorR.obj");
+		castleDoorLMesh			= Mesh.loadFromOBJFile("castle_doorL.obj");
+		castleDungeonWallsMesh	= Mesh.loadFromOBJFile("castle_dungeon_walls.obj", "castle_dungeon_bBoxes.obj");
+		castleFloorMesh			= Mesh.loadFromOBJFile("castle_floor.obj", "castle_floor.obj");
+		skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
+		ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
+		bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
+		keyHoleMesh				= Mesh.loadFromOBJFile("keyhole.obj");
+		keyMesh					= Mesh.loadFromOBJFile("key.obj");
+		lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
+		lanternMesh				= Mesh.loadFromOBJFile("lantern.obj");
+	},
+
+	loadMaterials()
+	{
+		materials.push(greenSpecMaterial 		= new SpecularMaterial(0.0, 255, 10, 255));
+	    materials.push(greenMaterial 			= new DiffuseMaterial(0.0, 255, 10, 255));
+		materials.push(redMaterial 				= new DiffuseMaterial(255, 50, 50, 255));
+		materials.push(lavaMaterial 			= new SimpleMaterial(255, 0, 0, 255));
+		materials.push(brownMaterial 			= new DiffuseMaterial(255, 200, 50, 255));
+		materials.push(yellowMaterial 			= new DiffuseMaterial( 255, 255 , 0, 255));
+		materials.push(textureMaterial 			= new TextureMaterial("crate.png"));
+		materials.push(castleInteriorTex 		= new TextureDiffuse("castle_interior.jpg"));
+		materials.push(castleExteriorTex 		= new TextureDiffuse("castle_exterior.jpg"));
+		materials.push(castleDoorsTex 			= new TextureDiffuse("castle_towers_doors.jpg"));
+		materials.push(castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg"));
+		materials.push(grassTex					= new TextureDiffuse("terrain1.jpg"));
+		materials.push(house0Tex 				= new TextureDiffuse("house0.jpg"));
+		materials.push(rocksTex 				= new TextureDiffuse("rocks.jpg"));
+		materials.push(rock1Tex 				= new TextureDiffuse("rock1.jpg"));
+		materials.push(stone0Tex 				= new TextureDiffuse("stone0.jpg"));
+		materials.push(tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png"));
+		materials.push(tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg"));
+		materials.push(skyboxTex				= new TextureMaterial("skybox.jpg"));
+		materials.push(woodenDoorTex			= new TextureDiffuse("wooden_door.png"));
+		materials.push(woodenCrateTex			= new TextureDiffuse("wood_crate.png"));
+		materials.push(ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140));
+		materials.push(keyMaterial 				= new SpecularMaterial(200, 200, 0, 255));
+		materials.push(lavaMaterial 			= new TextureMaterial("lava.png"));
+		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
+
+		for(var i=0; i<materials.length; i++)
+		{
+			materials[i].setAmbientColor(0, 0, 20, 1.0);
+		}
+		lavaMaterial.setAmbientColor(200, 0, 0, 1.0);
+	},
+
 	//add at the end
 	addObject3D: function(object)
 	{
@@ -29,109 +156,45 @@ var Scene =
 				objects.splice(i, 1);
 	},
 
-	loadGlobalAssets()
+	switchLights_Extern()
 	{
-		unitCubeMesh 		= Mesh.loadFromOBJFile("u_cube.obj");
-		unitCubeTexMesh 	= Mesh.loadFromOBJFile("u_cube_leather.obj");
+		//delete old lights
+		lights.splice(0, lights.length);
+
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
+	    lights.push(new PointLight('LB', 0, 10, 120, 35, 0.8 ));
+	    lights[0].setCone(20, 50);
+	    lights[0].setColor(255, 255, 255);
+	    lights[1].setColor(255, 60, 0);
+	    Light.moveAllLights(viewMatrix);
 	},
 
-	init: function()
+	switchLights_Dungeon()
 	{
-		////		LOAD ASSETS
-		////_________________________________
+		//delete old lights
+		lights.splice(0, lights.length);
 
-		Scene.loadGlobalAssets();
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
+	    lights.push(new PointLight('LB', -115, -8, -61, 20, 0.85));
+	    lights[0].setCone(20, 50);
+	    lights[0].setColor(255, 255, 255);
+	    lights[1].setColor(100, 0, 255);
+	    Light.moveAllLights(viewMatrix);
 
-		var gearMesh 				= Mesh.loadFromOBJFile("gear.obj");
-		var castleTowerMesh			= Mesh.loadFromOBJFile("castle_tower.obj");
-		var castleWallMesh			= Mesh.loadFromOBJFile("castle_wall.obj");
-		var woodBox					= Mesh.loadFromOBJFile("wood_box.obj");
-		var rock0Mesh				= Mesh.loadFromOBJFile("rock0.obj");
-		var rock1Mesh				= Mesh.loadFromOBJFile("rock1.obj");
-		var stone0Mesh				= Mesh.loadFromOBJFile("stone0.obj");
-		var house0Mesh 				= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
-		var house0MeshNB			= Mesh.loadFromOBJFile("house0.obj");
-		var tree0TrunkMesh			= Mesh.loadFromOBJFile("tree0_trunk.obj");
-		var tree0LeafsMesh 			= Mesh.loadFromOBJFile("tree0_leafs.obj");
-		var doorMesh				= Mesh.loadFromOBJFile("wooden_door.obj");
-		var castleExteriorMesh		= Mesh.loadFromOBJFile("castle_exterior.obj", "castle_exterior_bBoxes.obj");
-		var castleInteriorMesh		= Mesh.loadFromOBJFile("castle_interior.obj", "castle_interior_bBoxes.obj");
-		var castleTowersMesh		= Mesh.loadFromOBJFile("castle_towers_doors.obj", "castle_towers_doors_bBoxes.obj");
-		var castleDoorRMesh			= Mesh.loadFromOBJFile("castle_doorR.obj");
-		var castleDoorLMesh			= Mesh.loadFromOBJFile("castle_doorL.obj");
-		var castleDungeonWallsMesh	= Mesh.loadFromOBJFile("castle_dungeon_walls.obj", "castle_dungeon_bBoxes.obj");
-		var castleFloorMesh			= Mesh.loadFromOBJFile("castle_floor.obj", "castle_floor.obj");
-		var skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
-		var ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
-		var bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
-		var keyHoleMesh				= Mesh.loadFromOBJFile("keyhole.obj");
-		var keyMesh					= Mesh.loadFromOBJFile("key.obj");
-		var lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
+	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
+	    lantern.setPosition(-60, -1, -61);
+	    lantern.addToScene();
+	},
 
-
-		////		CREATE MATERIALS
-		////__________________________________
-		const ambientColor = [0, 0, 20, 1.0]
-		var greenSpecMaterial 		= new SpecularMaterial(0.0, 255, 10, 255);
-		greenSpecMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-	    var greenMaterial 			= new DiffuseMaterial(0.0, 255, 10, 255);
-	    greenMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var redMaterial 			= new DiffuseMaterial(255, 50, 50, 255);
-		redMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var lavaMaterial 			= new SimpleMaterial(255, 0, 0, 255);
-		lavaMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var brownMaterial 			= new DiffuseMaterial(255, 200, 50, 255);
-		brownMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var yellowMaterial 			= new DiffuseMaterial( 255, 255 , 0, 255);
-		yellowMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var textureMaterial 		= new TextureMaterial("crate.png");
-		textureMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var castleInteriorTex 		= new TextureDiffuse("castle_interior.jpg");
-		castleInteriorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var castleExteriorTex 		= new TextureDiffuse("castle_exterior.jpg");
-		castleExteriorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var castleDoorsTex 			= new TextureDiffuse("castle_towers_doors.jpg");
-		castleDoorsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg");
-		castleDungeonWallsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var grassTex				= new TextureDiffuse("terrain1.jpg");
-		grassTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var house0Tex 				= new TextureDiffuse("house0.jpg");
-		house0Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var rocksTex 				= new TextureDiffuse("rocks.jpg");
-		rocksTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var rock1Tex 				= new TextureDiffuse("rock1.jpg");
-		rock1Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var stone0Tex 				= new TextureDiffuse("stone0.jpg");
-		stone0Tex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png");
-		tree0LeafsTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg");
-		tree0TrunkTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var skyboxTex				= new TextureMaterial("skybox.jpg");
-		skyboxTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var woodenDoorTex			= new TextureDiffuse("wooden_door.png");
-		woodenDoorTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var woodenCrateTex			= new TextureDiffuse("wood_crate.png");
-		woodenCrateTex.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140);
-		ghostMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var keyMaterial 			= new SpecularMaterial(200, 200, 0, 255);
-		keyMaterial.setAmbientColor(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
-		var lavaMaterial 			= new TextureMaterial("lava.png");
-		lavaMaterial.setAmbientColor(100, 0, 0, 255);
-
-
-	    console.log("Loaded texture");
-
-	    InterfaceOverlay.init();
-
+	makeScene()
+	{
 		////		CREATE OBJECTS 3D
 		////__________________________________
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 40, 190);
+		player.setPosition(0, 10, 190);
+		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -262,11 +325,6 @@ var Scene =
 		tmpObj.setScale(0.5, 0.5, 0.5);
 		tmpObj.addToScene();
 
-		//door
-		var tmpObj = new Door3D(doorMesh, woodenDoorTex);
-		tmpObj.setPosition(3, 0, 190);
-		tmpObj.addToScene();
-
 		//ghost
 		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
 		tmpObj.setPosition(-20, 5, 170);
@@ -311,6 +369,20 @@ var Scene =
 		tmpObj.setScale(5, 5, 5);
 		tmpObj.addToScene();
 
+		//trigger to switch lights
+		var dungeonLightsTrigg = new TriggerBox3D(10, 20, 10);
+		dungeonLightsTrigg.setPosition(0, -5, -40);
+		dungeonLightsTrigg.oneShot = true;
+		dungeonLightsTrigg.onTrigger = function(inst)
+						{
+							Scene.switchLights_Dungeon();
+							doorToDungeonL.close();
+							doorToDungeonR.close();
+						};
+		dungeonLightsTrigg.addToScene();
+
+
+
 		//skybox
 		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
 		tmpObj.addToScene();
@@ -331,19 +403,22 @@ var Scene =
 		firstPersonCamera.setPosition(0, 0, 0);
 		firstPersonCamera.look();
 
-		///			LIGHTS
-		///___________________________
+		//lights
+		Scene.switchLights_Extern();
+	},
 
-		//creates first light 
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', 0, 10, 120, 40, 0.5 ));
-	    //lights.push(new DirectionalLight('LB', 0, 0.5, 1));
-	    lights[0].setCone(20, 50);
-	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(255, 60, 0);
-	    Light.moveAllLights(viewMatrix);
+	start: function()
+	{
+		////LOAD ASSETS
+		Scene.loadMeshes();
+		Scene.loadMaterials();
 
+		//load interface
+	    InterfaceOverlay.init();
+
+	    Scene.makeScene();
+	    window.requestAnimationFrame(Scene.render);
 	},
 
 	render: function()
@@ -393,6 +468,10 @@ var Scene =
 			objects[i].render();	
 
 		InterfaceOverlay.render();
+
+		console.log(player.x);
+		console.log(player.y);
+		console.log(player.z);
 	
 		if(player.health > 0.0)
 			window.requestAnimationFrame(Scene.render);
