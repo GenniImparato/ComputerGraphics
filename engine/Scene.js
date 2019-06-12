@@ -29,6 +29,7 @@ var keyHoleMesh;
 var keyMesh;
 var lavaMesh;
 var lanternMesh;
+var finalDestMesh;
 
 ///MATERIALS
 var greenSpecMaterial;
@@ -64,8 +65,10 @@ var materials = [];
 
 var firstPersonCamera;
 var lookAtCamera;
+var camAnimator;
 
 var player;
+var endCredits = true;
 
 
 var Scene = 
@@ -100,6 +103,7 @@ var Scene =
 		keyMesh					= Mesh.loadFromOBJFile("key.obj");
 		lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
 		lanternMesh				= Mesh.loadFromOBJFile("lantern.obj");
+		finalDestMesh			= Mesh.loadFromOBJFile("final_dest.obj", "final_dest.obj");
 	},
 
 	loadMaterials()
@@ -193,10 +197,14 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 10, 190);
+		player.setPosition(-200, 50, -100);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
+
+		var tmpObj = new Object3D(finalDestMesh, castleDungeonWallsTex);
+		tmpObj.addToScene();
+		tmpObj.setPosition(-200, 0, -100);
 
 		//lava
 		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
@@ -403,6 +411,15 @@ var Scene =
 		firstPersonCamera.setPosition(0, 0, 0);
 		firstPersonCamera.look();
 
+		camAnimator = new LinearCameraAnimator(lookAtCamera);
+		camAnimator.addKeyFrame(30, 10, 250, 90, 10, 10);
+		camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
+		camAnimator.addKeyFrame(0, 80, 100, 0, 40, 40);
+		camAnimator.addKeyFrame(0, 80, 80, 180, 40, 50);
+		camAnimator.addKeyFrame(0, 20, 0, 360, 30, 30);
+		camAnimator.addKeyFrame(0, -5, -80, 0, 20, 5);
+		camAnimator.playAnimation(500, true);
+
 		//lights
 		Scene.switchLights_Extern();
 	},
@@ -436,7 +453,12 @@ var Scene =
 			objects[i].update();
 		}
 
-		if(cameraMode)
+		if(endCredits)
+		{
+			camAnimator.update();
+			lookAtCamera.look();
+		}
+		else if(cameraMode)
 		{
 			firstPersonCamera.setAngle(player.rotx);
 			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
@@ -467,7 +489,8 @@ var Scene =
 		for(var i=0; i<objects.length; i++)
 			objects[i].render();	
 
-		InterfaceOverlay.render();
+		if(!endCredits)
+			InterfaceOverlay.render();
 
 		console.log(player.x);
 		console.log(player.y);
