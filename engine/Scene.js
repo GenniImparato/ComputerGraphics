@@ -68,7 +68,7 @@ var lookAtCamera;
 var camAnimator;
 
 var player;
-var endCredits = true;
+var endCredits = false;
 
 
 var Scene = 
@@ -166,12 +166,12 @@ var Scene =
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', 0, 10, 120, 35, 0.8 ));
-	    lights.push(new PointLight('LC', -50, 70, -120, 50, 0.5 )); // Moon light
+	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));
+	    lights.push(new PointLight('LC', 0, 10, 350, 35, 0.8 )); // Moon light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 60, 0);
-	    lights[2].setColor(200, 200, 200);
+	    lights[2].setColor(255, 60, 0);
 	    Light.moveAllLights(viewMatrix);
 	},
 
@@ -182,7 +182,7 @@ var Scene =
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', -115, -8, -61, 30, 0.85));
-	    lights.push(new PointLight('LC', 50, -8, -120, 50, 0.5 )); // Wall light
+	    lights.push(new PointLight('LC', 50, -8, -120, 0, 0 )); // Wall light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(100, 0, 255);
@@ -201,7 +201,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(-200, 50, -100);
+		player.setPosition(0, 50, 150);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
