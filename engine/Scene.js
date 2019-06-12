@@ -167,9 +167,11 @@ var Scene =
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', 0, 10, 120, 35, 0.8 ));
+	    lights.push(new PointLight('LC', -50, 70, -120, 50, 0.5 )); // Moon light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 60, 0);
+	    lights[2].setColor(200, 200, 200);
 	    Light.moveAllLights(viewMatrix);
 	},
 
@@ -179,10 +181,12 @@ var Scene =
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', -115, -8, -61, 30, 50));
+	    lights.push(new PointLight('LB', -115, -8, -61, 30, 0.85));
+	    lights.push(new PointLight('LC', 50, -8, -120, 50, 0.5 )); // Wall light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(100, 0, 255);
+	    lights[2].setColor(244, 191, 66);
 	    Light.moveAllLights(viewMatrix);
 
 	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
