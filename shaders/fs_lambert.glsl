@@ -28,6 +28,28 @@ uniform float LBTarget;
 uniform vec3 LBType; // x is for directional, y for point and z for spot
 
 
+
+uniform float LCOn;
+uniform vec3 LCDir;		
+uniform vec3 LCPos;	
+uniform vec3 LCColor;	
+uniform float LCConeIn;
+uniform float LCConeOut;
+uniform float LCDecay;
+uniform float LCTarget;
+uniform vec3 LCType; // x is for directional, y for point and z for spot
+
+
+uniform float LDOn;
+uniform vec3 LDDir;		
+uniform vec3 LDPos;	
+uniform vec3 LDColor;	
+uniform float LDConeIn;
+uniform float LDConeOut;
+uniform float LDDecay;
+uniform float LDTarget;
+uniform vec3 LDType; // x is for directional, y for point and z for spot
+
 uniform vec4 mDiffColor;
 uniform vec4 mAmbientColor;
 uniform vec4 mEmitColor;
@@ -87,15 +109,26 @@ void main()
 	
 	// first light diffuse component
 	vec3 lambertDiffuseColor1 = applyLambertDiffuse(lightADir, lightAColor, normalVec, mDiffColor.rgb);
+
         // Second light
 	vec3 lightBDir = compLightDir(LBDir, LBPos, LBType);
 	vec3 lightBColor = compLightColor(LBColor, LBDir, LBTarget, LBPos, LBDecay, LBConeIn, LBConeOut, LBType);
-	
 
 	vec3 lambertDiffuseColor2 = applyLambertDiffuse(lightBDir, lightBColor, normalVec, mDiffColor.rgb);
 
+	// Third light
+	vec3 lightCDir = compLightDir(LCDir, LCPos, LCType);
+	vec3 lightCColor = compLightColor(LCColor, LCDir, LCTarget, LCPos, LCDecay, LCConeIn, LCConeOut, LCType);
+
+	vec3 lambertDiffuseColor3 = applyLambertDiffuse(lightCDir, lightCColor, normalVec, mDiffColor.rgb);
+
+	// fourth light
+	vec3 lightDDir = compLightDir(LDDir, LDPos, LDType);
+	vec3 lightDColor = compLightColor(LDColor, LDDir, LDTarget, LDPos, LDDecay, LDConeIn, LDConeOut, LDType);
+
+	vec3 lambertDiffuseColor4 = applyLambertDiffuse(lightDDir, lightDColor, normalVec, mDiffColor.rgb);
 
 	// lambert diffuse without specular
-	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn + mAmbientColor.rgb + mEmitColor.rgb, mDiffColor.a),0.0, 1.0);
+	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + mAmbientColor.rgb  + mEmitColor.rgb, mDiffColor.a),0.0, 1.0);
 	
 }

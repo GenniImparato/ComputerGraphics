@@ -31,7 +31,27 @@ uniform float LBDecay;
 uniform float LBTarget;
 uniform vec3 LBType; // x is for directional, y for point and z for spot
 
-// Final color is returned into:
+
+uniform float LCOn;
+uniform vec3 LCDir;		
+uniform vec3 LCPos;	
+uniform vec3 LCColor;	
+uniform float LCConeIn;
+uniform float LCConeOut;
+uniform float LCDecay;
+uniform float LCTarget;
+uniform vec3 LCType; // x is for directional, y for point and z for spot
+
+
+uniform float LDOn;
+uniform vec3 LDDir;		
+uniform vec3 LDPos;	
+uniform vec3 LDColor;	
+uniform float LDConeIn;
+uniform float LDConeOut;
+uniform float LDDecay;
+uniform float LDTarget;
+uniform vec3 LDType; // x is for directional, y for point and z for spot
 
 uniform vec4 mDiffColor;
 uniform vec4 mAmbientColor;
@@ -103,9 +123,20 @@ void main() {
 	vec3 lambertDiffuseColor2 = applyLambertDiffuse(lightBDir, lightBColor, normalVec, texColor.rgb);
 
 
+	// Third light
+	vec3 lightCDir = compLightDir(LCDir, LCPos, LCType);
+	vec3 lightCColor = compLightColor(LCColor, LCDir, LCTarget, LCPos, LCDecay, LCConeIn, LCConeOut, LCType);
+
+	vec3 lambertDiffuseColor3 = applyLambertDiffuse(lightCDir, lightCColor, normalVec, texColor.rgb);
+
+	// fourth light
+	vec3 lightDDir = compLightDir(LDDir, LDPos, LDType);
+	vec3 lightDColor = compLightColor(LDColor, LDDir, LDTarget, LDPos, LDDecay, LDConeIn, LDConeOut, LDType);
+
+	vec3 lambertDiffuseColor4 = applyLambertDiffuse(lightDDir, lightDColor, normalVec, texColor.rgb);
 
 	// lambert diffuse without specular
-	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn + mAmbientColor.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
+	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn +  + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + mAmbientColor.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
 
 	  
 
