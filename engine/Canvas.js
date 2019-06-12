@@ -3,6 +3,7 @@ var Canvas =
     init: function()
     {
         canvas = document.getElementById("canvas");
+        document.body.style.overflow = 'hidden';
 
         try
         {
