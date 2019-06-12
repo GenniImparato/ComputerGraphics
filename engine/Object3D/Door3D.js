@@ -48,12 +48,12 @@ class Door3D extends GroupObject3D
 		this.animator.enablePositionAnimation(false);
 		this.animator.enableScaleAnimation(false);
 
-		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1, 1, 1);
+		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0);
 
 		if(!openFromRight)
-			this.animator.addKeyFrame(0, 0, 0, -90, 0, 0, 1, 1, 1);
+			this.animator.addKeyFrame(0, 0, 0, -90, 0, 0);
 		else
-			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0, 1, 1, 1);
+			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0);
 
 	}
 

@@ -201,7 +201,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 50, 150);
+		player.setPosition(0, 50, 50);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -393,6 +393,19 @@ var Scene =
 						};
 		dungeonLightsTrigg.addToScene();
 
+		//dungeon doors
+		var tmpObj = new Door3D(doorMesh, woodenDoorTex, true, false);
+		tmpObj.setPosition(-135, -13, -57);
+		tmpObj.setRotation(90, 0, 0);
+		tmpObj.objects[0].setScale(1.8, 1.5, 1);
+		tmpObj.addToScene();
+
+		var tmpObj = new Door3D(doorMesh, woodenDoorTex, true, false);
+		tmpObj.setPosition(-129, -13, -91);
+		tmpObj.setRotation(90, 0, 0);
+		tmpObj.objects[0].setScale(1.6, 1.5, 1);
+		tmpObj.addToScene();
+
 
 		//skybox
 		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
@@ -497,6 +510,10 @@ var Scene =
 			InterfaceOverlay.render();
 		else
 			InterfaceOverlay.renderCredits();
+
+		console.log(player.x);
+		console.log(player.y);
+		console.log(player.z);
 	
 		if(player.health > 0.0)
 			window.requestAnimationFrame(Scene.render);
