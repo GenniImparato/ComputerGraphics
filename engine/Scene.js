@@ -175,7 +175,7 @@ var Scene =
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', -115, -8, -61, 20, 0.85));
+	    lights.push(new PointLight('LB', -115, -8, -61, 30, 50));
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(100, 0, 255);
