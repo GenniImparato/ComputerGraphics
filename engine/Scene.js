@@ -68,7 +68,7 @@ var lookAtCamera;
 var camAnimator;
 
 var player;
-var endCredits = true;
+var endCredits = false;
 
 
 var Scene = 
@@ -394,7 +394,6 @@ var Scene =
 		dungeonLightsTrigg.addToScene();
 
 
-
 		//skybox
 		var tmpObj = new Object3D(skyboxMesh, skyboxTex);
 		tmpObj.addToScene();
@@ -415,6 +414,7 @@ var Scene =
 		firstPersonCamera.setPosition(0, 0, 0);
 		firstPersonCamera.look();
 
+		//end credits animation
 		camAnimator = new LinearCameraAnimator(lookAtCamera);
 		camAnimator.addKeyFrame(30, 10, 250, 90, 10, 10);
 		camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
@@ -497,10 +497,6 @@ var Scene =
 			InterfaceOverlay.render();
 		else
 			InterfaceOverlay.renderCredits();
-
-		console.log(player.x);
-		console.log(player.y);
-		console.log(player.z);
 	
 		if(player.health > 0.0)
 			window.requestAnimationFrame(Scene.render);

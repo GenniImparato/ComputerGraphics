@@ -63,10 +63,6 @@ var InterfaceOverlay =
 		viewMatrix = utils.identityMatrix();
 		projectionMatrix = utils.identityMatrix();
 
-		//update health and energy from player
-		this.healthBar.setScale(0.32, 0.8*player.health, 0);
-		this.energyBar.setScale(0.32, 0.8*player.energy, 0);
-
 		this.credits1.render();
 		this.credits2.render();
 	},
