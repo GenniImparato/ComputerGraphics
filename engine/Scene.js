@@ -200,7 +200,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, -5, -35);
+		player.setPosition(0, 20, 120);
 		player.hasKey = false;
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -351,17 +351,7 @@ var Scene =
 		tmpObj.addToScene();
 
 		//ghost
-		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
-		tmpObj.setPosition(-20, 5, 170);
-		tmpObj.addToScene();
-		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
-		tmpObj.setPosition(-10, 8, 230);
-		tmpObj.addToScene();
-		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
-		tmpObj.setPosition(25, 5, 109);
-		tmpObj.addToScene();
-		var tmpObj = new Ghost3D(ghostMesh, ghostMaterial);
-		tmpObj.setPosition(50, 5, 250);
+		var tmpObj = new GhostSpawner3D();
 		tmpObj.addToScene();
 
 		//trees

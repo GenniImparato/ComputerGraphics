@@ -1,4 +1,5 @@
-const ghostMoveSpeed = 0.12;
+const 	ghostMoveSpeed = 0.12;
+var		ghostCount	= 0;
 
 class Ghost3D_ extends Object3D
 {
@@ -18,7 +19,7 @@ class Ghost3D_ extends Object3D
 		if(object == player)
 		{
 			object.damage(0.4);
-			this.removeFromScene();
+			this.health = 0;
 		}
 	}
 
@@ -56,14 +57,32 @@ class Ghost3D extends GroupObject3D
 		var mainObj = new Ghost3D_(mesh, material);
 		this.addObject3D(mainObj);
 
-		this.animator = new LinearAnimator(mainObj);
-		this.animator.enablePositionAnimation(true);
-		this.animator.enableRotationAnimation(false);
-		this.animator.enableScaleAnimation(true);
+		//idle animation
+		this.idleAnim = new LinearAnimator(mainObj);
+		this.idleAnim.enablePositionAnimation(true);
+		this.idleAnim.enableRotationAnimation(false);
+		this.idleAnim.enableScaleAnimation(true);
 
-		this.animator.addKeyFrame(0, -2.5, 0, 0, 0, 0, 0.8, 0.8, 0.8);
-		this.animator.addKeyFrame(0, +2.5, 0, 0, 0, 0, 1.2, 1.2, 1.2);
-		this.animator.playAnimation(150, true);
+		this.idleAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8);
+		this.idleAnim.addKeyFrame(0, +2.5, 0, 0, 0, 0, 1.2, 1.2, 1.2);
+
+		//spawn animation
+		this.spawnAnim = new LinearAnimator(mainObj, this);
+		this.spawnAnim.enablePositionAnimation(false);
+		this.spawnAnim.enableRotationAnimation(false);
+		this.spawnAnim.enableScaleAnimation(true);
+
+		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8);
+
+		this.currAnim = this.spawnAnim;
+		this.spawnAnim.playAnimation(100, false);
+
+		this.spawnAnim.onStop = function(inst)
+			{
+				inst.currAnim = inst.idleAnim;
+				inst.idleAnim.playAnimation(150, true);
+			};
 	}
 
 	preUpdate()
@@ -79,20 +98,63 @@ class Ghost3D extends GroupObject3D
 		distZ = distZ/dist;
 		distY = distY/dist;
 
-		if(dist<100 && dist>15)
-		{
+		this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
+
+		if(dist<100	&& this.spawnAnim.playing == false)
 			//follow player
 			this.setSpeed(distX*ghostMoveSpeed, distY*ghostMoveSpeed, distZ*ghostMoveSpeed);
-			this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
-		}
 		else
 			this.setSpeed(0, 0, 0);
 
 
-		this.animator.update();
+		this.currAnim.update();
 
 		if(this.objects[0].health == 0)
+		{
 			this.removeFromScene();
+			ghostCount--;
+		}
 	}
 
+}
+
+class GhostSpawner3D extends Object3D
+{
+	constructor()
+	{
+		super();
+		this.currTime = 0;
+		this.ghostCount = 0;
+		this.nextSpawnTime = Math.random()*800 + 200;
+	}
+
+	preUpdate()
+	{
+		this.currTime++;
+
+		if(this.currTime >= this.nextSpawnTime		&&		ghostCount < 3)
+		{
+			this.currTime = 0;
+
+			//spawn ghost
+			var ghost = new Ghost3D(ghostMesh, ghostMaterial);
+
+			//random spawning angle with respect to player (in range of 90 degrees)
+			var spawnAngle = player.rotx;
+			spawnAngle += (Math.random()-0.5)*90;
+
+			//random spawn distance
+			var spawDist = 20 + Math.random() * 30;
+
+			ghost.setPosition(player.x - spawDist*Math.sin(utils.degToRad(-spawnAngle)),
+								player.y + 5,
+								player.z - spawDist*Math.cos(utils.degToRad(spawnAngle)));
+			ghost.addToScene();
+
+			//random time for next spawn
+			this.nextSpawnTime = Math.random()*800 + 200;
+
+			ghostCount++;
+		}
+	}
 }

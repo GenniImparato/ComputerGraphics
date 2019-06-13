@@ -103,7 +103,14 @@ class Player extends GroupObject3D
 
 	preUpdate()
 	{
-		
+		//regen health
+		if(this.health <= 0)
+			this.health = 0;
+		else
+			this.health += 0.0003;
+
+		if(this.health > 1.0)
+			this.health = 1.0;	
 	}
 
 	damage(val)
