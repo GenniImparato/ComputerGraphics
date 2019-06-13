@@ -160,7 +160,7 @@ var Scene =
 	},
 
 	switchLights_Extern()
-	{
+	{	
 		//delete old lights
 		lights.splice(0, lights.length);
 
@@ -171,6 +171,9 @@ var Scene =
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 60, 0);
 	    lights[2].setColor(255, 60, 0);
+	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
+	    lantern.setPosition(10, 5, 0);
+	    lantern.addToScene();
 	    Light.moveAllLights(viewMatrix);
 	},
 
@@ -311,7 +314,7 @@ var Scene =
 
 		//key
 		var tmpObj = new Key3D(keyMesh, keyMaterial);
-		tmpObj.setPosition(0, 55, -55);
+		tmpObj.setPosition(0, 0, -25);
 		tmpObj.setScale(15, 15, 15);
 		tmpObj.addToScene();
 

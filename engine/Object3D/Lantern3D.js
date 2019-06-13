@@ -9,13 +9,14 @@ class Lantern3D extends GroupObject3D
 		this.addObject3D(mainObj);
 		this.linkLight(light);
 
-		this.animator = new LinearAnimator(mainObj);
+		this.animator = new BezierAnimator(mainObj);
 		this.animator.enablePositionAnimation(true);
 		this.animator.enableRotationAnimation(false);
 		this.animator.enableScaleAnimation(false);
-		this.animator.addKeyFrame(-50, 0, 0);
-		this.animator.addKeyFrame(+50, 0, 0);
-		this.animator.playAnimation(500, true);
+		this.animator.addKeyFrame(+10, 0, 0, 0, 0, 0);
+		this.animator.addKeyFrame(0, 0, +10, 0 , 50, 0);
+		this.animator.addKeyFrame(-10, 0, 0, 0 , 0 , 0);
+		this.animator.playAnimation(500, false);
 	}
 
 	linkLight(light)
