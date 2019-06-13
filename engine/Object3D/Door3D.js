@@ -99,7 +99,7 @@ class DoorKey3D extends GroupObject3D
 		if(!openFromRight)
 			keyhole.setPosition(-door.boundingBoxes[0].dx + keyhole.boundingBoxes[0].dx + 0.5, 
 							door.boundingBoxes[0].dy/2 - keyhole.boundingBoxes[0].dy/2 - 0.5, 
-							door.boundingBoxes[0].dz/2 + keyhole.boundingBoxes[0].dz);
+							door.boundingBoxes[0].dz/2);
 		else
 			keyhole.setPosition(door.boundingBoxes[0].dx - keyhole.boundingBoxes[0].dx - 0.5, 
 							door.boundingBoxes[0].dy/2 - keyhole.boundingBoxes[0].dy/2  - 0.5, 

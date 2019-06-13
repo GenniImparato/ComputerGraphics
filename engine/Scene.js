@@ -136,9 +136,9 @@ var Scene =
 
 		for(var i=0; i<materials.length; i++)
 		{
-			materials[i].setAmbientColor(0, 0, 20, 1.0);
+			materials[i].setAmbientColor(5, 5, 10, 255);
 		}
-		lavaMaterial.setAmbientColor(200, 0, 0, 1.0);
+		lavaMaterial.setAmbientColor(200, 0, 0, 255);
 	},
 
 	//add at the end
@@ -167,7 +167,7 @@ var Scene =
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));
-	    lights.push(new PointLight('LC', 0, 10, 350, 35, 0.8 )); // Moon light
+	    lights.push(new PointLight('LC', 0, 10, 350, 50, 0.8 )); // Moon light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 60, 0);
@@ -181,12 +181,12 @@ var Scene =
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', -115, -8, -61, 30, 0.85));
-	    lights.push(new PointLight('LC', 50, -8, -120, 0, 0 )); // Wall light
+	    lights.push(new PointLight('LB', -115, -8, -61, 30, 10));
+	    lights.push(new PointLight('LC', -1, 6, -180, 30, 0.8 )); // lava light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(100, 0, 255);
-	    lights[2].setColor(244, 191, 66);
+	    lights[1].setColor(100, -1, 255);
+	    lights[2].setColor(255, 0, 0);
 	    Light.moveAllLights(viewMatrix);
 
 	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
@@ -201,7 +201,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 50, 50);
+		player.setPosition(0, 20, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -404,6 +404,17 @@ var Scene =
 		tmpObj.setPosition(-129, -13, -91);
 		tmpObj.setRotation(90, 0, 0);
 		tmpObj.objects[0].setScale(1.6, 1.5, 1);
+		tmpObj.addToScene();
+
+		var tmpObj = new DoorKey3D(doorMesh, woodenDoorTex, keyHoleMesh, keyMesh, keyMaterial, null, false);
+		tmpObj.setPosition(0.85, -12, -75);
+		tmpObj.objects[0].setScale(1.6, 1.55, 1);
+		tmpObj.addToScene();
+
+		//second key
+		var tmpObj = new Key3D(keyMesh, keyMaterial);
+		tmpObj.setPosition(-109, -5, -94);
+		tmpObj.setScale(15, 15, 15);
 		tmpObj.addToScene();
 
 
