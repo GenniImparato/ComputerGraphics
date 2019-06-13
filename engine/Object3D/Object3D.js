@@ -335,10 +335,10 @@ class Object3D
 
 					if(this.checkCollision(this.collisionObjects[i], bBoxNum))
 					{
-						this.solveCollision(this.collisionObjects[i], bBoxNum);
-
 						if(this.changeBBColor)
-							this.collisionObjects[i].boundingBoxes[bBoxNum].setColor(this.collisionObjects[i].boundingBoxes[bBoxNum].collidedColor);				
+							this.collisionObjects[i].boundingBoxes[bBoxNum].setColor(this.collisionObjects[i].boundingBoxes[bBoxNum].collidedColor);
+						
+						this.solveCollision(this.collisionObjects[i], bBoxNum);				
 					}
 				}
 					
