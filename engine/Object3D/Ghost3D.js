@@ -98,12 +98,11 @@ class Ghost3D extends GroupObject3D
 		distZ = distZ/dist;
 		distY = distY/dist;
 
+		this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
+
 		if(dist<100	&& this.spawnAnim.playing == false)
-		{
 			//follow player
 			this.setSpeed(distX*ghostMoveSpeed, distY*ghostMoveSpeed, distZ*ghostMoveSpeed);
-			this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
-		}
 		else
 			this.setSpeed(0, 0, 0);
 
@@ -126,22 +125,23 @@ class GhostSpawner3D extends Object3D
 		super();
 		this.currTime = 0;
 		this.ghostCount = 0;
+		this.nextSpawnTime = Math.random()*800 + 200;
 	}
 
 	preUpdate()
 	{
 		this.currTime++;
 
-		if(this.currTime >= 500		&&		ghostCount < 3)
+		if(this.currTime >= this.nextSpawnTime		&&		ghostCount < 3)
 		{
 			this.currTime = 0;
 
 			//spawn ghost
 			var ghost = new Ghost3D(ghostMesh, ghostMaterial);
 
-			//random spawning angle with respect to player (in range of 180 degrees)
+			//random spawning angle with respect to player (in range of 90 degrees)
 			var spawnAngle = player.rotx;
-			spawnAngle += (Math.random()-0.5)*180;
+			spawnAngle += (Math.random()-0.5)*90;
 
 			//random spawn distance
 			var spawDist = 20 + Math.random() * 30;
@@ -150,6 +150,9 @@ class GhostSpawner3D extends Object3D
 								player.y + 5,
 								player.z - spawDist*Math.cos(utils.degToRad(spawnAngle)));
 			ghost.addToScene();
+
+			//random time for next spawn
+			this.nextSpawnTime = Math.random()*800 + 200;
 
 			ghostCount++;
 		}
