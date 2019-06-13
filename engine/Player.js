@@ -103,6 +103,7 @@ class Player extends GroupObject3D
 
 	preUpdate()
 	{
+		
 	}
 
 	damage(val)

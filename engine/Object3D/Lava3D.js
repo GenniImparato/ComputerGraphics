@@ -9,6 +9,7 @@ class Lava3D extends Object3D
 	{
 		object.colliding = true;
 		object.collisionY = true;
+		object.collisionYUp = true;
 
 		if(object == player)
 			object.damage(0.01);

@@ -280,7 +280,7 @@ class Object3D
 
 	render()
 	{
-		//values that needs to be recursivley summed by hierarchy
+		//values that needs to be recursivley modified by hierarchy
 		var transormedPos = this.recursivePositionTransform([this.x, this.y, this.z, 1.0]);
 		var transormedRot = this.recursiveRotationTransform([this.rotx, this.roty, this.rotz]);
 		var transormedSca = this.recursiveScaleTransform([this.scaleX, this.scaleY, this.scaleZ]);
@@ -321,7 +321,6 @@ class Object3D
 		this.collisionObjects = objects;
 	}
 
-	//must be called in render func
 	solveCollisions()
 	{
 		for(var i=0; i<this.collisionObjects.length; i++)

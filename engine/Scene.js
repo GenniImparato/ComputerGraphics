@@ -103,7 +103,6 @@ var Scene =
 		keyMesh					= Mesh.loadFromOBJFile("key.obj");
 		lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
 		lanternMesh				= Mesh.loadFromOBJFile("lantern.obj");
-		finalDestMesh			= Mesh.loadFromOBJFile("final_dest.obj", "final_dest.obj");
 	},
 
 	loadMaterials()
@@ -201,14 +200,10 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 20, 0);
-		player.hasKey = true;
+		player.setPosition(0, -5, -35);
+		player.hasKey = false;
 		player.enableCollisionWith(objects);
 		player.addToScene();
-
-		var tmpObj = new Object3D(finalDestMesh, castleDungeonWallsTex);
-		tmpObj.addToScene();
-		tmpObj.setPosition(-200, 0, -100);
 
 		//lava
 		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
@@ -283,6 +278,24 @@ var Scene =
 		tmpObj.enableCollisionWith(objects);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+
+		//mobile wood boxes in dungeon
+		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
+		tmpObj.setPosition(-1, 6, -183);
+		tmpObj.setScale(2, 2, 2);
+		tmpObj.enablePhysics(true);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
+
+		//big rock to block path
+		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
+		tmpObj.setPosition(-1, 100, -170);
+		tmpObj.setScale(1.9, 0.9, 1.3);
+		tmpObj.enablePhysics(true);
+		tmpObj.enableGravity(true);
+		tmpObj.enableCollisionWith(objects);
+		tmpObj.addToScene();
 
 
 		//castle
@@ -416,6 +429,37 @@ var Scene =
 		tmpObj.setPosition(-109, -5, -94);
 		tmpObj.setScale(15, 15, 15);
 		tmpObj.addToScene();
+
+		//second bridge with rocks
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(0, -15, -245);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(-10, -10, -265);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(-25, -5, -262);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(-45, -2, -261);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		/*var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(4, -4, 115);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();
+
+		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
+		tmpObj.setPosition(-8, -9, 108);
+		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
+		tmpObj.addToScene();*/
 
 
 		//skybox
