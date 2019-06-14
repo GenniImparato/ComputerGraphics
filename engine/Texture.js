@@ -1,5 +1,6 @@
 var textureShader;
 var textureDiffuseShader;
+var texturePhongShader;
 
 var texturesCount = 0;
 
@@ -25,9 +26,9 @@ class TextureMaterial extends SimpleMaterial {
     constructor(txFile) {
 	super(255, 255, 255, 255);
 	// default white specular
-	this.specR = 1.0;
-	this.specG = 1.0;
-	this.specB = 1.0;
+	this.specR = 0.0;
+	this.specG = 0.0;
+	this.specB = 0.0;
 	this.specA = 1.0;
 	this.gamma = 100;
 
@@ -94,6 +95,59 @@ class TextureDiffuse extends TextureMaterial {
 		    this.wrap = gl.CLAMP_TO_EDGE;
 		}
     }
+    
+
+    bindShader() {	
+    	super.bindShader();
+	    // setup texture
+ 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);
+		var materialDiffLoc = this.shader.getUniformLocation("mDiffColor");
+		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
+    }
+    
+}
+
+
+class TextureSpecular extends TextureMaterial {
+
+    constructor(txFile) {
+	super(txFile);
+	if(!texturePhongShader)
+	{
+	    texturePhongShader = new Shader("vs_tex.glsl", "fs_tex_phong.glsl", true);
+	}
+	this.specR = 1.0;
+	this.specG = 1.0;
+	this.specB = 1.0;
+	this.specA = 1.0;
+	this.gamma = 100;
+	this.shader  = texturePhongShader;
+
+    }
+
+
+    setRepeat(boolean) {
+		if(boolean) {
+		    this.wrap = gl.REPEAT;
+		}
+		else {
+		    this.wrap = gl.CLAMP_TO_EDGE;
+		}
+    }
+
+    setSpecularColor( specRed, specGreen, specBlue, specAlpha) {
+	this.specR = specRed / 255.0;
+	this.specG = specGreen / 255.0;
+	this.specB = specBlue / 255.0;
+	this.specA = specAlpha / 255.0;
+	return this; //useful for chaining setters
+    }
+
+    setSpecularShine(gamma) {
+	this.gamma = gamma;
+	return this; // useful for chaining setters
+    }
+
     
 
     bindShader() {	

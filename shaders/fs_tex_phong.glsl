@@ -55,6 +55,8 @@ uniform vec3 LDType; // x is for directional, y for point and z for spot
 
 uniform vec4 mDiffColor;
 uniform vec4 mAmbientColor;
+uniform vec4 mSpecColor;
+uniform float mSpecShine;
 uniform vec4 mEmitColor;
 
 
@@ -62,6 +64,13 @@ uniform vec4 mEmitColor;
 vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diffColor) {
   vec3 diffuseLambert = lightCol * clamp(dot( lightDir, normalVec),0.0,1.0) * diffColor;
      return  diffuseLambert;
+}
+
+vec4 applyPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec4 specularColor, float specularShine) {
+	vec3 reflection = -reflect(lightDir, normalVec);
+
+	vec4 phongSpecular = vec4(lightCol, 1.0) * pow(clamp(dot(reflection, eyedirVec), 0.0, 1.0), specularShine ) * specularColor;
+	return          phongSpecular;
 }
 
 vec3 compLightDir(vec3 LDir, vec3 LPos, vec3 LType) {
@@ -113,6 +122,7 @@ void main() {
 	vec3 lightAColor = compLightColor(LAColor, LADir, LATarget, LAPos, LADecay, LAConeIn, LAConeOut, LAType);
 
 	vec3 lambertDiffuseColor1 = applyLambertDiffuse(lightADir, lightAColor, normalVec , texColor.rgb );
+	vec4 phongSpecularColor1 = applyPhongSpecular(lightADir, lightAColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
         // Second light
 
@@ -121,6 +131,7 @@ void main() {
 
 
 	vec3 lambertDiffuseColor2 = applyLambertDiffuse(lightBDir, lightBColor, normalVec, texColor.rgb);
+	vec4 phongSpecularColor2 = applyPhongSpecular(lightBDir, lightBColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 
 	// Third light
@@ -128,15 +139,17 @@ void main() {
 	vec3 lightCColor = compLightColor(LCColor, LCDir, LCTarget, LCPos, LCDecay, LCConeIn, LCConeOut, LCType);
 
 	vec3 lambertDiffuseColor3 = applyLambertDiffuse(lightCDir, lightCColor, normalVec, texColor.rgb);
+	vec4 phongSpecularColor3 = applyPhongSpecular(lightCDir, lightCColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	// fourth light
 	vec3 lightDDir = compLightDir(LDDir, LDPos, LDType);
 	vec3 lightDColor = compLightColor(LDColor, LDDir, LDTarget, LDPos, LDDecay, LDConeIn, LDConeOut, LDType);
 
 	vec3 lambertDiffuseColor4 = applyLambertDiffuse(lightDDir, lightDColor, normalVec, texColor.rgb);
+	vec4 phongSpecularColor4 = applyPhongSpecular(lightDDir, lightDColor, normalVec, eyeDirVec, mSpecColor, mSpecShine);
 
 	// lambert diffuse without specular
-	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + mAmbientColor.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
+	  outColor = clamp((vec4(lambertDiffuseColor1, texColor.a) + phongSpecularColor1) *LAOn + (vec4(lambertDiffuseColor2, texColor.a)+ phongSpecularColor2) * LBOn  + (vec4(lambertDiffuseColor3, texColor.a)+ phongSpecularColor3) * LCOn + (vec4(lambertDiffuseColor4, texColor.a) + phongSpecularColor4) * LDOn + mAmbientColor + mEmitColor,0.0, 1.0);
 
 	  
 

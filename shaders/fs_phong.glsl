@@ -67,7 +67,7 @@ vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diff
 vec4 applyPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedirVec,  vec4 specularColor, float specularShine) {
 	vec3 reflection = -reflect(lightDir, normalVec);
 
-	vec4 phongSpecular = vec4(lightCol, 1.0) * pow(clamp(dot(reflection, eyedirVec), 0.0, 1.0), specularShine ) * specularColor;
+	vec4 phongSpecular = vec4(lightCol, 1.0) * clamp(pow(clamp(dot(reflection, eyedirVec), 0.0, 1.0), specularShine ), 0.0, 1.0) * specularColor;
 	return          phongSpecular;
 }
 
