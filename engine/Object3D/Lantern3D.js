@@ -16,7 +16,7 @@ class Lantern3D extends GroupObject3D
 		this.animator.addKeyFrame(+10, 0, 0, 0, 0, 0);
 		this.animator.addKeyFrame(0, 0, +10, 0 , 50, 0);
 		this.animator.addKeyFrame(-10, 0, 0, 0 , 0 , 0);
-		this.animator.playAnimation(500, false);
+		this.animator.playAnimation(500, true);
 	}
 
 	linkLight(light)

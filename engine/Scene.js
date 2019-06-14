@@ -30,6 +30,8 @@ var keyMesh;
 var lavaMesh;
 var lanternMesh;
 var finalDestMesh;
+var windmillBaseMesh;
+var windmillWheelMesh;
 
 ///MATERIALS
 var greenSpecMaterial;
@@ -56,6 +58,7 @@ var ghostMaterial;
 var keyMaterial;
 var lavaMaterial;
 var lanternTex;
+var windmillTex;
 ///_________________________________________________________
 
 
@@ -103,6 +106,8 @@ var Scene =
 		keyMesh					= Mesh.loadFromOBJFile("key.obj");
 		lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
 		lanternMesh				= Mesh.loadFromOBJFile("lantern.obj");
+		windmillBaseMesh		= Mesh.loadFromOBJFile("windmill_base.obj");
+		windmillWheelMesh		= Mesh.loadFromOBJFile("windmill_wheel.obj");
 	},
 
 	loadMaterials()
@@ -126,12 +131,13 @@ var Scene =
 		materials.push(tree0LeafsTex 			= new TextureDiffuse("tree0_leafs.png"));
 		materials.push(tree0TrunkTex 			= new TextureDiffuse("tree0_trunk.jpg"));
 		materials.push(skyboxTex				= new TextureMaterial("skybox.jpg"));
-		materials.push(woodenDoorTex			= new TextureSpecular("wooden_door.png"));
-		materials.push(woodenCrateTex			= new TextureSpecular("wood_crate.png"));
+		materials.push(woodenDoorTex			= new TextureDiffuse("wooden_door.png"));
+		materials.push(woodenCrateTex			= new TextureDiffuse("wood_crate.png"));
 		materials.push(ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140));
 		materials.push(keyMaterial 				= new SpecularMaterial(200, 200, 0, 255));
 		materials.push(lavaMaterial 			= new TextureMaterial("lava.png"));
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
+		materials.push(windmillTex 				= new TextureDiffuse("windmill.jpg"));
 
 		for(var i=0; i<materials.length; i++)
 		{
@@ -203,8 +209,8 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 20, 120);
-		player.hasKey = false;
+		player.setPosition(0, 0, 250);
+		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -353,7 +359,22 @@ var Scene =
 		tmpObj.setScale(0.5, 0.5, 0.5);
 		tmpObj.addToScene();
 
-		//ghost
+		//windmill
+		var base = new Object3D(windmillBaseMesh, windmillTex);
+		base.setPosition(-40, 0, 250);
+		base.setScale(0.25, 0.25, 0.25);
+		base.setRotation(-90, 0, 0);
+		base.addToScene();
+
+		var wheel = new Object3D(windmillWheelMesh, windmillTex);
+		wheel.setPosition(0.3, 174.1, 53.4);
+		//wheel.setScale(0.25, 0.25, 0.25);
+		wheel.setParent(base);
+		wheel.addToScene();
+		wheel.preUpdate = function(){wheel.rotate(0, 1, 0);};
+
+
+		//ghost spawner
 		var tmpObj = new GhostSpawner3D();
 		tmpObj.addToScene();
 
@@ -443,16 +464,6 @@ var Scene =
 		tmpObj.setPosition(-45, -2, -261);
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
-
-		/*var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
-		tmpObj.setPosition(4, -4, 115);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
-		tmpObj.addToScene();
-
-		var tmpObj = new AutomaticBridge3D(40, 100, 40, rock0Mesh, rocksTex);
-		tmpObj.setPosition(-8, -9, 108);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
-		tmpObj.addToScene();*/
 
 
 		//skybox
