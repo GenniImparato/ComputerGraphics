@@ -11,7 +11,7 @@ var rock0Mesh;
 var rock1Mesh;
 var stone0Mesh;
 var house0Mesh;
-var house0MeshNB;
+var house1Mesh;
 var tree0TrunkMesh;
 var tree0LeafsMesh;
 var doorMesh;
@@ -29,6 +29,7 @@ var keyHoleMesh;
 var keyMesh;
 var lavaMesh;
 var lanternMesh;
+var lanternInteriorMesh;
 var finalDestMesh;
 var windmillBaseMesh;
 var windmillWheelMesh;
@@ -46,6 +47,7 @@ var castleDoorsTex;
 var castleDungeonWallsTex;
 var grassTex;
 var house0Tex;
+var house1Tex;
 var rocksTex;
 var rock1Tex;
 var stone0Tex;
@@ -73,6 +75,8 @@ var camAnimator;
 var player;
 var endCredits = false;
 
+var lanterns = [];
+
 
 var Scene = 
 {
@@ -88,7 +92,7 @@ var Scene =
 		rock1Mesh				= Mesh.loadFromOBJFile("rock1.obj");
 		stone0Mesh				= Mesh.loadFromOBJFile("stone0.obj");
 		house0Mesh 				= Mesh.loadFromOBJFile("house0.obj", "house0_bBox.obj");
-		house0MeshNB			= Mesh.loadFromOBJFile("house0.obj");
+		house1Mesh				= Mesh.loadFromOBJFile("house1.obj");
 		tree0TrunkMesh			= Mesh.loadFromOBJFile("tree0_trunk.obj");
 		tree0LeafsMesh 			= Mesh.loadFromOBJFile("tree0_leafs.obj");
 		doorMesh				= Mesh.loadFromOBJFile("wooden_door.obj");
@@ -98,7 +102,8 @@ var Scene =
 		castleDoorRMesh			= Mesh.loadFromOBJFile("castle_doorR.obj");
 		castleDoorLMesh			= Mesh.loadFromOBJFile("castle_doorL.obj");
 		castleDungeonWallsMesh	= Mesh.loadFromOBJFile("castle_dungeon_walls.obj", "castle_dungeon_bBoxes.obj");
-		castleFloorMesh			= Mesh.loadFromOBJFile("castle_floor.obj", "castle_floor.obj");
+		castleFloorMesh			= Mesh.loadFromOBJFile("castle_floor.obj");
+		floorMesh				= Mesh.loadFromOBJFile("floor.obj");
 		skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
 		ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
 		bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
@@ -106,6 +111,7 @@ var Scene =
 		keyMesh					= Mesh.loadFromOBJFile("key.obj");
 		lavaMesh				= Mesh.loadFromOBJFile("lava.obj");
 		lanternMesh				= Mesh.loadFromOBJFile("lantern.obj");
+		lanternInteriorMesh		= Mesh.loadFromOBJFile("lantern_interior.obj");
 		windmillBaseMesh		= Mesh.loadFromOBJFile("windmill_base.obj");
 		windmillWheelMesh		= Mesh.loadFromOBJFile("windmill_wheel.obj");
 	},
@@ -123,8 +129,10 @@ var Scene =
 		materials.push(castleExteriorTex 		= new TextureDiffuse("castle_exterior.jpg"));
 		materials.push(castleDoorsTex 			= new TextureDiffuse("castle_towers_doors.jpg"));
 		materials.push(castleDungeonWallsTex	= new TextureDiffuse("bricks1.jpg"));
-		materials.push(grassTex					= new TextureDiffuse("terrain1.jpg"));
+		materials.push(terrain0Tex				= new TextureDiffuse("terrain0.jpg"));
+		materials.push(terrain1Tex				= new TextureDiffuse("terrain1.jpg"));
 		materials.push(house0Tex 				= new TextureDiffuse("house0.jpg"));
+		materials.push(house1Tex 				= new TextureDiffuse("house1.png"));
 		materials.push(rocksTex 				= new TextureDiffuse("rocks.jpg"));
 		materials.push(rock1Tex 				= new TextureDiffuse("rock1.jpg"));
 		materials.push(stone0Tex 				= new TextureDiffuse("stone0.jpg"));
@@ -170,16 +178,32 @@ var Scene =
 		//delete old lights
 		lights.splice(0, lights.length);
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
-	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));
-	    lights.push(new PointLight('LC', 0, 10, 350, 50, 0.8 )); // Moon light
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));	//player flashlight
+	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));			//lava light
+	    lights.push(new PointLight('LC', 0, 10, 350, 35, 5 )); 			//lantern light
+	    lights.push(new PointLight('LD', 0, 10, 350, 35, 10 )); 			//lantern light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(255, 60, 0);
+	    lights[1].setColor(255, 0, 0);
 	    lights[2].setColor(255, 60, 0);
-	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
-	    lantern.setPosition(10, 5, 0);
+	    lights[3].setColor(0, 20, 255);
+
+	    //lanterns
+	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]);
+	    lantern.setPosition(-20, 10, 320);
+	    lantern.animator.addKeyFrame(0, -3, 0);
+	    lantern.animator.addKeyFrame(0, +3, 0);
+	    lantern.animator.playAnimation(100, true);
 	    lantern.addToScene();
+
+	    //lanterns
+	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
+	    lantern.setPosition(-20, 10, 250);
+	    lantern.animator.addKeyFrame(0, -3, 0);
+	    lantern.animator.addKeyFrame(0, +3, 0);
+	    lantern.animator.playAnimation(100, true);
+	    lantern.addToScene();
+
 	    Light.moveAllLights(viewMatrix);
 	},
 
@@ -197,7 +221,7 @@ var Scene =
 	    lights[2].setColor(255, 0, 0);
 	    Light.moveAllLights(viewMatrix);
 
-	    var lantern = new Lantern3D(lanternMesh, lanternTex, lights[1]);
+	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
 	    lantern.setPosition(-60, -1, -61);
 	    lantern.addToScene();
 	},
@@ -209,7 +233,8 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(0, 0, 250);
+		player.setPosition(25, 10, 360);
+		player.setRotation(-90, 0, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -312,7 +337,7 @@ var Scene =
 						castleInteriorMesh, castleInteriorTex, 
 						castleTowersMesh, castleDoorsTex,
 						castleDoorRMesh, castleDoorLMesh, keyHoleMesh, keyMesh, keyMaterial, 
-						castleFloorMesh, grassTex,
+						castleFloorMesh, terrain1Tex, floorMesh, terrain0Tex,
 						castleDungeonWallsMesh, castleDungeonWallsTex);
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
@@ -345,18 +370,15 @@ var Scene =
 		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 
-		//house0 with custom bbox
+		//houses
 		var tmpObj = new Object3D(house0Mesh, house0Tex);
 		tmpObj.setPosition(40, 0, 200);
 		tmpObj.setScale(0.5, 0.5, 0.5);
-		tmpObj.setRotation(0, 0, 0);
-		tmpObj.boundingBoxes[0].setPositionCorrection(-1, 0, 0);
 		tmpObj.addToScene();
 		
-		//house0 with default bbox
-		var tmpObj = new Object3D(house0MeshNB, house0Tex);
-		tmpObj.setPosition(40, 0, 300);
-		tmpObj.setScale(0.5, 0.5, 0.5);
+		var tmpObj = new Object3D(house1Mesh, house1Tex);
+		tmpObj.setPosition(-30, 0, 350);
+		tmpObj.setScale(0.25, 0.25, 0.25);
 		tmpObj.addToScene();
 
 		//windmill

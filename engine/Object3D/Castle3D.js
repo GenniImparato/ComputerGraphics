@@ -7,7 +7,7 @@ class Castle3D extends GroupObject3D
 		interiorMesh, interiorMaterial, 
 		towersMesh, towersMaterial, 
 		doorRMesh, doorLMesh, keyHoleMesh, keyMesh, keyHoleMaterial,
-		floorMesh, floorMaterial,
+		floorMesh, floorMaterial, floor1Mesh, floor1Material,
 		dungeonWallsMesh, dungeonWallsMaterial)
 	{
 		super();
@@ -15,8 +15,8 @@ class Castle3D extends GroupObject3D
 		this.addObject3D(new Object3D(interiorMesh, interiorMaterial));
 		this.addObject3D(new Object3D(towersMesh, towersMaterial));
 		this.addObject3D(new Object3D(floorMesh, floorMaterial));
+		this.addObject3D(new Object3D(floor1Mesh, floor1Material));
 		this.addObject3D(new Object3D(dungeonWallsMesh, dungeonWallsMaterial));
-		this.objects[4].boundingBoxes[0].setScaleCorrection(0, 0, 0);
 
 		//main doors
 		var doorL = new Door3D(doorLMesh, towersMaterial, true, true);
