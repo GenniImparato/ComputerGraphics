@@ -10,12 +10,12 @@ out vec2 uv_coord;
 uniform mat4 worldProjectionMatrix; 
 uniform mat4 nMatrix;
 uniform mat4 worldViewMatrix;
+uniform float uvTime;
 
 void main() 
 {
    fsNormal = mat3(nMatrix) * inNormal; 
   fs_pos = (worldViewMatrix * vec4(inPosition, 1.0)).xyz;
   gl_Position = worldProjectionMatrix * vec4(inPosition, 1.0);
-  uv_coord = inUV;
-
+  uv_coord = vec2(inUV.x + uvTime*0.001, inUV.y + uvTime*0.001);
 }

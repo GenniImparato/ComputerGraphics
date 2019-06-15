@@ -33,6 +33,7 @@ class TextureMaterial extends SimpleMaterial {
 	this.gamma = 100;
 
 	this.loaded = false;
+	this.uvTime = 0.0;
 
 		if(!textureShader)
 	    {
@@ -58,6 +59,11 @@ class TextureMaterial extends SimpleMaterial {
 		}
     }
 
+    setUvTime(time)
+    {
+    	this.uvTime = time;
+    }
+
     bindShader() {	
 
     	super.bindShader();
@@ -70,6 +76,9 @@ class TextureMaterial extends SimpleMaterial {
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
 		gl.uniform4f(materialSpecularLoc, this.specR, this.specG, this.specB, this.specA);
 		gl.uniform1f(specularShineLoc, this.gamma);
+
+		//uv animation
+		gl.uniform1f(this.shader.getUniformLocation("uvTime"), this.uvTime);	
     }
     
 }

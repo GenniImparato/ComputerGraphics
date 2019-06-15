@@ -3,6 +3,7 @@ class Lava3D extends Object3D
 	constructor(mesh, material)
 	{
 		super(mesh, material);
+		this.animTime = 0.0;
 	}
 
 	collisionHandler(object)
@@ -13,5 +14,11 @@ class Lava3D extends Object3D
 
 		if(object == player)
 			object.damage(0.01);
+	}
+
+	preUpdate()
+	{
+		this.animTime--;
+		this.material.setUvTime(this.animTime);
 	}
 }
