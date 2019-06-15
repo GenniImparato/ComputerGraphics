@@ -44,16 +44,19 @@ class Door3D extends GroupObject3D
 			{	inst.close();	}
 		}
 		
-		this.animator = new LinearAnimator(doorPar);
-		this.animator.enablePositionAnimation(false);
-		this.animator.enableScaleAnimation(false);
+		this.animator = new Animator(doorPar);
+		var doorPath = new BezierCurve();
 
-		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0);
+		doorPath.addPoint(new KeyFrame(0, 0, 0, 0, 0, 0));
 
 		if(!openFromRight)
-			this.animator.addKeyFrame(0, 0, 0, -90, 0, 0);
+			doorPath.addPoint(new KeyFrame(0, 0, 0, -90, 0, 0));
 		else
-			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0);
+			doorPath.addPoint(new KeyFrame(0, 0, 0, 90, 0, 0));
+  
+		this.animator.addAnimation(new Animation(doorPath, 200));
+		this.animator.enablePositionAnimation(false);
+		this.animator.enableScaleAnimation(false);
 
 	}
 
@@ -64,12 +67,12 @@ class Door3D extends GroupObject3D
 
 	open()
 	{
-		this.animator.playAnimation(30, false);
+		this.animator.play(false);
 	}
 
 	close()
 	{
-		this.animator.playReverseAnimation(30, false);
+		this.animator.play(false);
 	}
 }
 
