@@ -398,7 +398,7 @@ var Scene =
 		//wheel.setScale(0.25, 0.25, 0.25);
 		wheel.setParent(base);
 		wheel.addToScene();
-		wheel.preUpdate = function(){wheel.rotate(0, 1, 0);};
+		wheel.preUpdate = function(){wheel.rotate(0, 0, 1);};
 
 
 		//ghost spawner
