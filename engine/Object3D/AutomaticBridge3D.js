@@ -7,11 +7,19 @@ class AutomaticBridge3D extends GroupObject3D
 		//main object
 		this.mainObj = new Object3D(mesh, material);
 		this.addObject3D(this.mainObj);
+		this.mainObj.setScale(1.5, 1.5, 1.5);
 
 		//animation
-		this.animator = new LinearAnimator(this.mainObj);
-		this.animator.addKeyFrame(0, -50, 0, 0, 0, 0, 1.6, 1.6, 1.6);
-		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1.6, 1.6, 1.6);
+		this.animator = new Animator(this.mainObj);
+
+		var path = new BezierCurve();
+
+		path.addPoint(new KeyFrame(0, -50, 0));
+		path.addPoint(new KeyFrame(0, 0, 0));
+  
+		this.animator.addAnimation(new Animation(path, 60));
+		this.animator.enablePositionAnimation(true);
+		this.animator.enableScaleAnimation(false);
 
 		//trigger
 		this.trigger = new TriggerBox3D(this.boundingBoxes[0].dx+triggDx, this.boundingBoxes[0].dy+triggDy, this.boundingBoxes[0].dz+triggDz, this);
@@ -28,11 +36,11 @@ class AutomaticBridge3D extends GroupObject3D
 
 	activate(instance)
 	{
-		instance.animator.playAnimation(50, false);
+		instance.animator.play(false);
 	}
 
 	deactivate(instance)
 	{
-		instance.animator.playReverseAnimation(50, false);
+		instance.animator.playReverse(false);
 	}
 }

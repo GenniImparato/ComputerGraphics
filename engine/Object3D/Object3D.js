@@ -86,7 +86,7 @@ class Object3D
 			this.boundingBoxes[0] = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
 			this.boundingBoxes[0].update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, this.roty);
 		}
 		//bounding boxes specified, creates bounding boxes from bBoxPositions
 		else if(this.mesh != null)
@@ -134,7 +134,7 @@ class Object3D
 				this.boundingBoxes[i] = new BoundingBox(cX, cY, cZ, 
 											minX, maxX, minY, maxY, minZ, maxZ);
 				this.boundingBoxes[i].update(this.x, this.y, this.z, 
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, this.roty);
 			}
 		}
 		//no mesh
@@ -161,14 +161,14 @@ class Object3D
 	{
 		this.x = x;		this.y = y;		this.z = z;
 		this.updateBoundingBoxes(this.x, this.y, this.z,
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, this.roty);
 	}
 
 	move(x, y, z)
 	{
 		this.x += x;	this.y += y;	this.z += z;
 		this.updateBoundingBoxes(this.x, this.y, this.z,
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, this.roty);
 	}
 
 	setRotation(x, y, z)
@@ -224,11 +224,11 @@ class Object3D
 	///			BOUNDING BOXES
 	///________________________________
 
-	updateBoundingBoxes(x, y, z, scaleX, scaleY, scaleZ, rotx)
+	updateBoundingBoxes(x, y, z, scaleX, scaleY, scaleZ, roty)
 	{
 		for(var i=0; i<this.boundingBoxes.length; i++)
 			this.boundingBoxes[i].update(x, y, z, 
-								scaleX, scaleY, scaleZ, rotx);
+								scaleX, scaleY, scaleZ, roty);
 	}
 
 	///			RECURSIVE HIERARCHY
@@ -286,7 +286,7 @@ class Object3D
 		var transormedSca = this.recursiveScaleTransform([this.scaleX, this.scaleY, this.scaleZ]);
 
 		this.updateBoundingBoxes(transormedPos[0], transormedPos[1], transormedPos[2], 
-							transormedSca[0], transormedSca[1], transormedSca[2], transormedRot[0]);
+							transormedSca[0], transormedSca[1], transormedSca[2], transormedRot[1]);
 		
 		//renders bounding box
 		if(showBoundingBoxes)
@@ -434,7 +434,7 @@ class Object3D
 		}		
 
 		this.updateBoundingBoxes(this.x, this.y, this.z,
-								this.scaleX, this.scaleY, this.scaleZ, this.rotx);
+								this.scaleX, this.scaleY, this.scaleZ, this.roty);
 	}
 
 	//to override

@@ -408,15 +408,15 @@ var Scene =
 		//trees
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(40, 0, 240);
-		tmpObj.setScale(5, 5, 5);
+		tmpObj.setScale(8, 8, 8);
 		tmpObj.addToScene();
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(-10, 0, 200);
-		tmpObj.setScale(5, 5, 5);
+		tmpObj.setScale(7, 10, 4);
 		tmpObj.addToScene();
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(5, 0, 300);
-		tmpObj.setScale(5, 5, 5);
+		tmpObj.setScale(10, 9, 10);
 		tmpObj.addToScene();
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(-30, 0, 210);
@@ -424,7 +424,7 @@ var Scene =
 		tmpObj.addToScene();
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(25, 0, 250);
-		tmpObj.setScale(5, 5, 5);
+		tmpObj.setScale(3, 4, 5);
 		tmpObj.addToScene();
 		var tmpObj = new Tree3D(tree0TrunkMesh, tree0TrunkTex, tree0LeafsMesh, tree0LeafsTex);
 		tmpObj.setPosition(-50, 0, 200);
