@@ -33,6 +33,7 @@ var lanternInteriorMesh;
 var finalDestMesh;
 var windmillBaseMesh;
 var windmillWheelMesh;
+var flashlightMesh;
 
 ///MATERIALS
 var greenSpecMaterial;
@@ -61,6 +62,7 @@ var keyMaterial;
 var lavaMaterial;
 var lanternTex;
 var windmillTex;
+var flashlightTex;
 ///_________________________________________________________
 
 
@@ -70,6 +72,7 @@ var materials = [];
 
 var firstPersonCamera;
 var lookAtCamera;
+var currCamera;
 var camAnimator;
 
 var player;
@@ -114,6 +117,7 @@ var Scene =
 		lanternInteriorMesh		= Mesh.loadFromOBJFile("lantern_interior.obj");
 		windmillBaseMesh		= Mesh.loadFromOBJFile("windmill_base.obj");
 		windmillWheelMesh		= Mesh.loadFromOBJFile("windmill_wheel.obj");
+		flashlightMesh			= Mesh.loadFromOBJFile("flashlight.obj");
 	},
 
 	loadMaterials()
@@ -146,6 +150,7 @@ var Scene =
 		materials.push(lavaMaterial 			= new TextureMaterial("lava.png"));
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
 		materials.push(windmillTex 				= new TextureDiffuse("windmill.jpg"));
+		materials.push(flashlightTex 			= new TextureDiffuse("flashlight.jpg"));
 
 		for(var i=0; i<materials.length; i++)
 		{
@@ -178,7 +183,7 @@ var Scene =
 		//delete old lights
 		lights.splice(0, lights.length);
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));	//player flashlight
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.05, 1, 50, 0.8));	//player flashlight
 	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));			//lava light
 	    lights.push(new PointLight('LC', 0, 10, 350, 35, 5 )); 			//lantern light
 	    lights.push(new PointLight('LD', 0, 10, 350, 35, 10 )); 			//lantern light
@@ -212,7 +217,7 @@ var Scene =
 		//delete old lights
 		lights.splice(0, lights.length);
 
-	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.12, 1, 50, 0.8));
+	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.05, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', -115, -8, -61, 30, 10));
 	    lights.push(new PointLight('LC', -1, 6, -180, 30, 0.8 )); // lava light
 	    lights[0].setCone(20, 50);
@@ -234,7 +239,7 @@ var Scene =
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
 		player.setPosition(25, 10, 360);
-		player.setRotation(-90, 0, 0);
+		player.setRotation(0, -90, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
@@ -385,7 +390,7 @@ var Scene =
 		var base = new Object3D(windmillBaseMesh, windmillTex);
 		base.setPosition(-40, 0, 250);
 		base.setScale(0.25, 0.25, 0.25);
-		base.setRotation(-90, 0, 0);
+		base.setRotation(0, -90, 0);
 		base.addToScene();
 
 		var wheel = new Object3D(windmillWheelMesh, windmillTex);
@@ -445,13 +450,13 @@ var Scene =
 		//dungeon doors
 		var tmpObj = new Door3D(doorMesh, woodenDoorTex, true, false);
 		tmpObj.setPosition(-135, -13, -57);
-		tmpObj.setRotation(90, 0, 0);
+		tmpObj.setRotation(0, 90, 0);
 		tmpObj.objects[0].setScale(1.8, 1.5, 1);
 		tmpObj.addToScene();
 
 		var tmpObj = new Door3D(doorMesh, woodenDoorTex, true, false);
 		tmpObj.setPosition(-129, -13, -91);
-		tmpObj.setRotation(90, 0, 0);
+		tmpObj.setRotation(0, 90, 0);
 		tmpObj.objects[0].setScale(1.6, 1.5, 1);
 		tmpObj.addToScene();
 
@@ -508,14 +513,16 @@ var Scene =
 		firstPersonCamera.setPosition(0, 0, 0);
 		firstPersonCamera.look();
 
+		currCamera = firstPersonCamera;
+
 		//end credits animation
 		camAnimator = new LinearCameraAnimator(lookAtCamera);
-		camAnimator.addKeyFrame(30, 10, 250, 90, 10, 10);
+		camAnimator.addKeyFrame(30, 10, 250, 10, 90, 10);
 		camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
-		camAnimator.addKeyFrame(0, 80, 100, 0, 40, 40);
-		camAnimator.addKeyFrame(0, 80, 80, 180, 40, 50);
-		camAnimator.addKeyFrame(0, 20, 0, 360, 30, 30);
-		camAnimator.addKeyFrame(0, -5, -80, 0, 20, 5);
+		camAnimator.addKeyFrame(0, 80, 100, 40, 0, 40);
+		camAnimator.addKeyFrame(0, 80, 80, 40, 180, 50);
+		camAnimator.addKeyFrame(0, 20, 0, 30, 360, 30);
+		camAnimator.addKeyFrame(0, -5, 0, -80, 20, 5);
 		camAnimator.playAnimation(500, true);
 
 		//lights
@@ -558,17 +565,19 @@ var Scene =
 		}
 		else if(cameraMode)
 		{
-			firstPersonCamera.setAngle(player.rotx);
+			firstPersonCamera.setAngle(player.roty);
 			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
 		    firstPersonCamera.look();
 		    lights[0].setRotation(firstPersonCamera.angle, firstPersonCamera.elevation);
+		    currCamera = firstPersonCamera;
 		}
 		else
 		{
-			lookAtCamera.setAngle(player.rotx);
+			lookAtCamera.setAngle(player.roty);
 			lookAtCamera.setLookPoint(player.x, player.y, player.z);
 			lookAtCamera.look();
 		    lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
+		    currCamera = lookAtCamera;
 		}
 
 		lights[0].setPosition(player.x, player.y+5, player.z);

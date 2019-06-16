@@ -72,7 +72,7 @@ class Ghost3D extends GroupObject3D
 		this.spawnAnim.enableRotationAnimation(false);
 		this.spawnAnim.enableScaleAnimation(true);
 
-		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1);
 		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8);
 
 		this.currAnim = this.spawnAnim;
@@ -98,7 +98,7 @@ class Ghost3D extends GroupObject3D
 		distZ = distZ/dist;
 		distY = distY/dist;
 
-		this.setRotation((180/Math.PI* Math.atan2(distZ, distX))-90, 0, 0);
+		this.setRotation(0, (180/Math.PI* Math.atan2(distZ, distX))-90, 0);
 
 		if(dist<100	&& this.spawnAnim.playing == false)
 			//follow player

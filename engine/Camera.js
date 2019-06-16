@@ -69,6 +69,8 @@ class LookAtCamera extends Camera
 
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
+
+		player.flashlight.setRotation(-this.elevation, 0, 0);
 	}
 }
 
@@ -104,5 +106,7 @@ class FirstPersonCamera  extends Camera
 
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
+
+		player.flashlight.setRotation(-this.elevation, 0, 0);
 	}
 }

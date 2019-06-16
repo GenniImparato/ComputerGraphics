@@ -50,9 +50,9 @@ class Door3D extends GroupObject3D
 		doorPath.addPoint(new KeyFrame(0, 0, 0, 0, 0, 0));
 
 		if(!openFromRight)
-			doorPath.addPoint(new KeyFrame(0, 0, 0, -90, 0, 0));
+			doorPath.addPoint(new KeyFrame(0, 0, 0, 0, -90, 0));
 		else
-			doorPath.addPoint(new KeyFrame(0, 0, 0, 90, 0, 0));
+			doorPath.addPoint(new KeyFrame(0, 0, 0, 0, 90, 0));
   
 		this.animator.addAnimation(new Animation(doorPath, 200));
 		this.animator.enablePositionAnimation(false);
@@ -72,7 +72,7 @@ class Door3D extends GroupObject3D
 
 	close()
 	{
-		this.animator.play(false);
+		this.animator.playReverse(false);
 	}
 }
 
@@ -150,9 +150,9 @@ class DoorKey3D extends GroupObject3D
 		this.animator.addKeyFrame(0, 0, 0, 0, 0, 0, 1, 1, 1);
 
 		if(!openFromRight)
-			this.animator.addKeyFrame(0, 0, 0, -90, 0, 0, 1, 1, 1);
+			this.animator.addKeyFrame(0, 0, 0, 0, -90, 0, 1, 1, 1);
 		else
-			this.animator.addKeyFrame(0, 0, 0, 90, 0, 0, 1, 1, 1);
+			this.animator.addKeyFrame(0, 0, 0, 0, 90, 0, 1, 1, 1);
 
 		this.frontTrigger.onTrigger = function(inst)	
 		{	

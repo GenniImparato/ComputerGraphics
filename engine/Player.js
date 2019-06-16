@@ -24,6 +24,13 @@ class Player extends GroupObject3D
 		this.energy = 1.0;
 		this.hasKey = false;
 
+		//flashlight
+		this.flashlight = new Object3D(flashlightMesh, flashlightTex);
+		this.flashlight.setPosition(0.5, 4/6, 0);
+		this.flashlight.setScale(1/4, 1/12, 1/4);
+		this.flashlight.boundingBoxes[0].setScaleCorrection(0, 0, 0);
+		this.addObject3D(this.flashlight);
+
 	}
 
 	handleInput()
@@ -51,36 +58,36 @@ class Player extends GroupObject3D
 		//move in the forward direction
 		if(Input.isKeyDown(Input.W_KEY))
 		{
-			this.setSpeed(-this.moveSpeed * Math.sin(utils.degToRad(-this.rotx)),
+			this.setSpeed(-this.moveSpeed * Math.sin(utils.degToRad(-this.roty)),
 								this.speedY,
-								-this.moveSpeed * Math.cos(utils.degToRad(this.rotx)));
+								-this.moveSpeed * Math.cos(utils.degToRad(this.roty)));
 		}
 		//move in the backward direction
 		else if(Input.isKeyDown(Input.S_KEY))
 		{
-			this.setSpeed(this.moveSpeed * Math.sin(utils.degToRad(-this.rotx)),
+			this.setSpeed(this.moveSpeed * Math.sin(utils.degToRad(-this.roty)),
 								this.speedY,
-								this.moveSpeed * Math.cos(utils.degToRad(this.rotx)));
+								this.moveSpeed * Math.cos(utils.degToRad(this.roty)));
 		}
 		//move left
 		else if(Input.isKeyDown(Input.A_KEY))
 		{
-			this.setSpeed(this.moveSpeed * Math.sin(utils.degToRad(-this.rotx-90)),
+			this.setSpeed(this.moveSpeed * Math.sin(utils.degToRad(-this.roty-90)),
 								this.speedY,
-								this.moveSpeed * Math.cos(utils.degToRad(this.rotx+90)));
+								this.moveSpeed * Math.cos(utils.degToRad(this.roty+90)));
 		}
 		//move right
 		else if(Input.isKeyDown(Input.D_KEY))
 		{
-			this.setSpeed(-this.moveSpeed * Math.sin(utils.degToRad(-this.rotx-90)),
+			this.setSpeed(-this.moveSpeed * Math.sin(utils.degToRad(-this.roty-90)),
 								this.speedY,
-								-this.moveSpeed * Math.cos(utils.degToRad(this.rotx+90)));
+								-this.moveSpeed * Math.cos(utils.degToRad(this.roty+90)));
 		}		
 		else
 			this.setSpeed(0, this.speedY, 0);
 		
 
-		this.rotate(Input.getMouseDiffX() * 0.2, 0, 0);
+		this.rotate(0, Input.getMouseDiffX() * 0.2, 0);
 
 		//jump
 		if(Input.isKeyClicked(Input.SPACE_KEY) && this.collisionYUp)
@@ -93,9 +100,9 @@ class Player extends GroupObject3D
 			var projectile = new Projectile3D(this.projectileMesh, this.projectileMaterial, 10);
 			projectile.setPosition(this.x, this.y+5, this.z);
 			projectile.setScale(2, 2, 2);
-			projectile.setSpeed(-projectileSpeed * Math.sin(utils.degToRad(-this.rotx)), 
+			projectile.setSpeed(-projectileSpeed * Math.sin(utils.degToRad(-this.roty)), 
 							-projectileSpeed * Math.sin(utils.degToRad(firstPersonCamera.elevation)), 
-							-projectileSpeed * Math.cos(utils.degToRad(this.rotx)));
+							-projectileSpeed * Math.cos(utils.degToRad(this.roty)));
 			projectile.enableCollisionWith(objects.slice(1, objects.length));
 			Scene.addObject3D_(projectile);
 		}
@@ -103,6 +110,8 @@ class Player extends GroupObject3D
 
 	preUpdate()
 	{
+		super.preUpdate();
+
 		//regen health
 		if(this.health <= 0)
 			this.health = 0;

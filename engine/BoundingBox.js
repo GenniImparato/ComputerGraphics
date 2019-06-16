@@ -46,14 +46,14 @@ class BoundingBox
 
 	}
 
-	update(x, y, z, scaleX, scaleY, scaleZ, rotX)
+	update(x, y, z, scaleX, scaleY, scaleZ, rotY)
 	{
 		this.x = x + (this.offX + this.posCX) * scaleX;
 		this.y = y + (this.offY + this.posCY) * scaleY;
 		this.z = z + (this.offZ + this.posCZ) * scaleZ;
 
 		//invert bb axis at 90 degrees
-		if((rotX >= 45 && rotX <= 135) || (rotX <= -45 && rotX >= -135))
+		if((rotY >= 45 && rotY <= 135) || (rotY <= -45 && rotY >= -135))
 		{
 			//swap dx/dz
 			this.dx = this.dz_ * scaleX * this.scaleCX;
