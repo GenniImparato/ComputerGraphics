@@ -196,17 +196,21 @@ var Scene =
 	    //lanterns
 	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]);
 	    lantern.setPosition(-20, 10, 320);
-	    lantern.animator.addKeyFrame(0, -3, 0);
-	    lantern.animator.addKeyFrame(0, +3, 0);
-	    lantern.animator.playAnimation(100, true);
+	    var lanternPath = new BezierCurve();
+	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
+	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
+	    lantern.animator.addAnimation(new Animation(lanternPath, 100));
+	    lantern.animator.play(true);
 	    lantern.addToScene();
 
 	    //lanterns
-	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
+	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
+	    lanternPath = new BezierCurve();
 	    lantern.setPosition(-20, 10, 250);
-	    lantern.animator.addKeyFrame(0, -3, 0);
-	    lantern.animator.addKeyFrame(0, +3, 0);
-	    lantern.animator.playAnimation(100, true);
+	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
+	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
+	    lantern.animator.addAnimation(new Animation(lanternPath, 100));
+	    lantern.animator.play(true);
 	    lantern.addToScene();
 
 	    Light.moveAllLights(viewMatrix);
