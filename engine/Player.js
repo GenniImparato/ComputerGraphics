@@ -24,6 +24,8 @@ class Player extends GroupObject3D
 		this.energy = 1.0;
 		this.hasKey = false;
 
+		this.damagedTime = -1;
+
 		//flashlight
 		this.flashlight = new Object3D(flashlightMesh, flashlightTex);
 		this.flashlight.setPosition(0.5, 4/6, 0);
@@ -111,6 +113,11 @@ class Player extends GroupObject3D
 	preUpdate()
 	{
 		super.preUpdate();
+		
+		if(this.damagedTime >= 30)
+			this.damagedTime = -1;
+		else if(this.damagedTime >= 0)
+			this.damagedTime++;
 
 		//regen health
 		if(this.health <= 0)
@@ -124,6 +131,8 @@ class Player extends GroupObject3D
 
 	damage(val)
 	{
+		this.damagedTime = 0;
+
 		this.health -= val;
 		if(this.health < 0)
 			this.health = 0;

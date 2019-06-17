@@ -80,7 +80,7 @@ class Ghost3D extends GroupObject3D
 		this.spawnAnim.addAnimation(new Animation(spawnPath, 100));
 
 		this.currAnim = this.spawnAnim;
-		this.spawnAnim.play(100, false);
+		this.spawnAnim.play(false);
 
 		this.spawnAnim.onStop = function(inst)
 			{
@@ -144,7 +144,7 @@ class GhostSpawner3D extends Object3D
 			var ghost = new Ghost3D(ghostMesh, ghostMaterial);
 
 			//random spawning angle with respect to player (in range of 90 degrees)
-			var spawnAngle = player.rotx;
+			var spawnAngle = player.roty;
 			spawnAngle += (Math.random()-0.5)*90;
 
 			//random spawn distance

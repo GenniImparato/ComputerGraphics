@@ -40,7 +40,6 @@ class TriggerBox3D extends Box3D
 	}
 
 	//override default collision handler
-	//doensn't stop the collider
 	collisionHandler(object)
 	{
 		if(object != player)

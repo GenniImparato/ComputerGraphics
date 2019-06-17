@@ -250,7 +250,7 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(25, 10, 360);
+		player.setPosition(25, 30, 360);
 		player.setRotation(0, -90, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);

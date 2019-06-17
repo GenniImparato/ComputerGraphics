@@ -31,6 +31,11 @@ var InterfaceOverlay =
 		this.credits2  = new Box3D(0.4, 0.8, 0, new TextureMaterial("credits2.png"));
 		this.credits2.setRotation(0, 0, 90);
 		this.credits2.setPosition(-0.5, -0.5, 0);
+
+		//damage screen
+		this.damage  = new Box3D(2, 2, 0, new TextureMaterial("damage.png"));
+		this.damage.setRotation(0, 0, 90);
+		this.damage.setPosition(0, 0, 0.1);
 	},
 
 	render()
@@ -43,8 +48,13 @@ var InterfaceOverlay =
 		this.healthBar.setScale(0.32, 0.8*player.health, 0);
 		this.energyBar.setScale(0.32, 0.8*player.energy, 0);
 
+		if(player.damagedTime >= 0)
+			this.damage.render();
+
 		if(player.hasKey)
 			this.key.render();
+
+		
 
 		this.healthBar.render();
 		this.energyBar.render();
@@ -56,7 +66,7 @@ var InterfaceOverlay =
 		//parallel projection
 		viewMatrix = utils.identityMatrix();
 		projectionMatrix = utils.identityMatrix();
-		
+
 		this.gameOverScreen.render();
 	},
 

@@ -109,8 +109,8 @@ class BezierCurve {
 			intermediateRotations =  this.lerp(tempRotations1, tempRotations2, alpha); 
 
 	// scales
-	tempScales1 = [tempFrame1.x, tempFrame1.y, tempFrame1.z];
-	tempScales2 = [tempFrame2.x, tempFrame2.y, tempFrame2.z];
+	tempScales1 = [tempFrame1.scaleX, tempFrame1.scaleY, tempFrame1.scaleZ];
+	tempScales2 = [tempFrame2.scaleX, tempFrame2.scaleY, tempFrame2.scaleZ];
 	intermediateScales = this.lerp(tempScales1, tempScales2, alpha);
 
 
@@ -225,9 +225,8 @@ class Animator
    			{
    				this.reverse = !this.reverse;
    			}
-   			else {
+   			else 
    				this.stop();
-   			}
    		}
 
    		if(this.currTime < 0) {
