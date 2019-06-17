@@ -43,18 +43,21 @@ var InterfaceOverlay =
 		this.healthBar.setScale(0.32, 0.8*player.health, 0);
 		this.energyBar.setScale(0.32, 0.8*player.energy, 0);
 
-		//show game over screen
-		if(player.health <= 0)
-			this.gameOverScreen.render();
-		else
-		{
-			if(player.hasKey)
-				this.key.render();
+		if(player.hasKey)
+			this.key.render();
 
-			this.healthBar.render();
-			this.energyBar.render();
-			this.bar.render();
-		}
+		this.healthBar.render();
+		this.energyBar.render();
+		this.bar.render();
+	},
+
+	renderGameOver()
+	{
+		//parallel projection
+		viewMatrix = utils.identityMatrix();
+		projectionMatrix = utils.identityMatrix();
+		
+		this.gameOverScreen.render();
 	},
 
 	renderCredits()

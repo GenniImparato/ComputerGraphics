@@ -3,6 +3,7 @@ var textureDiffuseShader;
 var texturePhongShader;
 
 var texturesCount = 0;
+var loadedText = [];
 
 
 function isPowerOf2(value) {
@@ -19,6 +20,8 @@ function isPowerOf2(value) {
      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+
+     loadedText[this.txNum] = true;
 }
 
 class TextureMaterial extends SimpleMaterial {
@@ -32,7 +35,6 @@ class TextureMaterial extends SimpleMaterial {
 	this.specA = 1.0;
 	this.gamma = 100;
 
-	this.loaded = false;
 	this.uvTime = 0.0;
 
 		if(!textureShader)
@@ -43,11 +45,17 @@ class TextureMaterial extends SimpleMaterial {
 
 		this.image = new Image();
 		this.image.txNum = texturesCount;
+		loadedText[texturesCount] = false;
 		texturesCount++;
 		this.powerOf2 = false;
 		requestCORSIfNotSameOrigin(this.image, textureDir + txFile);
 		this.image.src = textureDir + txFile;
 		this.image.onload = textureLoaderCallback;
+    }
+
+    isLoaded()
+    {
+    	return loadedText[this.image.txNum];
     }
 
     setRepeat(boolean) {

@@ -156,7 +156,7 @@ var Scene =
 		{
 			materials[i].setAmbientColor(5, 5, 10, 255);
 		}
-		lavaMaterial.setAmbientColor(200, 0, 0, 255);
+		lavaMaterial.setAmbientColor(200, 0, 0, 255);	
 	},
 
 	//add at the end
@@ -231,7 +231,15 @@ var Scene =
 	    lantern.addToScene();
 	},
 
-	makeScene()
+	clearObjects()
+	{
+		for(var i=0; i<objects.length; i++)
+			objects[i] = null;
+
+		objects = [];
+	},
+
+	createObjects()
 	{
 		////		CREATE OBJECTS 3D
 		////__________________________________
@@ -531,16 +539,32 @@ var Scene =
 
 
 	start: function()
-	{
-		////LOAD ASSETS
+	{		
+		//LOAD ASSETS
 		Scene.loadMeshes();
 		Scene.loadMaterials();
+		InterfaceOverlay.init();
 
-		//load interface
-	    InterfaceOverlay.init();
+		//CREATE SCENE
+		Scene.createObjects();
+		
+		window.requestAnimationFrame(Scene.waitsForTextures);
+	},
 
-	    Scene.makeScene();
-	    window.requestAnimationFrame(Scene.render);
+	waitsForTextures()
+	{
+		//waits for all textures to load
+		var waiting = true;
+		for(var i=0; i<materials.length; i++)
+		{
+				waiting = waiting && materials[i].isLoaded();
+		}
+		waiting = !waiting;
+
+		if(waiting)
+			window.requestAnimationFrame(Scene.waitsForTextures);
+		else	
+			window.requestAnimationFrame(Scene.render);
 	},
 
 	render: function()
@@ -549,7 +573,8 @@ var Scene =
 
 		Canvas.makePerspectiveMatrix();
 
-		player.handleInput();
+		if(player)
+			player.handleInput();
 
 		//physics and collisions
 		for(var i=0; i<objects.length; i++)
@@ -563,25 +588,30 @@ var Scene =
 			camAnimator.update();
 			lookAtCamera.look();
 		}
-		else if(cameraMode)
+		else if(player)	
 		{
-			firstPersonCamera.setAngle(player.roty);
-			firstPersonCamera.setPosition(player.x, player.y+5, player.z);
-		    firstPersonCamera.look();
-		    lights[0].setRotation(firstPersonCamera.angle, firstPersonCamera.elevation);
-		    currCamera = firstPersonCamera;
-		}
-		else
-		{
-			lookAtCamera.setAngle(player.roty);
-			lookAtCamera.setLookPoint(player.x, player.y, player.z);
-			lookAtCamera.look();
-		    lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
-		    currCamera = lookAtCamera;
-		}
+			if(cameraMode)
+			{
+				firstPersonCamera.setAngle(player.roty);
+				firstPersonCamera.setPosition(player.x, player.y+5, player.z);
+		    	firstPersonCamera.look();
+		    	//flashlight rotation alligned to camera
+		    	lights[0].setRotation(firstPersonCamera.angle, firstPersonCamera.elevation);
+			}
+			else
+			{
+				lookAtCamera.setAngle(player.roty);
+				lookAtCamera.setLookPoint(player.x, player.y, player.z);
+				lookAtCamera.look();
+				//flashlight rotation alligned to camera
+		    	lights[0].setRotation(lookAtCamera.angle, lookAtCamera.elevation);
+			}
 
-		lights[0].setPosition(player.x, player.y+5, player.z);
-	    Light.moveAllLights(viewMatrix);
+			//flashlight position alligned to player
+			lights[0].setPosition(player.x, player.y+5, player.z);
+	    	Light.moveAllLights(viewMatrix);		
+		}
+		
 		
 
 		//toggle showing of bounding boxes
@@ -596,16 +626,30 @@ var Scene =
 		for(var i=0; i<objects.length; i++)
 			objects[i].render();	
 
-		if(!endCredits)
+		//game over screen
+		if(this.gameOver)
+		{
+			InterfaceOverlay.renderGameOver();
+
+			//respawn
+			if(Input.isMouseDown())
+			{
+				Scene.createObjects();
+				this.gameOver = false;
+			}
+		}
+		//player just died
+		else if(player.health <= 0.0)
+		{
+			Scene.clearObjects();
+			player = null;
+			this.gameOver = true;			
+		}
+		else if(!endCredits)
 			InterfaceOverlay.render();
 		else
 			InterfaceOverlay.renderCredits();
 
-		console.log(player.x);
-		console.log(player.y);
-		console.log(player.z);
-	
-		if(player.health > 0.0)
-			window.requestAnimationFrame(Scene.render);
+		window.requestAnimationFrame(Scene.render);
 	},
 }
