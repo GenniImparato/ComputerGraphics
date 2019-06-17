@@ -20,7 +20,7 @@ class Lava3D extends Object3D
 	{
 		this.animTime--;
 		this.material.setUvTime(this.animTime);
-		this.material.setWaveHeight(this.y / 2);
-		this.material.setWavePeriod(100.0);
+		this.material.setWaveHeight(10);
+		this.material.setWavePeriod(100);
 	}
 }

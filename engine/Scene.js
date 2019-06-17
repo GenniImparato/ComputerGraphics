@@ -70,6 +70,9 @@ var objects = [];
 var lights = []; // should have maximum 3 lights
 var materials = [];
 
+//collision group 1
+var rocksCratesCollGroup = [];
+
 var firstPersonCamera;
 var lookAtCamera;
 var currCamera;
@@ -174,9 +177,16 @@ var Scene =
 
 	removeObject3D: function(object)
 	{
+		//remove from scene
 		for(var i=0; i<objects.length; i++)
 			if(objects[i] == object)
 				objects.splice(i, 1);
+
+		//remove from collision group
+		for(var i=0; i<rocksCratesCollGroup.length; i++)
+			if(rocksCratesCollGroup[i] == object)
+				rocksCratesCollGroup.splice(i, 1);
+			
 	},
 
 	switchLights_Extern()
@@ -240,8 +250,12 @@ var Scene =
 	{
 		for(var i=0; i<objects.length; i++)
 			objects[i] = null;
-
 		objects = [];
+
+		//clear collision group
+		for(var i=0; i<rocksCratesCollGroup.length; i++)
+			rocksCratesCollGroup[i] = null;
+		rocksCratesCollGroup = [];
 	},
 
 	createObjects()
@@ -251,7 +265,8 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		player.setPosition(25, 30, 360);
+		//player.setPosition(25, 30, 360);
+		player.setPosition(0, 30, 20);
 		player.setRotation(0, -90, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
@@ -272,45 +287,51 @@ var Scene =
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
 		tmpObj.setPosition(-38, 150, 0);
 		tmpObj.setScale(0.3, 0.35, 0.4);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
 		tmpObj.setPosition(-45, 150, 35);
 		tmpObj.setScale(0.2, 0.2, 0.3);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		//destroyable wood boxes
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-25, 50, 40);
 		tmpObj.setScale(2, 2, 2);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-23, 80, 40);
 		tmpObj.setScale(2, 3, 2);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-38, 105, 0);
 		tmpObj.setScale(3, 3, 3);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-45, 100, 35);
 		tmpObj.setScale(4, 3, 5);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		//second trigger for falling rocks/boxes
 		var trigg = new GravityTrigger3D(15, 15, 15);
@@ -320,24 +341,26 @@ var Scene =
 		var tmpObj = new DestroyableObject3D(woodBox, woodenCrateTex, redMaterial);
 		tmpObj.setPosition(-75, 100, -60);
 		tmpObj.setScale(2, 2, 2);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
 		tmpObj.setPosition(-75, 150, -60);
 		tmpObj.setScale(0.2, 0.2, 0.3);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 		trigg.registerObject3D(tmpObj);
+		rocksCratesCollGroup.push(tmpObj);
 
 		//mobile wood boxes in dungeon
 		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
 		tmpObj.setPosition(-1, 6, -183);
-		tmpObj.setScale(2, 2, 2);
+		tmpObj.setScale(3.5, 3.5, 3.5);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableGravity(true);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
 
 		//big rock to block path
@@ -346,8 +369,9 @@ var Scene =
 		tmpObj.setScale(1.9, 0.9, 1.3);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableGravity(true);
-		tmpObj.enableCollisionWith(objects);
+		tmpObj.enableCollisionWith(rocksCratesCollGroup);
 		tmpObj.addToScene();
+		rocksCratesCollGroup.push(tmpObj);
 
 
 		//castle
@@ -360,6 +384,11 @@ var Scene =
 		tmpObj.setPosition(0, 0, 8);
 		tmpObj.setScale(3, 3, 3);
 		tmpObj.addToScene();
+
+		//adds castle floor, exterior and dungeon, to rock/boxes collisions group
+		rocksCratesCollGroup.push(tmpObj.objects[3]);
+		rocksCratesCollGroup.push(tmpObj.objects[0]);
+		rocksCratesCollGroup.push(tmpObj.objects[5]);
 
 		//key
 		var tmpObj = new Key3D(keyMesh, keyMaterial);
@@ -555,7 +584,7 @@ var Scene =
 		//lights
 		Scene.switchLights_Extern();
 
-		endCredits = true;
+		endCredits = false;
 	},
 
 
