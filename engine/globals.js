@@ -2,7 +2,7 @@ var gl;
 var canvas;
 var aspectRatio;
 
-var basePath = window.location.href;
+var basePath = window.location.origin;
 var OBJModelsDir 	= basePath + "/models/";
 var shaderDir 		= basePath + "/shaders/";
 const textureDir = basePath + "/textures/"
