@@ -660,7 +660,7 @@ var Scene =
 			}
 		}
 		//player just died
-		else if(player.health <= 0.0)
+		else if(player.health <= 0.0 && !endCredits)
 		{
 			Scene.clearObjects();
 			player = null;

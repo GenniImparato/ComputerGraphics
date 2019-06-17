@@ -40,9 +40,9 @@ class BoundingBox
 		this.posCZ 		= 0.0;
 
 		//colors
-		this.collidedColor = [255, 0, 0, 240];			//red
-		this.nonCollidedColor = [0, 0, 255, 240];		//blue
-		this.material = new DiffuseMaterial(0, 100, 0, 100);
+		this.collidedColor = [255, 0, 0, 100];			//red
+		this.nonCollidedColor = [0, 0, 255, 100];		//blue
+		this.material = new SimpleMaterial(0, 100, 0, 100);
 
 	}
 
