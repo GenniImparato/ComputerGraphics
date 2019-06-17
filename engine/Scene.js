@@ -529,17 +529,33 @@ var Scene =
 		currCamera = firstPersonCamera;
 
 		//end credits animation
-		camAnimator = new LinearCameraAnimator(lookAtCamera);
-		camAnimator.addKeyFrame(30, 10, 250, 10, 90, 10);
-		camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
-		camAnimator.addKeyFrame(0, 80, 100, 40, 0, 40);
-		camAnimator.addKeyFrame(0, 80, 80, 40, 180, 50);
-		camAnimator.addKeyFrame(0, 20, 0, 30, 360, 30);
-		camAnimator.addKeyFrame(0, -5, 0, -80, 20, 5);
-		camAnimator.playAnimation(500, true);
+		camAnimator = new CameraAnimator(lookAtCamera);
+		var cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
+		cameraPath.addPoint(new CameraKeyFrame(0, 2, 200, 0, 0, 10));
+		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+		cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
+		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+		cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
+		cameraPath.addPoint(new CameraKeyFrame(0, 2, 200, 0, 0, 10));
+		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+
+		// camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
+		// camAnimator.addKeyFrame(0, 80, 100, 40, 0, 40);
+		// camAnimator.addKeyFrame(0, 80, 80, 40, 180, 50);
+		// camAnimator.addKeyFrame(0, 20, 0, 30, 360, 30);
+		// camAnimator.addKeyFrame(0, -5, 0, -80, 20, 5);
+		camAnimator.play(true);
 
 		//lights
 		Scene.switchLights_Extern();
+
+		endCredits = true;
 	},
 
 
@@ -654,6 +670,7 @@ var Scene =
 			InterfaceOverlay.render();
 		else
 			InterfaceOverlay.renderCredits();
+
 
 		window.requestAnimationFrame(Scene.render);
 	},

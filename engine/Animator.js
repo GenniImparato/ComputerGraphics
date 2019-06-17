@@ -186,7 +186,6 @@ class CameraBezierCurve {
 		    intermediateCoordinates[2],
 		    intermediateRotations[0],
 		    intermediateRotations[1],
-		    intermediateRotations[2],
 		    intermediateLookRadius[0]
 		));
 	    }	
@@ -458,14 +457,13 @@ class CameraAnimator
 
 
    	if(this.animatePosition)
-   	    this.camera.setPosition(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
+   	    this.camera.setLookPoint(interpolatedFrame.x, interpolatedFrame.y, interpolatedFrame.z);
    	if(this.animateRotation) {
    	    this.camera.setAngle(interpolatedFrame.angle);
-	    this.camer.setElevation(interpolatedFrame.elevation);
+	    this.camera.setElevation(interpolatedFrame.elevation);
 	}
    	if(this.animateRadius)
    	    this.camera.setLookRadius(interpolatedFrame.lookRadius);
-
     }
 
 }
