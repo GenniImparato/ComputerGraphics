@@ -1,6 +1,8 @@
 var textureShader;
 var textureDiffuseShader;
 var texturePhongShader;
+var textureNormalsShader;
+var liquidTextureShader;
 
 var texturesCount = 0;
 var loadedText = [];
@@ -11,6 +13,20 @@ function isPowerOf2(value) {
 }
 
  function textureLoaderCallback () {
+     this.txId = gl.createTexture();
+     gl.activeTexture(gl.TEXTURE0 + this.txNum);
+     gl.bindTexture(gl.TEXTURE_2D, this.txId);		
+     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);		
+     gl.generateMipmap(gl.TEXTURE_2D);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+
+     loadedText[this.txNum] = true;
+}
+
+function normalMapLoaderCallback () {
      this.txId = gl.createTexture();
      gl.activeTexture(gl.TEXTURE0 + this.txNum);
      gl.bindTexture(gl.TEXTURE_2D, this.txId);		
@@ -67,10 +83,11 @@ class TextureMaterial extends SimpleMaterial {
 		}
     }
 
-    setUvTime(time)
+	setUvTime(time)
     {
     	this.uvTime = time;
     }
+   
 
     bindShader() {	
 
@@ -84,9 +101,7 @@ class TextureMaterial extends SimpleMaterial {
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);
 		gl.uniform4f(materialSpecularLoc, this.specR, this.specG, this.specB, this.specA);
 		gl.uniform1f(specularShineLoc, this.gamma);
-
-		//uv animation
-		gl.uniform1f(this.shader.getUniformLocation("uvTime"), this.uvTime);	
+		gl.uniform1f(this.shader.getUniformLocation("uvTime"), this.uvTime);
     }
     
 }
@@ -181,3 +196,83 @@ class TextureSpecular extends TextureMaterial {
     
 }
 
+class TextureWithNormals extends TextureSpecular {
+	 constructor(txFile, nmapFile) {
+		super(txFile);
+		if(!textureNormalsShader)
+		{
+		    textureNormalsShader = new Shader("vs_tex_normals.glsl", "fs_tex_phong.glsl", true);
+		}
+		this.specR = 1.0;
+		this.specG = 1.0;
+		this.specB = 1.0;
+		this.specA = 1.0;
+		this.gamma = 100;
+		this.shader  = textureNormalsShader;
+
+		this.normalMap = new Image();
+		this.normalMap.txNum = texturesCount;
+		loadedText[texturesCount] = false;
+		texturesCount++;
+		requestCORSIfNotSameOrigin(this.normalMap, textureDir + nmapFile);
+		this.normalMap.src = textureDir + nmapFile;
+		this.normalMap.onload = normalMapLoaderCallback;
+    }
+
+
+    disableSpecular() {
+    	this.specR = 0.0;
+		this.specG = 0.0;
+		this.specB = 0.0;
+		this.specA = 1.0;
+    }
+
+    bindShader() {	
+    	super.bindShader();
+	    // setup normal map texture
+ 		gl.uniform1i(this.shader.getUniformLocation("uNormalMap"), this.normalMap.txNum);
+    }
+}
+
+
+class LiquidTexture extends TextureMaterial {
+
+    constructor(txFile) {
+	super(txFile);
+	if(!liquidTextureShader)
+	{
+	    liquidTextureShader = new Shader("vs_tex_liquid.glsl", "fs_tex.glsl", true);
+	}
+	this.shader  = liquidTextureShader;
+	this.time = 0;
+	this.waveP = 10.0;
+
+    }
+
+
+    setRepeat(boolean) {
+		if(boolean) {
+		    this.wrap = gl.REPEAT;
+		}
+		else {
+		    this.wrap = gl.CLAMP_TO_EDGE;
+		}
+    }
+    
+    setWavePeriod(period) {
+    	this.waveP = period;
+    }
+
+    setWaveHeight(height) {
+    	this.waveH = height;
+    }
+
+    bindShader() {	
+    	super.bindShader();
+	    // setup texture
+ 		gl.uniform1i(this.shader.getUniformLocation("uTexture"), this.image.txNum);	
+ 		gl.uniform1f(this.shader.getUniformLocation("wavePeriod"), this.waveP);	
+ 		gl.uniform1f(this.shader.getUniformLocation("waveHeight"), this.waveH);	
+    }
+    
+}

@@ -147,9 +147,10 @@ var Scene =
 		materials.push(woodenCrateTex			= new TextureDiffuse("wood_crate.png"));
 		materials.push(ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140));
 		materials.push(keyMaterial 				= new SpecularMaterial(200, 200, 0, 255));
-		materials.push(lavaMaterial 			= new TextureMaterial("lava.png"));
+		materials.push(lavaMaterial 			= new LiquidTexture("lava.png"));
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
-		materials.push(windmillTex 				= new TextureDiffuse("windmill.jpg"));
+		materials.push(windmillTex 				= new TextureWithNormals("windmill.jpg", "windmill_normals.jpg"));
+		windmillTex.disableSpecular();
 		materials.push(flashlightTex 			= new TextureDiffuse("flashlight.jpg"));
 
 		for(var i=0; i<materials.length; i++)
@@ -258,7 +259,7 @@ var Scene =
 
 		//lava
 		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
-		tmpObj.setPosition(0, -5, 0);
+		tmpObj.setPosition(0, -10, 0);
 		tmpObj.setScale(3, 2, 3);
 		tmpObj.addToScene();
 

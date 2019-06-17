@@ -15,20 +15,7 @@ class KeyFrame
 
 }
 
-
-class CameraKeyFrame
-{
-    constructor(x, y, z, angle, elevation, lookRadius)
-    {
-	this.x = x;
-	this.y = y;
-	this.z = z;
-	this.angle = angle;
-	this.elevation = elevation;
-	this.lookRadius = lookRadius;
-    }
-
-}
+	
 
 class BezierCurve {
 
@@ -134,9 +121,9 @@ class BezierCurve {
     	var result = [];
 	for(var i=0; i < a.length; i++) {
     	    result.push((1 - alpha ) * a[i] + alpha * b[i]); 
-    	    return result;
+    	    
 	}
-
+	return result;	
     }
 
 }
@@ -238,9 +225,9 @@ class CameraBezierCurve {
     lerp(a, b ,alpha) { // of coordinates or scales
     	var result = [];
 	for(var i=0; i < a.length; i++) {
-    	    result.push((1 - alpha ) * a[0] + alpha * b[0]); 
+    	    result.push((1 - alpha ) * a[i] + alpha * b[i]); 
 	}
-    	return result;
+    return result;
     }
 
 }
