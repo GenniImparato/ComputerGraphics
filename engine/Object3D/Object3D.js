@@ -358,7 +358,6 @@ class Object3D
 	//default acts as a rigid body that stops colliding objects
 	collisionHandler(object, bboxNum)
 	{
-		object.penetrationZ = 0;
 		object.colliding = true;
 
 		//collision from y++
@@ -371,8 +370,9 @@ class Object3D
 		else
 		{
 			//collision from x++
-			if(object.boundingBoxes[0].maxX >= this.boundingBoxes[bboxNum].maxX	&& 	object.boundingBoxes[0].minX <= this.boundingBoxes[bboxNum].maxX	&&	object.speedX<0) 
+			if(object.boundingBoxes[0].maxX >= this.boundingBoxes[bboxNum].maxX	&& 	object.boundingBoxes[0].minX <= this.boundingBoxes[bboxNum].maxX	&&	object.speedX<0)
 				object.collisionX = true;
+				
 			//collision from x--
 			if(object.boundingBoxes[0].maxX >= this.boundingBoxes[bboxNum].minX	&& 	object.boundingBoxes[0].minX <= this.boundingBoxes[bboxNum].minX	&&	object.speedX>0)
 				object.collisionX = true;
@@ -383,7 +383,7 @@ class Object3D
 
 			//collision from z--
 			if(object.boundingBoxes[0].maxZ >= this.boundingBoxes[bboxNum].minZ	&& 	object.boundingBoxes[0].minZ <= this.boundingBoxes[bboxNum].minZ	&&	object.speedZ>0) 
-					object.collisionZ = true;
+				object.collisionZ = true;
 		}
 		
 
@@ -419,7 +419,6 @@ class Object3D
 				this.speedY = 0;
 				this.y += this.penetrationY;
 			}
-
 			if(this.collisionZ)
 				this.speedZ = 0;
 

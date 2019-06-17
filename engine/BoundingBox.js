@@ -42,7 +42,7 @@ class BoundingBox
 		//colors
 		this.collidedColor = [255, 0, 0, 240];			//red
 		this.nonCollidedColor = [0, 0, 255, 240];		//blue
-		this.material = new SimpleMaterial(0, 100, 0, 240);
+		this.material = new DiffuseMaterial(0, 100, 0, 100);
 
 	}
 
@@ -53,10 +53,11 @@ class BoundingBox
 		this.z = z + (this.offZ + this.posCZ) * scaleZ;
 
 		//invert bb axis at 90 degrees
+		rotY = Math.abs(rotY)%360;
 		if((rotY >= 45 && rotY <= 135) || (rotY <= -45 && rotY >= -135))
 		{
 			//swap dx/dz
-			this.dx = this.dz_ * scaleX * this.scaleCX;
+			this.dx = this.dz_ * scaleZ * this.scaleCZ;
 			this.dy = this.dy_ * scaleY * this.scaleCY;
 			this.dz = this.dx_ * scaleX * this.scaleCX;
 		}

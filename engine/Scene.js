@@ -612,8 +612,7 @@ var Scene =
 			}
 
 			//flashlight position alligned to player's flashlight
-			var fPos = player.flashlight.getWorldPosition();
-			lights[0].setPosition(fPos[0], fPos[1], fPos[2]);
+			lights[0].setPosition(player.x, player.y+4, player.z);
 	    	Light.moveAllLights(viewMatrix);		
 		}
 		

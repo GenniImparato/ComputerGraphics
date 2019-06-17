@@ -10,7 +10,7 @@ class Player extends GroupObject3D
 		super(mainMesh, material);
 		this.changeBBColor = true;
 		this.boundingBoxes[0].setColor([255, 255, 0, 255]);
-		this.boundingBoxes[0].setScaleCorrection(7, 7, 7);
+		this.boundingBoxes[0].setScaleCorrection(3.7, 6.5, 3.7);
 		this.enableGravity(true);
 		this.enablePhysics(true);
 		this.setVisible(false);
@@ -27,8 +27,8 @@ class Player extends GroupObject3D
 
 		//flashlight
 		this.flashlight = new Object3D(flashlightMesh, flashlightTex);
-		this.flashlight.setPosition(2, 4, 0.8);
-		this.flashlight.setScale(0.5, 0.5, 0.5);
+		this.flashlight.setPosition(0, 4, 0.1);
+		this.flashlight.setScale(0.25, 0.25, 0.25);
 		this.flashlight.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 		this.addObject3D(this.flashlight);
 
