@@ -58,30 +58,34 @@ class Ghost3D extends GroupObject3D
 		this.addObject3D(mainObj);
 
 		//idle animation
-		this.idleAnim = new LinearAnimator(mainObj);
+		this.idleAnim = new Animator(mainObj);
 		this.idleAnim.enablePositionAnimation(true);
 		this.idleAnim.enableRotationAnimation(false);
 		this.idleAnim.enableScaleAnimation(true);
 
-		this.idleAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8);
-		this.idleAnim.addKeyFrame(0, +2.5, 0, 0, 0, 0, 1.2, 1.2, 1.2);
+		var idlePath = new BezierCurve();
+		idlePath.addPoint(new KeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8));
+		idlePath.addPoint(new KeyFrame(0, +2.5, 0, 0, 0, 0, 1.2, 1.2, 1.2));
+		this.idleAnim.addAnimation(new Animation(idlePath, 150));
 
 		//spawn animation
-		this.spawnAnim = new LinearAnimator(mainObj, this);
+		this.spawnAnim = new Animator(mainObj, this);
 		this.spawnAnim.enablePositionAnimation(false);
 		this.spawnAnim.enableRotationAnimation(false);
 		this.spawnAnim.enableScaleAnimation(true);
 
-		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1);
-		this.spawnAnim.addKeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8);
+		var spawnPath = new BezierCurve();
+		spawnPath.addPoint(new KeyFrame(0, 0, 0, 0, 0, 0, 0.1, 0.1, 0.1));
+		spawnPath.addPoint(new KeyFrame(0, 0, 0, 0, 0, 0, 0.8, 0.8, 0.8));
+		this.spawnAnim.addAnimation(new Animation(spawnPath, 100));
 
 		this.currAnim = this.spawnAnim;
-		this.spawnAnim.playAnimation(100, false);
+		this.spawnAnim.play(100, false);
 
 		this.spawnAnim.onStop = function(inst)
 			{
 				inst.currAnim = inst.idleAnim;
-				inst.idleAnim.playAnimation(150, true);
+				inst.idleAnim.play(true);
 			};
 	}
 

@@ -8,16 +8,16 @@ class KeyFrame
 		this.rotX = rotX || 0;
 		this.rotY = rotY || 0;
 		this.rotZ = rotZ || 0;
-		this.scaleX = scaleX || 1;
-		this.scaleY = scaleY || 1;
-		this.scaleZ = scaleZ || 1;
+		this.scaleX = scaleX ;
+		this.scaleY = scaleY ;
+		this.scaleZ = scaleZ ;
 	}
 
 	interpolate(nextframe, interpolatePosition)
 	{
 		return new KeyFrame(this.x + (nextframe.x - this.x)*interpolatePosition,
 							this.y + (nextframe.y - this.y)*interpolatePosition,
-							this.z + (nextframe.z- this.z)*interpolatePosition, 
+							this.z + (nextframe.z - this.z)*interpolatePosition, 
 							this.rotX + (nextframe.rotX - this.rotX)*interpolatePosition,
 							this.rotY + (nextframe.rotY - this.rotY)*interpolatePosition,
 							this.rotZ + (nextframe.rotZ- this.rotZ)*interpolatePosition, 
@@ -70,17 +70,17 @@ class BezierCurve {
 	    	tempFrame2 = intermediateStep[i+1];
 	    	tempCoordinates1 = [tempFrame1.x, tempFrame1.y, tempFrame1.z];
 	    	tempCoordinates2 = [tempFrame2.x, tempFrame2.y, tempFrame2.z];
-	    	intermediateCoordinates = this.lerp(tempCoordinate1, tempCoordinate2, alpha);
+	    	intermediateCoordinates = this.lerp(tempCoordinates1, tempCoordinates2, alpha);
 
 			// rotations
 			tempRotations1 = [tempFrame1.rotX, tempFrame1.rotY, tempFrame1.rotZ];
-			tempRotatios2 = [tempFrame2.rotX, tempFrame2.rotY, tempFrame2.rotZ];
+			tempRotations2 = [tempFrame2.rotX, tempFrame2.rotY, tempFrame2.rotZ];
 			intermediateRotations =  this.lerp(tempRotations1, tempRotations2, alpha); 
 
 			// scales
 			tempScales1 = [tempFrame1.x, tempFrame1.y, tempFrame1.z];
 			tempScales2 = [tempFrame2.x, tempFrame2.y, tempFrame2.z];
-			intermediateScales = this.lerp(tempScale1, tempScale2, alpha);
+			intermediateScales = this.lerp(tempScales1, tempScales2, alpha);
 			tempFrames.push(new KeyFrame(
 				intermediateCoordinates[0],
 				intermediateCoordinates[1],
@@ -224,6 +224,9 @@ class Animator
    			if(this.loop) 
    			{
    				this.reverse = !this.reverse;
+   			}
+   			else {
+   				this.stop();
    			}
    		}
 

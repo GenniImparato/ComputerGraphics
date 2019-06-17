@@ -121,14 +121,24 @@ class DoorKey3D extends GroupObject3D
 		this.key.boundingBoxes[0].setScaleCorrection(0, 0, 0);
 
 		//key animator
-		this.keyAnim = new LinearAnimator(this.key, this);
+		this.keyAnim = new Animator(this.key, this);
 		this.keyAnim.enablePositionAnimation(true);
 		this.keyAnim.enableRotationAnimation(true);
 		this.keyAnim.enableScaleAnimation(false);
-		this.keyAnim.addKeyFrame(keyhole.x, keyhole.y, keyhole.z+2.5, 0, 0, 0);
-		this.keyAnim.addKeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0);
-		this.keyAnim.addKeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 90);
-		this.keyAnim.addKeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0);
+
+		// movement
+		var tempPath = new BezierCurve();
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+2.5, 0, 0, 0));
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0));
+		this.keyAnim.addAnimation(new Animation(tempPath, 50));
+		
+		//rotation
+		tempPath = new BezierCurve();
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0));
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 90));
+		this.keyAnim.addAnimation(new Animation(tempPath, 200));
+
+
 		//open door after key animation
 		this.keyAnim.onStop = function(inst) {inst.open();	if(linkedDoor)linkedDoor.open();};
 		
@@ -162,7 +172,7 @@ class DoorKey3D extends GroupObject3D
 			if(player.hasKey)
 			{
 				inst.key.setVisible(true);
-				inst.keyAnim.playAnimation(100, false);	
+				inst.keyAnim.play(false);	
 				player.hasKey = false;
 				inst.frontTrigger.removeFromScene();
 			}
