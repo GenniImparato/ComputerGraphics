@@ -24,6 +24,7 @@ var castleDungeonWallsMesh;
 var castleFloorMesh;
 var skyboxMesh;
 var ghostMesh;
+var ghostTongueMesh;
 var bombMesh;
 var keyHoleMesh;
 var keyMesh;
@@ -58,6 +59,8 @@ var skyboxTex;
 var woodenDoorTex;
 var woodenCrateTex;
 var ghostMaterial;
+var ghostDamagedMaterial;
+var ghostTongueMaterial;
 var keyMaterial;
 var lavaMaterial;
 var lanternTex;
@@ -112,6 +115,7 @@ var Scene =
 		floorMesh				= Mesh.loadFromOBJFile("floor.obj");
 		skyboxMesh				= Mesh.loadFromOBJFile("skybox.obj");
 		ghostMesh				= Mesh.loadFromOBJFile("ghost.obj");
+		ghostTongueMesh			= Mesh.loadFromOBJFile("ghost_tongue.obj");
 		bombMesh				= Mesh.loadFromOBJFile("bomb.obj");
 		keyHoleMesh				= Mesh.loadFromOBJFile("keyhole.obj");
 		keyMesh					= Mesh.loadFromOBJFile("key.obj");
@@ -148,7 +152,9 @@ var Scene =
 		materials.push(skyboxTex				= new TextureMaterial("skybox.jpg"));
 		materials.push(woodenDoorTex			= new TextureDiffuse("wooden_door.png"));
 		materials.push(woodenCrateTex			= new TextureDiffuse("wood_crate.png"));
-		materials.push(ghostMaterial 			= new DiffuseMaterial( 200, 200 , 200, 140));
+		materials.push(ghostMaterial 			= new TextureDiffuse("ghost.png"));
+		materials.push(ghostDamagedMaterial 	= new TextureDiffuse("ghost_damaged.png"));
+		materials.push(ghostTongueMaterial 		= new DiffuseMaterial( 200, 0 , 0, 140));
 		materials.push(keyMaterial 				= new SpecularMaterial(200, 200, 0, 255));
 		materials.push(lavaMaterial 			= new LiquidTexture("lava.png"));
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
@@ -265,8 +271,8 @@ var Scene =
 
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
-		//player.setPosition(25, 30, 360);
-		player.setPosition(0, 30, 20);
+		player.setPosition(25, 30, 360);
+		//player.setPosition(0, 30, 20);
 		player.setRotation(0, -90, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
@@ -276,6 +282,7 @@ var Scene =
 		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
 		tmpObj.setPosition(0, -10, 0);
 		tmpObj.setScale(3, 2, 3);
+		rocksCratesCollGroup.push(tmpObj);
 		tmpObj.addToScene();
 
 		//trigger for falling rocks/boxes
@@ -356,8 +363,8 @@ var Scene =
 
 		//mobile wood boxes in dungeon
 		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
-		tmpObj.setPosition(-1, 6, -183);
-		tmpObj.setScale(3.5, 3.5, 3.5);
+		tmpObj.setPosition(-1, 4, -183);
+		tmpObj.setScale(3, 3, 3);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(rocksCratesCollGroup);

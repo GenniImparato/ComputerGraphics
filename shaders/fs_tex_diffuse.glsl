@@ -138,6 +138,7 @@ void main() {
 	// lambert diffuse without specular
 	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + mAmbientColor.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
 
-	  
+	  if(outColor.a < 0.2)
+  		discard; 
 
 }

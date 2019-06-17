@@ -130,13 +130,19 @@ class DoorKey3D extends GroupObject3D
 		var tempPath = new BezierCurve();
 		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+2.5, 0, 0, 0));
 		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0));
-		this.keyAnim.addAnimation(new Animation(tempPath, 50));
+		this.keyAnim.addAnimation(new Animation(tempPath, 40));
 		
 		//rotation
 		tempPath = new BezierCurve();
 		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0));
 		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 90));
-		this.keyAnim.addAnimation(new Animation(tempPath, 200));
+		this.keyAnim.addAnimation(new Animation(tempPath, 40));
+
+		//rotation back
+		tempPath = new BezierCurve();
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 90));
+		tempPath.addPoint(new KeyFrame(keyhole.x, keyhole.y, keyhole.z+0.5, 0, 0, 0));
+		this.keyAnim.addAnimation(new Animation(tempPath, 40));
 
 
 		//open door after key animation

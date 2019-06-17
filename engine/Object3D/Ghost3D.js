@@ -1,15 +1,18 @@
 const 	ghostMoveSpeed = 0.12;
 var		ghostCount	= 0;
 
-class Ghost3D_ extends Object3D
+class Ghost3D_ extends GroupObject3D
 {
-	constructor(mesh, material)
+	constructor(mesh, material, tongueMesh, tongueMaterial)
 	{
 		super(mesh, material);	
 
-		this.damagedMaterial = new DiffuseMaterial(255, 0, 0, 200);
+		this.damagedMaterial = ghostDamagedMaterial;
 		this.standardMaterial = material;
 		this.damagedTime = 0;
+
+		this.addObject3D(new Object3D(tongueMesh, tongueMaterial));
+		this.objects[0].boundingBoxes[0].setScaleCorrection(0, 0, 0);
 	}
 
 	collisionHandler(object)
@@ -27,7 +30,7 @@ class Ghost3D_ extends Object3D
 	{
 		this.damagedTime++;
 
-		if(this.damagedTime > 15)
+		if(this.damagedTime > 20)
 		{
 			this.setMaterial(this.standardMaterial);
 		}
@@ -47,14 +50,14 @@ class Ghost3D_ extends Object3D
 
 class Ghost3D extends GroupObject3D
 {
-	constructor(mesh, material)
+	constructor(mesh, material, tongueMesh, tongueMaterial)
 	{
 		super();
 
 		this.enablePhysics(true);
 		this.enableGravity(false);
 
-		var mainObj = new Ghost3D_(mesh, material);
+		var mainObj = new Ghost3D_(mesh, material, tongueMesh, tongueMaterial);
 		this.addObject3D(mainObj);
 
 		//idle animation
@@ -141,7 +144,7 @@ class GhostSpawner3D extends Object3D
 			this.currTime = 0;
 
 			//spawn ghost
-			var ghost = new Ghost3D(ghostMesh, ghostMaterial);
+			var ghost = new Ghost3D(ghostMesh, ghostMaterial, ghostTongueMesh, ghostTongueMaterial);
 
 			//random spawning angle with respect to player (in range of 90 degrees)
 			var spawnAngle = player.roty;
