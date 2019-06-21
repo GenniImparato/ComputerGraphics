@@ -1,5 +1,5 @@
 const 	ghostMoveSpeed = 0.12;
-var		ghostCount	= 0;
+var 	ghostCount = 0;
 
 class Ghost3D_ extends GroupObject3D
 {
@@ -131,7 +131,7 @@ class GhostSpawner3D extends Object3D
 	{
 		super();
 		this.currTime = 0;
-		this.ghostCount = 0;
+		ghostCount = 0;
 		this.nextSpawnTime = Math.random()*800 + 200;
 	}
 

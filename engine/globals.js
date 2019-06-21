@@ -12,8 +12,6 @@ var perspectiveMatrix;
 var viewMatrix;
 var projectionMatrix;
 
-//global shader for bounding boxes
-
 //flag to show/hide bounding boxes of every object in the scene
 var showBoundingBoxes = false;
 //flag to toggle fpcamera/lookatcamera, first person = true;

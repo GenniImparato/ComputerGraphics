@@ -55,7 +55,8 @@ class LookAtCamera extends Camera
 
 	look()
 	{
-		this.handleInput();
+		if(!endCredits)
+			this.handleInput();
 
 		//computes camera position
 		this.z = this.lookRadius * Math.cos(utils.degToRad(-this.angle)) * Math.cos(utils.degToRad(this.elevation));

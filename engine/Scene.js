@@ -82,7 +82,7 @@ var currCamera;
 var camAnimator;
 
 var player;
-var endCredits = false;
+var endCredits = true;
 
 var lanterns = [];
 
@@ -164,7 +164,7 @@ var Scene =
 
 		for(var i=0; i<materials.length; i++)
 		{
-			materials[i].setAmbientColor(5, 5, 10, 255);
+			materials[i].setAmbientColor(12, 4, 25, 255);
 		}
 		lavaMaterial.setAmbientColor(200, 0, 0, 255);	
 	},
@@ -201,29 +201,50 @@ var Scene =
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.05, 1, 50, 0.8));	//player flashlight
-	    lights.push(new PointLight('LB', 0, 10, 100, 35, 0.8 ));			//lava light
-	    lights.push(new PointLight('LC', 0, 10, 350, 35, 5 )); 			//lantern light
-	    lights.push(new PointLight('LD', 0, 10, 350, 35, 10 )); 			//lantern light
+	    lights.push(new PointLight('LB', 0, 10, 200, 35, 0.5 ));			//castle lantern light
+	    lights.push(new PointLight('LC', 0, 10, 350, 25, 1.5 )); 			//yellow light
+	    lights.push(new PointLight('LD', 0, 10, 350, 25, 1.5 )); 			//blue lantern light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 0, 0);
-	    lights[2].setColor(255, 60, 0);
+	    lights[2].setColor(255, 255, 0);
 	    lights[3].setColor(0, 20, 255);
 
-	    //lanterns
-	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]);
-	    lantern.setPosition(-20, 10, 320);
+	    //castle lantern
+	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
+	    lantern.setPosition(0, 12, 100);
 	    var lanternPath = new BezierCurve();
-	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
-	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
-	    lantern.animator.addAnimation(new Animation(lanternPath, 100));
+	    lanternPath.addPoint(new KeyFrame(0, 0, 0));
+	    lanternPath.addPoint(new KeyFrame(60, 40, -20));
+	    lanternPath.addPoint(new KeyFrame(50, 30, -20));
+	    lanternPath.addPoint(new KeyFrame(0, 5, -100));
+	    lantern.animator.addAnimation(new Animation(lanternPath, 400));
+
+	    lanternPath = new BezierCurve();
+	    lanternPath.addPoint(new KeyFrame(0, 5, -100));
+	    lanternPath.addPoint(new KeyFrame(-60, 30, -20));
+	    lanternPath.addPoint(new KeyFrame(-35, 40, -20));
+	    lanternPath.addPoint(new KeyFrame(0, 0, 0));
+	    lantern.animator.addAnimation(new Animation(lanternPath, 400));
+	    lantern.animator.play(false);
+	    lantern.animator.instance = lantern.animator;
+	    lantern.animator.onStop = function(inst){inst.play(false); inst.currTime=0;};
+	    lantern.addToScene();
+
+	    //blue lantern
+	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
+	    lantern.setPosition(-20, 10, 250);
+	    lanternPath = new BezierCurve();
+	    lanternPath.addPoint(new KeyFrame(0, 0, -15));
+	    lanternPath.addPoint(new KeyFrame(+30, +20, 0));
+	    lanternPath.addPoint(new KeyFrame(0, 0, +15));
+	    lantern.animator.addAnimation(new Animation(lanternPath, 300));
 	    lantern.animator.play(true);
 	    lantern.addToScene();
 
-	    //lanterns
-	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
+	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]);
 	    lanternPath = new BezierCurve();
-	    lantern.setPosition(-20, 10, 250);
+	    lantern.setPosition(-20, 10, 320);
 	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
 	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
 	    lantern.animator.addAnimation(new Animation(lanternPath, 100));
@@ -567,31 +588,30 @@ var Scene =
 		//end credits animation
 		camAnimator = new CameraAnimator(lookAtCamera);
 		var cameraPath = new CameraBezierCurve();
-		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
-		cameraPath.addPoint(new CameraKeyFrame(0, 2, 200, 0, 0, 10));
-		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
-		camAnimator.addAnimation(new Animation(cameraPath, 500));
-		cameraPath = new CameraBezierCurve();
-		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
-		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
-		camAnimator.addAnimation(new Animation(cameraPath, 500));
-		cameraPath = new CameraBezierCurve();
-		cameraPath.addPoint(new CameraKeyFrame(30, 10, 250, 10, 90, 10));
-		cameraPath.addPoint(new CameraKeyFrame(0, 2, 200, 0, 0, 10));
-		cameraPath.addPoint(new CameraKeyFrame(0, 80, 100, 40, 0, 40));
-		camAnimator.addAnimation(new Animation(cameraPath, 500));
+		cameraPath.addPoint(new CameraKeyFrame(150, 0, 280, 10, 90, 5));
+		cameraPath.addPoint(new CameraKeyFrame(140, 2, 275, 0, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(20, 80, 250, -20, 0, 35));
+		cameraPath.addPoint(new CameraKeyFrame(-50, 20, 250, -80, 0, 30));
+		cameraPath.addPoint(new CameraKeyFrame(-10, 0, 250, -150, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(0, 80, 240, -100, 20, 10));
+		cameraPath.addPoint(new CameraKeyFrame(0, 70, 50, -20, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(0, 20, -20, 0, 10, 10));
+		cameraPath.addPoint(new CameraKeyFrame(-50, 150, -30, 70, 0, 25));
+		cameraPath.addPoint(new CameraKeyFrame(-100, 190, -150, 70, 60, 25));
+		cameraPath.addPoint(new CameraKeyFrame(-250, 200, -30, 90, 80, 50));
+		cameraPath.addPoint(new CameraKeyFrame(-380, 80, 100, 180, 110, 25));
+		cameraPath.addPoint(new CameraKeyFrame(-220, 20, 120, 180, 60, 10));
+		cameraPath.addPoint(new CameraKeyFrame(20, 35, 150, 180, -5, 15));
+		cameraPath.addPoint(new CameraKeyFrame(100, 40, 250, 150, -15, 25));
+		cameraPath.addPoint(new CameraKeyFrame(120, 20, 450, 100, 10, 15));
+		cameraPath.addPoint(new CameraKeyFrame(130, 10, 350, 20, 85, 5));
+		cameraPath.addPoint(new CameraKeyFrame(150, 0, 280, 10, 90, 5));
+		camAnimator.addAnimation(new Animation(cameraPath, 2000));
 
-		// camAnimator.addKeyFrame(0, 2, 200, 0, 0, 10);
-		// camAnimator.addKeyFrame(0, 80, 100, 40, 0, 40);
-		// camAnimator.addKeyFrame(0, 80, 80, 40, 180, 50);
-		// camAnimator.addKeyFrame(0, 20, 0, 30, 360, 30);
-		// camAnimator.addKeyFrame(0, -5, 0, -80, 20, 5);
 		camAnimator.play(true);
 
 		//lights
 		Scene.switchLights_Extern();
-
-		endCredits = false;
 	},
 
 
@@ -633,6 +653,9 @@ var Scene =
 		if(player)
 			player.handleInput();
 
+		if(endCredits)
+			player.setPosition(lookAtCamera.x, lookAtCamera.y, lookAtCamera.z);
+
 		//physics and collisions
 		for(var i=0; i<objects.length; i++)
 		{
@@ -642,6 +665,7 @@ var Scene =
 
 		if(endCredits)
 		{
+			lights[0].setColor(0, 0, 0, 0);
 			camAnimator.update();
 			lookAtCamera.look();
 		}
@@ -665,9 +689,10 @@ var Scene =
 			}
 
 			//flashlight position alligned to player's flashlight
-			lights[0].setPosition(player.x, player.y+4, player.z);
-	    	Light.moveAllLights(viewMatrix);		
+			lights[0].setPosition(player.x, player.y+4, player.z);		
 		}
+
+		Light.moveAllLights(viewMatrix);
 		
 		
 

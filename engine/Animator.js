@@ -15,6 +15,32 @@ class KeyFrame
 
 }
 
+class CameraKeyFrame
+{
+	constructor(x, y, z, angle, elevation, lookRadius)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.angle = angle;
+		this.elevation = elevation;
+		this.lookRadius = lookRadius;
+	}
+
+	//interpolates this with the next frame
+	//interpolatePosition range: [0.0, 1.0];
+	interpolate(nextframe, interpolatePosition)
+	{
+		return new CameraKeyFrame(this.x + (nextframe.x - this.x)*interpolatePosition,
+							this.y + (nextframe.y - this.y)*interpolatePosition,
+							this.z + (nextframe.z- this.z)*interpolatePosition, 
+							this.angle + (nextframe.angle - this.angle)*interpolatePosition,
+							this.elevation + (nextframe.elevation - this.elevation)*interpolatePosition,
+							this.lookRadius + (nextframe.lookRadius- this.lookRadius)*interpolatePosition);
+
+	}
+}
+
 	
 
 class BezierCurve {
