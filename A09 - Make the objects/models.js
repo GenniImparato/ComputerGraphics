@@ -111,11 +111,11 @@ function buildGeometry() {
     var fillVertexIndex = 2; // from  which we can start to add vertices
     var fillIndexIndex = 0; // from which we can start to add indexes
     for(i = 0; i < slices6; i++) {
-	// bottom
+	// top
 	vert6[i+fillVertexIndex] = [currentRay * Math.cos(2*Math.PI / slices6 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices6 * i)];
-	ind6[fillIndexIndex + 3*i]   = 1;
+	ind6[fillIndexIndex + 3*i]   = (i < slices6 - 1) ? i+fillVertexIndex+1 : fillVertexIndex  ;
 	ind6[fillIndexIndex + 3*i + 1] = i+fillVertexIndex;
-	ind6[fillIndexIndex + 3*i + 2] = (i < slices6 - 1) ? i+fillVertexIndex+1 : fillVertexIndex ;
+	ind6[fillIndexIndex + 3*i + 2] = 1;
     }    
     fillIndexIndex = i*3; // added index for this cycle
     prevStartVertexIndex = fillVertexIndex ; // store where the previous circle start
@@ -127,12 +127,12 @@ function buildGeometry() {
     	currentHeight = ray6 *  Math.sin(Math.PI/2 - Math.PI/strips6 * (j+1) );
     	while( i2 < slices6 ) {	
     	    vert6[fillVertexIndex + i2 ] = [currentRay * Math.cos(2*Math.PI / slices6 * i2), currentHeight , currentRay * Math.sin(2*Math.PI / slices6 * i2)];
-    	    ind6[fillIndexIndex + 6*i2    ] = prevStartVertexIndex + i2;
+    	    ind6[fillIndexIndex + 6*i2    ] = (i2 < slices6 - 1) ? prevStartVertexIndex + 1 + i2 : prevStartVertexIndex ;
     	    ind6[fillIndexIndex + 6*i2 + 1] = fillVertexIndex + i2 ;
-    	    ind6[fillIndexIndex + 6*i2 + 2] = (i2 < slices6 - 1) ? prevStartVertexIndex + 1 + i2 : prevStartVertexIndex ;
-    	    ind6[fillIndexIndex + 6*i2 + 3] =  fillVertexIndex + i2 ;
+    	    ind6[fillIndexIndex + 6*i2 + 2] = prevStartVertexIndex + i2 ;
+    	    ind6[fillIndexIndex + 6*i2 + 3] = (i2 < slices6 - 1) ? prevStartVertexIndex + 1 + i2 : prevStartVertexIndex  ;
     	    ind6[fillIndexIndex + 6*i2 + 4] =  (i2 < slices6 - 1) ? fillVertexIndex + i2 + 1   : fillVertexIndex ;
-    	    ind6[fillIndexIndex + 6*i2 + 5] = (i2 < slices6 - 1) ? prevStartVertexIndex + 1 + i2 : prevStartVertexIndex ;
+    	    ind6[fillIndexIndex + 6*i2 + 5] = fillVertexIndex + i2 ;
     	    i2++;
     	}
     	prevStartVertexIndex = fillVertexIndex;
@@ -146,30 +146,11 @@ function buildGeometry() {
     for(i = 0; i < slices6; i++) {
 	// bottom
 	vert6[i+fillVertexIndex] = [currentRay * Math.cos(2*Math.PI / slices6 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices6 * i)];
-	ind6[fillIndexIndex + 3*i]   = (i < slices6 - 1) ? i+fillVertexIndex+1 : fillVertexIndex;
+	ind6[fillIndexIndex + 3*i]   = fillVertexIndex-1;
 	ind6[fillIndexIndex + 3*i + 1] = i+fillVertexIndex;
-	ind6[fillIndexIndex + 3*i + 2] = fillVertexIndex-1 ;
+	ind6[fillIndexIndex + 3*i + 2] =  (i < slices6 - 1) ? i+fillVertexIndex+1 : fillVertexIndex  ;
     }    
-    // side strips
-    // i2 = 0;
-    // var j = 1;
-    // while( j < strips6 - 1) {
 
-    // 	j++;
-    // }
-
-    // //top 
-
-    // i2 = 0;
-    // while( i2 < slices6) {
-    // 	// bottom
-    // 	var currentRay = ray6 * Math.sin(2* Math.PI / strips6); 
-    // 	vert6[i + i2] = [Math.cos(2*Math.PI / slices6 * i), ray6 *  Math.cos(Math.PI - 2*Math.PI/strips6 ), Math.sin(2*Math.PI / slices6 * i)];
-    // 	ind6[i + 3*i2]   = i;
-    // 	ind6[i + 3*i2 + 1] = i+i2+1;
-    // 	ind6[i + 3*i2 + 2] =  (i2 < slices6 - 1) ? i+i2+2 : i+1;
-    // 	i2++;
-    // }    
     addMesh(vert6, ind6, color6);
 }
 
