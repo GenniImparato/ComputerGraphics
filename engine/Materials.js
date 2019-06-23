@@ -98,7 +98,7 @@ class SimpleMaterial {
 		var materialAmbientLoc = this.shader.getUniformLocation("mAmbientColor");
 		var materialEmitLoc = this.shader.getUniformLocation("mEmitColor");
 		var ambHLoc = this.shader.getUniformLocation("ambientHighColor");
-		var ambLLoc = this.shader.getUniformLocation("ambientLowhColor");
+		var ambLLoc = this.shader.getUniformLocation("ambientLowColor");
 		var ambDLoc = this.shader.getUniformLocation("ambientDir");
 		
 		gl.uniform4f(materialDiffLoc, this.diffR, this.diffG, this.diffB, this.diffA);

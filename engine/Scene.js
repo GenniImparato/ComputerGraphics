@@ -82,7 +82,7 @@ var currCamera;
 var camAnimator;
 
 var player;
-var endCredits = true;
+var endCredits = false;
 
 var lanterns = [];
 
@@ -160,14 +160,13 @@ var Scene =
 		materials.push(keyMaterial 				= new SpecularMaterial(200, 200, 0, 255));
 		materials.push(lavaMaterial 			= new LiquidTexture("lava.png"));
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
-		materials.push(windmillTex 				= new TextureWithNormals("windmill.jpg", "windmill_normals.jpg"));
-		windmillTex.disableSpecular();
+		materials.push(windmillTex 				= new TextureDiffuse("windmill.jpg"));
 		materials.push(flashlightTex 			= new TextureDiffuse("flashlight.jpg"));
 
 		for(var i=0; i<materials.length; i++)
 		{
-			materials[i].setMaterialAmbient(50, 50, 50, 255);
-			materials[i].setAmbientLowColor(255, 51, 0, 255);
+			materials[i].setMaterialAmbient(10, 10, 10, 255);
+			materials[i].setAmbientLowColor(150, 10, 10, 255);
 			materials[i].setAmbientHighColor(0, 0, 77, 255);
 			materials[i].setAmbientDirection(0, 1, 0);
 		}
@@ -211,7 +210,7 @@ var Scene =
 	    lights.push(new PointLight('LD', 0, 10, 350, 30, 1.5 )); 			//blue lantern light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
-	    lights[1].setColor(255, 0, 0);
+	    lights[1].setColor(30, 180, 0);
 	    lights[2].setColor(255, 255, 0);
 	    lights[3].setColor(0, 100, 255);
 
