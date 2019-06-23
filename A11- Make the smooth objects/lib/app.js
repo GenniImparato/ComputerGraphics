@@ -58,9 +58,9 @@ void main() {
 	vec3 n_norm = normalize(fs_norm);
 	
 	float dimFact = lightDir1.w * clamp(dot(n_norm, lightDir1.xyz),0.0,1.0);
-	dimFact += lightDir2.w * clamp(dot(n_norm, lightDir2.xyz),0.0,1.0);
-	dimFact += lightDir3.w * clamp(dot(n_norm, lightDir3.xyz),0.0,1.0);
-	dimFact = dimFact * matcol.a + (1.0 - matcol.a);
+//	dimFact += lightDir2.w * clamp(dot(n_norm, lightDir2.xyz),0.0,1.0);
+//	dimFact += lightDir3.w * clamp(dot(n_norm, lightDir3.xyz),0.0,1.0);
+//      dimFact = dimFact * matcol.a + (1.0 - matcol.a);
 	color = vec4(min(matcol.rgb * dimFact, vec3(1.0, 1.0, 1.0)), 1.0);
 }`;
 

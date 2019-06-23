@@ -3,8 +3,8 @@ function buildGeometry() {
     var i2;
     
     // Draws a pyramid
-    var vert1 = [[-1.0,-1.0,0.0], [1.0,-1.0,0.0], [0.0,1.0,1],
-		 [-1, -1.0, 2], [1, -1, 2]];
+    var vert1 = [[-1.0,-1.0,-1.0], [1.0,-1.0,-1.0], [0.0,1.0,0],
+		 [-1, -1.0, 1], [1, -1, 1]];
     var ind1 = [0, 2, 1,
 		0, 1, 4,
 		0, 4, 3,
@@ -16,8 +16,8 @@ function buildGeometry() {
     addMesh(vert1, ind1, color1);
 
     // Draws a cube
-    var vert2 = [[-1.0,-1.0,0.0], [1.0,-1.0,0.0], [-1.0,1.0,0.0], [1.0,1.0,0.0],
-		 [-1.0,-1,2], [1,-1,2], [-1,1,2],[1,1,2]]
+    var vert2 = [[-1.0,-1.0,-1.0], [1.0,-1.0,-1.0], [-1.0,1.0,-1.0], [1.0,1.0,-1.0],
+		 [-1.0,-1,1], [1,-1,1], [-1,1,1],[1,1,1]]
     var ind2 = [0, 2, 1, 1, 2, 3,
 		1, 3, 5, 5, 3, 7,
 		0, 4, 2, 4, 6, 2,
@@ -74,23 +74,23 @@ function buildGeometry() {
     var vert5 = [[0.0, -1, 0.0], [0,1,0]];
     var ind5 = [];
     var color5 = [1.0, 0.0, 1.0];
-    var slices5 = 64;
+    var slices5 = 12;
     for(i = 0; i < slices5*2; i=i+2) {
 	// bottom circle
 	vert5[i+2] = [Math.cos(2*Math.PI / slices5 * (i/2)), -1, Math.sin(2*Math.PI / slices5 * (i/2))];
 	ind5[12*i/2]   = 0;
 	ind5[12*i/2 +1] = i+2;
-	ind5[12*i/2 +2] = (i < slices5*2-3) ? i+4 : 2 ;
+	ind5[12*i/2 +2] = (i+4 <= slices5*2) ? i+4 : 2 ;
 	// side
 	ind5[12*i/2 + 3]   = i+2 ;
 	ind5[12*i/2 + 4]   = i+3 ;
-	ind5[12*i/2 + 5]   = (i < slices5*2-3) ? i+4 : 2 ;
+	ind5[12*i/2 + 5]   = (i+4 <= slices5*2) ? i+4 : 2 ;
 	ind5[12*i/2 + 6]   = i+3;
-	ind5[12*i/2 + 7]   = (i < slices5*2-4) ? i+5 : 3 ;
-	ind5[12*i/2 + 8]   = (i < slices5*2-3) ? i+4 : 2 ;
+	ind5[12*i/2 + 7]   = (i+5 <= slices5*2+1) ? i+5 : 3 ;
+	ind5[12*i/2 + 8]   = (i+4 <= slices5*2) ? i+4 : 2 ;
 	//top circle
 	vert5[i+3] = [Math.cos(2*Math.PI / slices5 * (i/2)), 1, Math.sin(2*Math.PI / slices5 * (i/2))];
-	ind5[12*i/2 + 9]   = (i < slices5*2-4) ? i+5 : 3; // swapped because back-face culling
+	ind5[12*i/2 + 9]   = (i+5 <= slices5*2+1) ? i+5 : 3; // swapped because back-face culling
 	ind5[12*i/2 + 10] = i+3;
 	ind5[12*i/2 + 11] = 1 ;
 

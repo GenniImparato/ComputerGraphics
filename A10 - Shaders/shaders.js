@@ -130,12 +130,7 @@ var S5 = `
 // Single directional light, no diffuse, phong specular, hemispheric ambient and no emission
 var S6 = `
 
-	
-	
-	float specularIntensity = pow(
-									clamp(dot(eyedirVec, reflectionDir), 0.0, 1.0), 
-									SpecShine); 
-	vec4 hemisphericUp = ambientLightColor * (dot(normalVec, ADir) + 1.0)/2.0 :
+	vec4 hemisphericUp = ambientLightColor * (dot(normalVec, ADir) + 1.0)/2.0 ;
 	vec4 hemisphericDown = ambientLightLowColor * (1.0 - dot(normalVec, ADir))/2.0;
 	vec4 hemisphericColor = hemisphericUp + hemisphericDown;
 
@@ -148,7 +143,45 @@ var S6 = `
 
 // Three lights: a directional, a point and a spot. Lambert diffuse, phong specular, constant ambient and no emission
 var S7 = `
-	out_color = vec4(1.0, 1.0, 1.0, 1.0);
+        // directional
+	float cosAlphaAngleA = max(dot(LADir, normalize(normalVec) ), 0.0);
+	vec3 reflectionDirA = -reflect(LADir, normalize(normalVec));
+	float specularIntensity = pow(clamp(dot(eyedirVec, reflectionDirA), 0.0, 1.0), SpecShine); 
+	vec4 diffuseComponentA =  diffColor * clamp(cosAlphaAngleA, 0.0, 1.0); 
+	vec4 specularComponentA = specularColor * specularIntensity;
+
+        // point light
+	vec3 differenceVectorB = normalize(LBPos - fs_pos);
+	float differenceLengthB = length(LBPos - fs_pos);
+	float decayFactorB = pow( (LBTarget / differenceLengthB), LBDecay);	
+	float cosAlphaAngleB = dot(differenceVectorB, normalize(normalVec));
+
+	vec4 lightColorB = LBlightColor * decayFactorB ;
+	vec4 diffuseComponentB  = diffColor * clamp(cosAlphaAngleB, 0.0, 1.0);
+
+	vec3 reflectionDirB = -reflect(differenceVectorB, normalize(normalVec));
+	float specularIntensityB = pow(clamp(dot(eyedirVec, reflectionDirB), 0.0, 1.0), SpecShine); 
+	vec4 specularComponentB = specularColor * specularIntensityB;
+
+        // spot light
+	vec3 differenceVectorC = normalize(LCPos - fs_pos);
+	float differenceLengthC = length(LCPos - fs_pos);
+	float cosAlphaLight = max(dot(differenceVectorC, LCDir), 0.0);
+ 	float lightConeOut = cos(radians(LCConeOut) / 2.0);
+ 	float lightConeIn = cos(radians(LCConeIn * LCConeOut) / 2.0);
+	float coneLight = clamp( (cosAlphaLight - lightConeOut) /(lightConeIn - lightConeOut),0.0, 1.0);
+	float lightDecayC =  pow( LCTarget / differenceLengthC , LCDecay);
+	vec4 lightColorC  = LClightColor *  lightDecayC * coneLight; 
+	vec3 reflectionDirC = -reflect(LCDir, normalize(normalVec));
+	float specularIntensityC = pow(clamp(dot(eyedirVec, reflectionDirC), 0.0, 1.0), SpecShine); 
+	float cosAlphaAngleC = max(dot(differenceVectorC, normalize(normalVec)), 0.0);
+	vec4 diffuseComponentC =  diffColor * cosAlphaAngleC;
+	vec4 specularComponentC = specularColor * specularIntensityC;
+
+	out_color = clamp(LAlightColor * (diffuseComponentA + specularComponentA) 
+                          +  lightColorB * (diffuseComponentB + specularComponentB)
+                          +  lightColorC * (diffuseComponentC + specularComponentC)
+                          ,0.0, 1.0);
 `;
 	return [S1, S2, S3, S4, S5, S6, S7];
 }
