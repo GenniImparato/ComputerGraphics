@@ -164,9 +164,12 @@ var Scene =
 
 		for(var i=0; i<materials.length; i++)
 		{
-			materials[i].setAmbientColor(12, 4, 25, 255);
+			materials[i].setMaterialAmbient(50, 50, 50, 255);
+			materials[i].setAmbientLowColor(255, 51, 0, 255);
+			materials[i].setAmbientHighColor(0, 0, 77, 255);
+			materials[i].setAmbientDirection(0, 1, 0);
 		}
-		lavaMaterial.setAmbientColor(200, 0, 0, 255);	
+		lavaMaterial.setAmbientLowColor(200, 0, 0, 255);	
 	},
 
 	//add at the end

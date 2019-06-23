@@ -51,8 +51,14 @@ uniform vec3 LDType; // x is for directional, y for point and z for spot
 
 uniform vec4 mDiffColor;
 uniform vec4 mSpecColor;
+uniform vec4 mAmbientColor;
 uniform float mSpecShine;
 uniform vec4 mEmitColor;
+
+uniform vec3 ambientDir;
+uniform vec4 ambientHighColor;
+uniform vec4 ambientLowColor;
+
 
 
 out vec4 outColor;
@@ -79,6 +85,11 @@ vec3 compLightDir(vec3 LDir, vec3 LPos, vec3 LType) {
     pointDir * LType.y +
     spotDir * LType.z;
 }
+
+vec4 computeAmbientLightColor(vec3 normalVec) {
+	return (((dot(normalVec, normalize(ambientDir)) + 1.0) * ambientHighColor) + ((1.0 - dot(normalVec, normalize(ambientDir))) * ambientLowColor)) / 2.0;
+}
+
 
 vec3 compLightColor (vec3 LColor, vec3 LDir, float LTarget, vec3 LPos, float LDecay, float LConeIn, float LConeOut, vec3 LType) {
   vec3 directColor = LColor;
@@ -141,6 +152,8 @@ void main()
 	vec3 lambertDiffuseColor4 = applyLambertDiffuse(lightDDir, lightDColor, normalVec, mDiffColor.rgb);
 	vec4 phongSpecularColor4 = applyPhongSpecular(lightDDir, lightDColor, normalVec, eyeDirVec,  mSpecColor, mSpecShine);
 
-	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn, mDiffColor.a)  + phongSpecularColor1 * LAOn + phongSpecularColor2 * LBOn + phongSpecularColor3 * LCOn + phongSpecularColor4 * LDOn ,0.0, 1.0);
+	vec4 ambientComponent = computeAmbientLightColor(normalize(normalVec)) * mAmbientColor;
+
+	outColor = clamp(vec4(lambertDiffuseColor1 * LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn, mDiffColor.a)  + phongSpecularColor1 * LAOn + phongSpecularColor2 * LBOn + phongSpecularColor3 * LCOn + phongSpecularColor4 * LDOn + ambientComponent + mEmitColor ,0.0, 1.0);
 	
 }

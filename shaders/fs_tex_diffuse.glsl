@@ -57,6 +57,10 @@ uniform vec4 mDiffColor;
 uniform vec4 mAmbientColor;
 uniform vec4 mEmitColor;
 
+uniform vec3 ambientDir;
+uniform vec4 ambientHighColor;
+uniform vec4 ambientLowColor;
+
 
 
 vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diffColor) {
@@ -90,6 +94,11 @@ vec3 compLightColor (vec3 LColor, vec3 LDir, float LTarget, vec3 LPos, float LDe
     spotColor * LType.z;
   
 }
+
+vec4 computeAmbientLightColor(vec3 normalVec) {
+	return (((dot(normalVec, ambientDir) + 1.0) * ambientHighColor) + ((1.0 - dot(normalVec, ambientDir)) * ambientLowColor)) / 2.0;
+}
+
 
 
 
@@ -135,8 +144,11 @@ void main() {
 
 	vec3 lambertDiffuseColor4 = applyLambertDiffuse(lightDDir, lightDColor, normalVec, texColor.rgb);
 
+	vec4 ambientComponent = computeAmbientLightColor(normalize(normalVec)) * mAmbientColor;
+
+
 	// lambert diffuse without specular
-	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + mAmbientColor.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
+	  outColor = clamp(vec4(lambertDiffuseColor1 *LAOn + lambertDiffuseColor2 * LBOn + lambertDiffuseColor3 * LCOn + lambertDiffuseColor4 * LDOn + ambientComponent.rgb + mEmitColor.rgb, texColor.a),0.0, 1.0);
 
 	  if(outColor.a < 0.2)
   		discard; 
