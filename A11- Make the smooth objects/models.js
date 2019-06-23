@@ -97,11 +97,11 @@ function buildGeometry() {
     var norm4 = [[0,0,0]];
     var ind4 = [];
     var color4 = [0.0, 1.0, 1.0];
-    var slices4 = 20;
-    var strips4 = 20;
+    var slices4 = 50;
+    var strips4 = 50;
     var ray4 = 2;
     vert4[1] = [0, ray4,0];
-    norm4[1] = [0, 1, 0];
+    norm4[1] = [0, ray4, 0];
     var currentRay = ray4 * Math.cos(Math.PI/2 - Math.PI / strips4 * 1); 
     var currentHeight = ray4 * Math.sin(Math.PI/2 - Math.PI/strips4 * 1 );
     var prevStartVertexIndex = 2;
@@ -110,7 +110,7 @@ function buildGeometry() {
     for(i = 0; i < slices4; i++) {
 	// top
 	vert4[i+fillVertexIndex] = [currentRay * Math.cos(2*Math.PI / slices4 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i)];
-	norm4[i+fillVertexIndex] = [  Math.cos(2*Math.PI / slices4 * i), Math.sin(Math.PI/2 - Math.PI/strips4 * 1 ) ,  Math.sin(2*Math.PI / slices4 * i)];
+	norm4[i+fillVertexIndex] = [ currentRay * Math.cos(2*Math.PI / slices4 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i)];
 	ind4[fillIndexIndex + 3*i]   = (i < slices4 - 1) ? i+fillVertexIndex+1 : fillVertexIndex  ;
 	ind4[fillIndexIndex + 3*i + 1] = i+fillVertexIndex;
 	ind4[fillIndexIndex + 3*i + 2] = 1;
@@ -125,7 +125,7 @@ function buildGeometry() {
     	currentHeight = ray4 *  Math.sin(Math.PI/2 - Math.PI/strips4 * (j+1) );
     	while( i2 < slices4 ) {	
     	    vert4[fillVertexIndex + i2 ] = [currentRay * Math.cos(2*Math.PI / slices4 * i2), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i2)];
-    	    norm4[fillVertexIndex + i2 ] = [ Math.cos(2*Math.PI / slices4 * i2), Math.sin(Math.PI/2 - Math.PI/strips4 * (j+1) ) ,  Math.sin(2*Math.PI / slices4 * i2)];
+    	    norm4[fillVertexIndex + i2 ] = [ currentRay * Math.cos(2*Math.PI / slices4 * i2), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i2)];
     	    ind4[fillIndexIndex + 6*i2    ] = (i2 < slices4 - 1) ? prevStartVertexIndex + 1 + i2 : prevStartVertexIndex ;
     	    ind4[fillIndexIndex + 6*i2 + 1] = fillVertexIndex + i2 ;
     	    ind4[fillIndexIndex + 6*i2 + 2] = prevStartVertexIndex + i2 ;
@@ -139,14 +139,14 @@ function buildGeometry() {
     	fillIndexIndex = fillIndexIndex + i2 * 6;
     }
     vert4[fillVertexIndex]= [0,-ray4,0];
-    norm4[fillVertexIndex]= [0,-1,0];
+    norm4[fillVertexIndex]= [0,-ray4,0];
     fillVertexIndex++;
     currentRay = ray4 * Math.cos(-Math.PI/2 + Math.PI / strips4 ); 
     currentHeight = ray4 * Math.sin(-Math.PI/2 + Math.PI/strips4);
     for(i = 0; i < slices4; i++) {
 	// bottom
 	vert4[i+fillVertexIndex] = [currentRay * Math.cos(2*Math.PI / slices4 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i)];
-	norm4[i+fillVertexIndex] = [ Math.cos(2*Math.PI / slices4 * i), Math.sin(-Math.PI/2 + Math.PI/strips4) ,  Math.sin(2*Math.PI / slices4 * i)];
+	norm4[i+fillVertexIndex] = [ currentRay * Math.cos(2*Math.PI / slices4 * i), currentHeight , currentRay * Math.sin(2*Math.PI / slices4 * i)];
 	ind4[fillIndexIndex + 3*i]   = fillVertexIndex-1;
 	ind4[fillIndexIndex + 3*i + 1] = i+fillVertexIndex;
 	ind4[fillIndexIndex + 3*i + 2] =  (i < slices4 - 1) ? i+fillVertexIndex+1 : fillVertexIndex  ;
