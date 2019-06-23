@@ -86,6 +86,8 @@ var endCredits = true;
 
 var lanterns = [];
 
+var lava;
+
 
 var Scene = 
 {
@@ -202,13 +204,13 @@ var Scene =
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.05, 1, 50, 0.8));	//player flashlight
 	    lights.push(new PointLight('LB', 0, 10, 200, 35, 0.5 ));			//castle lantern light
-	    lights.push(new PointLight('LC', 0, 10, 350, 25, 1.5 )); 			//yellow light
-	    lights.push(new PointLight('LD', 0, 10, 350, 25, 1.5 )); 			//blue lantern light
+	    lights.push(new PointLight('LC', 0, 10, 350, 30, 1.5 )); 			//yellow light
+	    lights.push(new PointLight('LD', 0, 10, 350, 30, 1.5 )); 			//blue lantern light
 	    lights[0].setCone(20, 50);
 	    lights[0].setColor(255, 255, 255);
 	    lights[1].setColor(255, 0, 0);
 	    lights[2].setColor(255, 255, 0);
-	    lights[3].setColor(0, 20, 255);
+	    lights[3].setColor(0, 100, 255);
 
 	    //castle lantern
 	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
@@ -252,6 +254,9 @@ var Scene =
 	    lantern.addToScene();
 
 	    Light.moveAllLights(viewMatrix);
+
+	    lava.material.setWaveHeight(10);
+	    lava.setPosition(0, -10, 0);
 	},
 
 	switchLights_Dungeon()
@@ -271,6 +276,9 @@ var Scene =
 	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
 	    lantern.setPosition(-60, -1, -61);
 	    lantern.addToScene();
+
+	    lava.material.setWaveHeight(8);
+	    lava.setPosition(0, -16, 0);
 	},
 
 	clearObjects()
@@ -293,18 +301,18 @@ var Scene =
 		//player
 		player  = new Player(unitCubeTexMesh, textureMaterial, rock1Mesh, rock1Tex);
 		player.setPosition(25, 30, 360);
-		//player.setPosition(0, 30, 20);
+		//player.setPosition(-1, 5, -100);
 		player.setRotation(0, -90, 0);
 		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
 		//lava
-		var tmpObj = new Lava3D(lavaMesh, lavaMaterial);
-		tmpObj.setPosition(0, -10, 0);
-		tmpObj.setScale(3, 2, 3);
-		rocksCratesCollGroup.push(tmpObj);
-		tmpObj.addToScene();
+		lava = new Lava3D(lavaMesh, lavaMaterial);
+		lava.setPosition(0, -10, 0);
+		lava.setScale(3, 2, 3);
+		rocksCratesCollGroup.push(lava);
+		lava.addToScene();
 
 		//trigger for falling rocks/boxes
 		var trigg = new GravityTrigger3D(35, 35, 35);
@@ -382,10 +390,16 @@ var Scene =
 		trigg.registerObject3D(tmpObj);
 		rocksCratesCollGroup.push(tmpObj);
 
+		//destroyable door (castle top)
+		var tmpObj = new DestroyableObject3D(doorMesh, woodenDoorTex, redMaterial);
+		tmpObj.setPosition(-0.9, 49, -43);
+		tmpObj.setScale(2.5, 1.5, 2);
+		tmpObj.addToScene();
+
 		//mobile wood boxes in dungeon
 		var tmpObj = new MobileObject3D(woodBox, woodenCrateTex);
-		tmpObj.setPosition(-1, 4, -183);
-		tmpObj.setScale(3, 3, 3);
+		tmpObj.setPosition(-1, -2.5, -183);
+		tmpObj.setScale(3, 4, 3);
 		tmpObj.enablePhysics(true);
 		tmpObj.enableGravity(true);
 		tmpObj.enableCollisionWith(rocksCratesCollGroup);
@@ -420,7 +434,7 @@ var Scene =
 
 		//key
 		var tmpObj = new Key3D(keyMesh, keyMaterial);
-		tmpObj.setPosition(0, 0, -25);
+		tmpObj.setPosition(-0.9, 50, -59);
 		tmpObj.setScale(15, 15, 15);
 		tmpObj.addToScene();
 
@@ -606,7 +620,7 @@ var Scene =
 		cameraPath.addPoint(new CameraKeyFrame(120, 20, 450, 100, 10, 15));
 		cameraPath.addPoint(new CameraKeyFrame(130, 10, 350, 20, 85, 5));
 		cameraPath.addPoint(new CameraKeyFrame(150, 0, 280, 10, 90, 5));
-		camAnimator.addAnimation(new Animation(cameraPath, 2000));
+		camAnimator.addAnimation(new Animation(cameraPath, 4000));
 
 		camAnimator.play(true);
 

@@ -4,6 +4,9 @@ class Lava3D extends Object3D
 	{
 		super(mesh, material);
 		this.animTime = 0.0;
+
+		this.material.setWaveHeight(10);
+		this.material.setWavePeriod(6);
 	}
 
 	collisionHandler(object)
@@ -18,9 +21,7 @@ class Lava3D extends Object3D
 
 	preUpdate()
 	{
-		this.animTime--;
+		this.animTime-=1.7;
 		this.material.setUvTime(this.animTime);
-		this.material.setWaveHeight(10);
-		this.material.setWavePeriod(100);
 	}
 }
