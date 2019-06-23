@@ -3,15 +3,15 @@ function move() {
     var R1 =  utils.multiplyMatrices(
 	utils.MakeTranslateMatrix(1,1,0),
 	utils.multiplyMatrices(
-	    utils.MakeRotateZMatrix(15),
+	    utils.MakeRotateYMatrix(45),
 	    utils.multiplyMatrices(
-		utils.MakeRotateYMatrix(45),
+		utils.MakeRotateZMatrix(15),
 		utils.multiplyMatrices(
 		    utils.MakeRotateXMatrix(30),
 		    utils.multiplyMatrices(
-			utils.invertMatrix(utils.MakeRotateYMatrix(45)),
+			utils.invertMatrix(utils.MakeRotateZMatrix(15)),
 			utils.multiplyMatrices(
-			    utils.invertMatrix(utils.MakeRotateZMatrix(15)),
+			    utils.invertMatrix(utils.MakeRotateYMatrix(45)),
 			    utils.invertMatrix(utils.MakeTranslateMatrix(1,1,0))))))));  
 	// Double the size of an object, using as fixed point (1,1,0)
     var S1 =  utils.multiplyMatrices(
