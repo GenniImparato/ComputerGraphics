@@ -82,7 +82,7 @@ var currCamera;
 var camAnimator;
 
 var player;
-var endCredits = true;
+var endCredits = false;
 
 var lanterns = [];
 

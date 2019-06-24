@@ -96,14 +96,35 @@ class FirstPersonCamera  extends Camera
 		this.z = z;
 	}
 	
+	setAngle(angle)
+	{
+		this.angle = angle;
+	}
+
+	setElevation(elevation)
+	{
+		if(elevation < 90) {
+			if(elevation > -90)
+		   		this.elevation = elevation;		
+		   	else 
+		   		this.elevation = -90;
+		} else {
+			this.elevation = 90;
+		}
+	}
+
 	handleInput()
 	{
-		this.elevation += Input.getMouseDiffY() * 0.2;
+		this.setElevation(this.elevation + Input.getMouseDiffY() * 0.2);
 	}
+
+	
+
 
 	look()
 	{
 		this.handleInput();
+
 
 		viewMatrix = utils.MakeView(this.x, this.y, this.z, -this.elevation, this.angle);
 		projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewMatrix);
