@@ -54,7 +54,7 @@ function buildGeometry() {
     var vert4 = [[0.0, 0.0, 0.0]];
     var ind4 = [];
     var color4 = [1.0, 1.0, 0.0];
-    var slices4 = 10;
+    var slices4 = 64;
     for(i = 0; i < slices4; i++) {
 	vert4[i+1] = [Math.cos(2*Math.PI / slices4 * i), 0.0 ,Math.sin(2*Math.PI / slices4 * i) ];
 	ind4[3*i]   = 0;
@@ -74,7 +74,7 @@ function buildGeometry() {
     var vert5 = [[0.0, -1, 0.0], [0,1,0]];
     var ind5 = [];
     var color5 = [1.0, 0.0, 1.0];
-    var slices5 = 12;
+    var slices5 = 64;
     for(i = 0; i < slices5*2; i=i+2) {
 	// bottom circle
 	vert5[i+2] = [Math.cos(2*Math.PI / slices5 * (i/2)), -1, Math.sin(2*Math.PI / slices5 * (i/2))];
@@ -101,8 +101,8 @@ function buildGeometry() {
     var vert6 = [[0,0,0]];
     var ind6 = [];
     var color6 = [0.0, 1.0, 1.0];
-    var slices6 = 50;
-    var strips6 = 20;
+    var slices6 = 64;
+    var strips6 = 64;
     var ray6 = 2;
     vert6[1] = [0, ray6,0];
     var currentRay = ray6 * Math.cos(Math.PI/2 - Math.PI / strips6 * 1); 

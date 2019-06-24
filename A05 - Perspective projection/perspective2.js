@@ -3,8 +3,9 @@ function perspective(w, h, fov) {
     var a = w/h;
     const n = 0.1
     const f = 100
+    console.log(fov)
     var fovy = utils.degToRad(fov)
-    var out = [1/a* Math.tan(fovy/2),		0.0,		0.0,		0.0,
+    var out = [1/(a* Math.tan(fovy/2)),		0.0,		0.0,		0.0,
 	       0.0,		1/Math.tan(fovy/2),		0.0,		0.0,
 	       0.0,		0.0,		(f + n)/(n - f),		2 * f * n / ( n - f ),
 			   0.0,		0.0,		-1,		0];

@@ -1,5 +1,5 @@
 // these global variables are used to contain the current angles of the world
-var worldQuaternion = new Quaternion("1 + 0i + 0j + 0k"); // Starting quaternion : no rotation 
+var worldQuaternion = Quaternion.fromEuler(0,0,0); // Starting quaternion : no rotation 
 
 function quaternionFromEuler( rx, ry, rz ) {
     var xQuaternion = new Quaternion({w: Math.cos(rx/2), x: Math.sin(rx/2), y: 0, z: 0});

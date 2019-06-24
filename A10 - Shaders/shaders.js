@@ -63,7 +63,7 @@ var S2 = `
 	vec4 lightColor = LAlightColor * decayFactor ;
 	vec4 diffuseComponent  = diffColor * clamp(cosAlphaAngle, 0.0, 1.0);
 
-	vec3 halfVector = normalize(LADir + eyedirVec);
+	vec3 halfVector = normalize(differenceVector + eyedirVec);
 	vec4 specularComponent = specularColor * pow(clamp(dot(normalize(normalVec), halfVector), 0.0, 1.0), SpecShine);
 
 	out_color = clamp(lightColor * diffuseComponent + lightColor * specularComponent, 0.0, 1.0) ;
@@ -111,7 +111,6 @@ var S5 = `
 	float specularIntensity = clamp( dot(eyedirVec, reflectionDir), 0.0, 1.0);
 	vec4 diffuseComponent;
 	vec4 specularComponent;
-	vec4 toonOffset = vec4(0.5, 0.5, 0.5, 0.00);
 	if (cosAlphaAngle >= DToonTh) {
 		diffuseComponent = diffColor;
 	}
@@ -172,7 +171,7 @@ var S7 = `
 	float coneLight = clamp( (cosAlphaLight - lightConeOut) /(lightConeIn - lightConeOut),0.0, 1.0);
 	float lightDecayC =  pow( LCTarget / differenceLengthC , LCDecay);
 	vec4 lightColorC  = LClightColor *  lightDecayC * coneLight; 
-	vec3 reflectionDirC = -reflect(LCDir, normalize(normalVec));
+	vec3 reflectionDirC = -reflect(differenceVectorC, normalize(normalVec));
 	float specularIntensityC = pow(clamp(dot(eyedirVec, reflectionDirC), 0.0, 1.0), SpecShine); 
 	float cosAlphaAngleC = max(dot(differenceVectorC, normalize(normalVec)), 0.0);
 	vec4 diffuseComponentC =  diffColor * cosAlphaAngleC;

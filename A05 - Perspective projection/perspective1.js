@@ -7,7 +7,7 @@ function perspective() {
     var out = [1/a * Math.tan(fovy/2),		0.0,		0.0,		0.0,
 	       0.0,		1/Math.tan(fovy/2),		0.0,		0.0,
 	       0.0,		0.0,		(f + n)/(n - f),		2 * f * n / ( n - f ),
-			   0.0,		0.0,		-1,		0];
+			   0.0,		0.0,		-1,		0.0];
 
 	return out;
 }
