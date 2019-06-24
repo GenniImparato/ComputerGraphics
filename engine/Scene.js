@@ -305,7 +305,7 @@ var Scene =
 		player.setPosition(25, 30, 360);
 		//player.setPosition(-1, 5, -100);
 		player.setRotation(0, -90, 0);
-		player.hasKey = true;
+		player.hasKey = false;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
