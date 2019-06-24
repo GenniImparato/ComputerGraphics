@@ -82,7 +82,7 @@ var currCamera;
 var camAnimator;
 
 var player;
-var endCredits = false;
+var endCredits = true;
 
 var lanterns = [];
 
@@ -604,25 +604,65 @@ var Scene =
 		//end credits animation
 		camAnimator = new CameraAnimator(lookAtCamera);
 		var cameraPath = new CameraBezierCurve();
-		cameraPath.addPoint(new CameraKeyFrame(150, 0, 280, 10, 90, 5));
-		cameraPath.addPoint(new CameraKeyFrame(140, 2, 275, 0, 0, 20));
-		cameraPath.addPoint(new CameraKeyFrame(20, 80, 250, -20, 0, 35));
-		cameraPath.addPoint(new CameraKeyFrame(-50, 20, 250, -80, 0, 30));
-		cameraPath.addPoint(new CameraKeyFrame(-10, 0, 250, -150, 0, 20));
-		cameraPath.addPoint(new CameraKeyFrame(0, 80, 240, -100, 20, 10));
-		cameraPath.addPoint(new CameraKeyFrame(0, 70, 50, -20, 0, 20));
-		cameraPath.addPoint(new CameraKeyFrame(0, 20, -20, 0, 10, 10));
-		cameraPath.addPoint(new CameraKeyFrame(-50, 150, -30, 70, 0, 25));
-		cameraPath.addPoint(new CameraKeyFrame(-100, 190, -150, 70, 60, 25));
-		cameraPath.addPoint(new CameraKeyFrame(-250, 200, -30, 90, 80, 50));
-		cameraPath.addPoint(new CameraKeyFrame(-380, 80, 100, 180, 110, 25));
-		cameraPath.addPoint(new CameraKeyFrame(-220, 20, 120, 180, 60, 10));
-		cameraPath.addPoint(new CameraKeyFrame(20, 35, 150, 180, -5, 15));
-		cameraPath.addPoint(new CameraKeyFrame(100, 40, 250, 150, -15, 25));
-		cameraPath.addPoint(new CameraKeyFrame(120, 20, 450, 100, 10, 15));
-		cameraPath.addPoint(new CameraKeyFrame(130, 10, 350, 20, 85, 5));
-		cameraPath.addPoint(new CameraKeyFrame(150, 0, 280, 10, 90, 5));
-		camAnimator.addAnimation(new Animation(cameraPath, 4000));
+	        // Pass through windmill wheel
+		cameraPath.addPoint(new CameraKeyFrame(100, 0, 250, 0, 90, 0));
+		cameraPath.addPoint(new CameraKeyFrame(50, 80, 300, 90, 0, 10));
+		cameraPath.addPoint(new CameraKeyFrame(-100, 50, 200, 110, 0, 20));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+	        cameraPath = new CameraBezierCurve();
+	        // // look backward
+		cameraPath.addPoint(new CameraKeyFrame(-100, 50, 200, 110, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(-60, 40, 190, 180, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(0, 15, 150, 180, 0, 20));
+		camAnimator.addAnimation(new Animation(cameraPath, 300));
+	        cameraPath = new CameraBezierCurve();
+	        // enter the castle
+		cameraPath.addPoint(new CameraKeyFrame(0, 15, 150, 180, 0, 20));
+		cameraPath.addPoint(new CameraKeyFrame(0, 5, 80, 0, 0, 0));
+
+		camAnimator.addAnimation(new Animation(cameraPath, 250));
+	        cameraPath = new CameraBezierCurve();
+
+	        // look into castle garden
+		cameraPath.addPoint(new CameraKeyFrame(0, 5, 80, 0, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 5, 40, -90, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 5, -10, 0, 0, 0));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+
+	        cameraPath = new CameraBezierCurve();
+	        // // enter the dungeon
+		cameraPath.addPoint(new CameraKeyFrame(0, 5, -10, 0, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 6, -30, -10, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, -13, -50, -90, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, -10, -70, 0, 0, 0));
+	    camAnimator.addAnimation(new Animation(cameraPath, 500));
+	    
+	     //pass through the door
+	        cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(0, -10, -70, 0, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, -5, -130, 0, 0, 0));
+		camAnimator.addAnimation(new Animation(cameraPath, 200));
+
+	     // traverse the tunnel
+	        cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(0, -5, -130, 0, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(-25, 7, -160, 120, 50, 0));
+
+		cameraPath.addPoint(new CameraKeyFrame(-25, 15, -200, 150, 50, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 0, -250, 0, 0, 0));
+		camAnimator.addAnimation(new Animation(cameraPath, 800));
+	     // exit the tunnel
+	        cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(0, 0, -250, 0, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 0, -300, -100, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 50 , -280, -180, 0, 0));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
+
+	    // up to the sky
+	        cameraPath = new CameraBezierCurve();
+		cameraPath.addPoint(new CameraKeyFrame(0, 50 , -280, -180, 0, 0));
+		cameraPath.addPoint(new CameraKeyFrame(0, 150 , -280, -180, 20, 10));
+		camAnimator.addAnimation(new Animation(cameraPath, 500));
 
 		camAnimator.play(true);
 
