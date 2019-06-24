@@ -1,0 +1,22 @@
+{
+   "name": "super-mauro-bros",
+   "version": "1.0.0",
+   "main": "index.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/GenniImparato/ComputerGraphics"
+   },
+   "keywords": [
+      "3d",
+      "webgl",
+      "games"
+   ],
+   "license": "ISC",
+   "homepage": "https://super-mauro-bros.herokuapp.com",
+   "dependencies": {
+      "static-server": "^2.2.1"
+   }
+}
