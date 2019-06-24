@@ -1,9 +1,9 @@
 var StaticServer = require('static-server');
+const serverPort = process.env.PORT || 8887
 var server = new StaticServer({
   rootPath: '.',            // required, the root of the server file tree
-  port: 8887,               // required, the port to listen
-  name: 'graphics-project',   // optional, will set "X-Powered-by" HTTP header
-  host: '127.0.0.1',       // optional, defaults to any interface
+  port: serverPort,               // required, the port to listen
+  name: 'super-mauro-bros',   // optional, will set "X-Powered-by" HTTP header
   cors: '*',                // optional, defaults to undefined
   followSymlink: true,      // optional, defaults to a 404 error
   templates: {
