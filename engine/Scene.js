@@ -35,6 +35,7 @@ var finalDestMesh;
 var windmillBaseMesh;
 var windmillWheelMesh;
 var flashlightMesh;
+var treasureMesh;
 
 ///MATERIALS
 var greenSpecMaterial;
@@ -66,11 +67,13 @@ var lavaMaterial;
 var lanternTex;
 var windmillTex;
 var flashlightTex;
+var treasureMaterial;
 ///_________________________________________________________
 
 
 var objects = [];
 var lights = []; // should have maximum 3 lights
+var lanterns = [];
 var materials = [];
 
 //collision group 1
@@ -127,6 +130,7 @@ var Scene =
 		windmillBaseMesh		= Mesh.loadFromOBJFile("windmill_base.obj");
 		windmillWheelMesh		= Mesh.loadFromOBJFile("windmill_wheel.obj");
 		flashlightMesh			= Mesh.loadFromOBJFile("flashlight.obj");
+		treasureMesh 			= Mesh.loadFromOBJFile("treasure_chest.obj");
 	},
 
 	loadMaterials()
@@ -162,6 +166,8 @@ var Scene =
 		materials.push(lanternTex 				= new TextureDiffuse("lantern_violet.jpg"));
 		materials.push(windmillTex 				= new TextureDiffuse("windmill.jpg"));
 		materials.push(flashlightTex 			= new TextureDiffuse("flashlight.jpg"));
+		materials.push(treasureMaterial         = new SpecularMaterial(255, 255, 0, 255));
+		treasureMaterial.setSpecularShine(50);
 
 		for(var i=0; i<materials.length; i++)
 		{
@@ -202,6 +208,7 @@ var Scene =
 	switchLights_Extern()
 	{	
 		//delete old lights
+		clearLanterns();
 		lights.splice(0, lights.length);
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.05, 1, 50, 0.8));	//player flashlight
@@ -215,45 +222,45 @@ var Scene =
 	    lights[3].setColor(0, 100, 255);
 
 	    //castle lantern
-	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
-	    lantern.setPosition(0, 12, 100);
+	    lanterns.push( new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]));
+	    lanterns[0].setPosition(0, 12, 100);
 	    var lanternPath = new BezierCurve();
 	    lanternPath.addPoint(new KeyFrame(0, 0, 0));
 	    lanternPath.addPoint(new KeyFrame(60, 40, -20));
 	    lanternPath.addPoint(new KeyFrame(50, 30, -20));
 	    lanternPath.addPoint(new KeyFrame(0, 5, -100));
-	    lantern.animator.addAnimation(new Animation(lanternPath, 400));
+	    lanterns[0].animator.addAnimation(new Animation(lanternPath, 400));
 
 	    lanternPath = new BezierCurve();
 	    lanternPath.addPoint(new KeyFrame(0, 5, -100));
 	    lanternPath.addPoint(new KeyFrame(-60, 30, -20));
 	    lanternPath.addPoint(new KeyFrame(-35, 40, -20));
 	    lanternPath.addPoint(new KeyFrame(0, 0, 0));
-	    lantern.animator.addAnimation(new Animation(lanternPath, 400));
-	    lantern.animator.play(false);
-	    lantern.animator.instance = lantern.animator;
+	    lanterns[0].animator.addAnimation(new Animation(lanternPath, 400));
+	    lanterns[0].animator.play(false);
+	    lanterns[0].animator.instance = lantern.animator;
 	    lantern.animator.onStop = function(inst){inst.play(false); inst.currTime=0;};
-	    lantern.addToScene();
+	    lanterns[0].addToScene();
 
 	    //blue lantern
-	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]);
-	    lantern.setPosition(-20, 10, 250);
+	    lanterns.push(new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[3]));
+	    lanterns[1].setPosition(-20, 10, 250);
 	    lanternPath = new BezierCurve();
 	    lanternPath.addPoint(new KeyFrame(0, 0, -15));
 	    lanternPath.addPoint(new KeyFrame(+30, +20, 0));
 	    lanternPath.addPoint(new KeyFrame(0, 0, +15));
-	    lantern.animator.addAnimation(new Animation(lanternPath, 300));
-	    lantern.animator.play(true);
-	    lantern.addToScene();
+	    lanterns[1].animator.addAnimation(new Animation(lanternPath, 300));
+	    lanterns[1].animator.play(true);
+	    lanterns[1].addToScene();
 
-	    lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]);
+	    lanterns.push(new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]));
 	    lanternPath = new BezierCurve();
-	    lantern.setPosition(-20, 10, 320);
+	    lanterns[1].setPosition(-20, 10, 320);
 	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
 	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
-	    lantern.animator.addAnimation(new Animation(lanternPath, 100));
-	    lantern.animator.play(true);
-	    lantern.addToScene();
+	    lanterns[1].animator.addAnimation(new Animation(lanternPath, 100));
+	    lanterns[1].animator.play(true);
+	    lanterns[1].addToScene();
 
 	    Light.moveAllLights(viewMatrix);
 
@@ -264,7 +271,9 @@ var Scene =
 	switchLights_Dungeon()
 	{
 		//delete old lights
+		clearLanterns();
 		lights.splice(0, lights.length);
+		player.hasKey = true;
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.05, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', -115, -8, -61, 30, 10));
@@ -275,11 +284,11 @@ var Scene =
 	    lights[2].setColor(255, 0, 0);
 	    Light.moveAllLights(viewMatrix);
 
-	    var lantern = new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]);
-	    lantern.setPosition(-60, -1, -61);
-	    lantern.addToScene();
+	    lanterns.push(new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]));
+	    lanterns[0].setPosition(-10, -1, -61);
+	    lanterns[0].addToScene();
 
-	    lava.material.setWaveHeight(8);
+	    lava.material.setWaveHeight(6);
 	    lava.setPosition(0, -16, 0);
 	},
 
@@ -295,6 +304,13 @@ var Scene =
 		rocksCratesCollGroup = [];
 	},
 
+	clearLanterns()
+	{
+		for(var i=0; i<lanterns.length; i++)
+			lanterns[i] = null;
+		lanterns = [];
+	}
+
 	createObjects()
 	{
 		////		CREATE OBJECTS 3D
@@ -305,7 +321,7 @@ var Scene =
 		player.setPosition(25, 30, 360);
 		//player.setPosition(-1, 5, -100);
 		player.setRotation(0, -90, 0);
-		player.hasKey = false;
+		player.hasKey = true;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -408,12 +424,9 @@ var Scene =
 		tmpObj.addToScene();
 
 		//big rock to block path
-		var tmpObj = new Object3D(stone0Mesh, stone0Tex);
-		tmpObj.setPosition(-1, 100, -170);
-		tmpObj.setScale(1.9, 0.9, 1.3);
-		tmpObj.enablePhysics(true);
-		tmpObj.enableGravity(true);
-		tmpObj.enableCollisionWith(rocksCratesCollGroup);
+		var tmpObj = new Object3D(treasureMesh, treasureMaterial);
+		tmpObj.setPosition(-1, 25, -170);
+		tmpObj.setScale(1, 1, 1);
 		tmpObj.addToScene();
 		rocksCratesCollGroup.push(tmpObj);
 
@@ -550,6 +563,16 @@ var Scene =
 		tmpObj.setPosition(0.85, -12, -75);
 		tmpObj.objects[0].setScale(1.6, 1.55, 1);
 		tmpObj.addToScene();
+
+		var endGameTrigger = new TriggerBox3D(5, 5, 5);
+		endGameTrigger.setPosition(-1, 25, -170);
+		endGameTrigger.oneShot = true;
+		endGameTrigger.onTrigger = function(inst)
+						{
+							Scene.switchLights_Extern();
+							endCredits = true;
+						};
+		endGameTrigger.addToScene();
 
 		//second key
 		var tmpObj = new Key3D(keyMesh, keyMaterial);

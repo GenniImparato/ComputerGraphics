@@ -71,11 +71,12 @@ vec3 applyLambertDiffuse(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 diff
 vec3 compLightDir(vec3 LDir, vec3 LPos, vec3 LType) {
   vec3 directDir = normalize(LDir);
   vec3 pointDir = normalize(LPos - fs_pos);
-  vec3 spotDir = normalize(LDir);
+  vec3 spotDir = normalize(LPos - fs_pos);
   return directDir * LType.x +
     pointDir * LType.y +
     spotDir * LType.z;
 }
+
 
 vec3 compLightColor (vec3 LColor, vec3 LDir, float LTarget, vec3 LPos, float LDecay, float LConeIn, float LConeOut, vec3 LType) {
   vec3 directColor = LColor;

@@ -431,6 +431,7 @@ class CameraAnimator
 	this.playing = true;
 	this.reverse = true;
 	this.loop = loop;
+	this.currTime = this.duration;
     }
 
     stop()

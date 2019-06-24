@@ -80,7 +80,7 @@ vec4 applyPhongSpecular(vec3 lightDir, vec3 lightCol, vec3 normalVec, vec3 eyedi
 vec3 compLightDir(vec3 LDir, vec3 LPos, vec3 LType) {
   vec3 directDir = normalize(LDir);
   vec3 pointDir = normalize(LPos - fs_pos);
-  vec3 spotDir = normalize(LDir);
+  vec3 spotDir = normalize(LPos - fs_pos);
   return directDir * LType.x +
     pointDir * LType.y +
     spotDir * LType.z;
