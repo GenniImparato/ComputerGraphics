@@ -29,9 +29,8 @@ class GroupObject3D extends Object3D
 
 	removeFromScene()
 	{
-		Scene.removeObject3D(this);
-
 		for(var i=0; i<this.objectsCount; i++)
 			this.objects[i].removeFromScene();
+		Scene.removeObject3D(this);
 	}
 }
