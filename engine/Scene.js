@@ -205,11 +205,20 @@ var Scene =
 			
 	},
 
-	switchLights_Extern()
+	clearLanterns()
+	{
+		for(var i=0; i<lanterns.length; i++)
+			lanterns[i] = null;
+		lanterns = [];
+	},
+
+
+	switchLights_Extern(createLantern)
 	{	
 		//delete old lights
-		clearLanterns();
+		this.clearLanterns();
 		lights.splice(0, lights.length);
+		player.hasKey = false;
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, -0.05, 1, 50, 0.8));	//player flashlight
 	    lights.push(new PointLight('LB', 0, 10, 200, 35, 0.5 ));			//castle lantern light
@@ -221,6 +230,7 @@ var Scene =
 	    lights[2].setColor(255, 255, 0);
 	    lights[3].setColor(0, 100, 255);
 
+	    if(createLantern)  {
 	    //castle lantern
 	    lanterns.push( new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]));
 	    lanterns[0].setPosition(0, 12, 100);
@@ -238,8 +248,8 @@ var Scene =
 	    lanternPath.addPoint(new KeyFrame(0, 0, 0));
 	    lanterns[0].animator.addAnimation(new Animation(lanternPath, 400));
 	    lanterns[0].animator.play(false);
-	    lanterns[0].animator.instance = lantern.animator;
-	    lantern.animator.onStop = function(inst){inst.play(false); inst.currTime=0;};
+	    lanterns[0].animator.instance = lanterns[0].animator;
+	    lanterns[0].animator.onStop = function(inst){inst.play(false); inst.currTime=0;};
 	    lanterns[0].addToScene();
 
 	    //blue lantern
@@ -255,12 +265,13 @@ var Scene =
 
 	    lanterns.push(new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[2]));
 	    lanternPath = new BezierCurve();
-	    lanterns[1].setPosition(-20, 10, 320);
+	    lanterns[2].setPosition(-20, 10, 320);
 	    lanternPath.addPoint(new KeyFrame(0, -3, 0));
 	    lanternPath.addPoint(new KeyFrame(0, +3, 0));
-	    lanterns[1].animator.addAnimation(new Animation(lanternPath, 100));
-	    lanterns[1].animator.play(true);
-	    lanterns[1].addToScene();
+	    lanterns[2].animator.addAnimation(new Animation(lanternPath, 100));
+	    lanterns[2].animator.play(true);
+	    lanterns[2].addToScene();
+		}
 
 	    Light.moveAllLights(viewMatrix);
 
@@ -268,12 +279,12 @@ var Scene =
 	    lava.setPosition(0, -10, 0);
 	},
 
-	switchLights_Dungeon()
+	switchLights_Dungeon(createLantern)
 	{
 		//delete old lights
-		clearLanterns();
+		this.clearLanterns();
 		lights.splice(0, lights.length);
-		player.hasKey = true;
+		player.hasKey = false;
 
 	    lights.push(new SpotLight('LA', 0, 20, 30, 0, 0.05, 1, 50, 0.8));
 	    lights.push(new PointLight('LB', -115, -8, -61, 30, 10));
@@ -284,10 +295,16 @@ var Scene =
 	    lights[2].setColor(255, 0, 0);
 	    Light.moveAllLights(viewMatrix);
 
+	    if(createLantern) {
 	    lanterns.push(new Lantern3D(lanternMesh, lanternInteriorMesh, lanternTex, lights[1]));
-	    lanterns[0].setPosition(-10, -1, -61);
+	    lanterns[0].setPosition(-10, -5, -30);
+	    lanternPath = new BezierCurve();
+	    lanternPath.addPoint(new KeyFrame(-10, -1, -30));
+	    lanternPath.addPoint(new KeyFrame(-80, -1, -30));
+	    lanterns[0].animator.addAnimation(new Animation(lanternPath, 300));
+	    lanterns[0].animator.play(true);
 	    lanterns[0].addToScene();
-
+		}
 	    lava.material.setWaveHeight(6);
 	    lava.setPosition(0, -16, 0);
 	},
@@ -304,13 +321,7 @@ var Scene =
 		rocksCratesCollGroup = [];
 	},
 
-	clearLanterns()
-	{
-		for(var i=0; i<lanterns.length; i++)
-			lanterns[i] = null;
-		lanterns = [];
-	}
-
+	
 	createObjects()
 	{
 		////		CREATE OBJECTS 3D
@@ -321,7 +332,7 @@ var Scene =
 		player.setPosition(25, 30, 360);
 		//player.setPosition(-1, 5, -100);
 		player.setRotation(0, -90, 0);
-		player.hasKey = true;
+		player.hasKey = false;
 		player.enableCollisionWith(objects);
 		player.addToScene();
 
@@ -540,7 +551,7 @@ var Scene =
 		dungeonLightsTrigg.oneShot = true;
 		dungeonLightsTrigg.onTrigger = function(inst)
 						{
-							Scene.switchLights_Dungeon();
+							Scene.switchLights_Dungeon(true);
 							doorToDungeonL.close();
 							doorToDungeonR.close();
 						};
@@ -569,7 +580,17 @@ var Scene =
 		endGameTrigger.oneShot = true;
 		endGameTrigger.onTrigger = function(inst)
 						{
-							Scene.switchLights_Extern();
+							Scene.switchLights_Extern(false);
+							var dungeonLightsTrigg = new TriggerBox3D(10, 20, 10);
+							dungeonLightsTrigg.setPosition(0, -5, -40);
+							dungeonLightsTrigg.oneShot = true;
+							dungeonLightsTrigg.onTrigger = function(inst)
+							{
+							Scene.switchLights_Dungeon(false);
+							doorToDungeonL.close();
+							doorToDungeonR.close();
+							};
+							dungeonLightsTrigg.addToScene();
 							endCredits = true;
 						};
 		endGameTrigger.addToScene();
@@ -690,7 +711,7 @@ var Scene =
 		camAnimator.play(true);
 
 		//lights
-		Scene.switchLights_Extern();
+		Scene.switchLights_Extern(true);
 	},
 
 
