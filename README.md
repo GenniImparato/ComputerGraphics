@@ -1,6 +1,4 @@
-# ComputerGraphics
+# Computer graphics dungeon game project
 
-Free textures : 
-- https://3dtextures.me
-- https://www.3dxo.com/textures
-- http://texturer.com/
+The game can be played at
+https://super-mauro-bros.herokuapp.com/
